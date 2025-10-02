@@ -20,7 +20,7 @@ except ImportError:
     ZHDATE_AVAILABLE = False
 
 try:
-    import chinese_calendar
+    import chinese_calendar  # noqa: F401
 
     CHINESE_CALENDAR_AVAILABLE = True
 except ImportError:

@@ -309,7 +309,9 @@ class FestivalManager:
             for fid, fdata in self.chinese_festivals.items():
                 fest_name: str = str(fdata.get("name", ""))
                 regional = fdata.get("regional_names", [])
-                regional_list: list[Any] = regional if isinstance(regional, list) else []
+                regional_list: list[Any] = (
+                    regional if isinstance(regional, list) else []
+                )
                 if (
                     fest_name.lower() == festival_name.lower()
                     or fid.lower() == festival_name.lower()

@@ -7,15 +7,15 @@ from datetime import datetime, timedelta
 from typing import Any
 
 try:
-    from skyfield.api import load, utc
-    from skyfield.searchlib import find_discrete, find_maxima
+    from skyfield.api import load, utc  # noqa: F401
+    from skyfield.searchlib import find_discrete, find_maxima  # noqa: F401
 
     SKYFIELD_AVAILABLE = True
 except ImportError:
     SKYFIELD_AVAILABLE = False
 
 try:
-    import ephem
+    import ephem  # noqa: F401
 
     EPHEM_AVAILABLE = True
 except ImportError:

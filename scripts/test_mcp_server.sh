@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+# MCP Server Test Script (FIFO-based)
+# Tests all 18 MCP tools using FIFO pipes for STDIO communication
+#
+# NOTE: For more comprehensive testing with better error handling,
+# consider using test_mcp_final.sh instead. This script uses FIFOs
+# which can have timing issues on slower systems.
+#
 
 set -e
 
@@ -108,22 +116,38 @@ test_tool() {
         return 1
     fi
 
+    # Validate JSON-RPC 2.0 response structure
+    # Check for jsonrpc version
+    if ! echo "$response" | grep -q '"jsonrpc":"2.0"'; then
+        echo -e "${RED}  ❌ FAIL: Invalid JSON-RPC format${NC}"
+        echo "  Response: $(echo "$response" | cut -c1-100)..."
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 1
+    fi
+
     # Check if response contains error
     if echo "$response" | grep -q '"error"'; then
         echo -e "${RED}  ❌ FAIL: Error in response${NC}"
-        echo "  Response: $response"
+        echo "  Response: $(echo "$response" | cut -c1-150)..."
         FAIL_COUNT=$((FAIL_COUNT + 1))
         return 1
     fi
 
     # Check if response contains result
     if echo "$response" | grep -q '"result"'; then
-        echo -e "${GREEN}  ✅ PASS${NC}"
-        PASS_COUNT=$((PASS_COUNT + 1))
-        return 0
+        # Validate that result contains content
+        if echo "$response" | grep -q '"content"'; then
+            echo -e "${GREEN}  ✅ PASS${NC}"
+            PASS_COUNT=$((PASS_COUNT + 1))
+            return 0
+        else
+            echo -e "${YELLOW}  ⚠️  PASS (but no content field)${NC}"
+            PASS_COUNT=$((PASS_COUNT + 1))
+            return 0
+        fi
     else
         echo -e "${RED}  ❌ FAIL: No result in response${NC}"
-        echo "  Response: $response"
+        echo "  Response: $(echo "$response" | cut -c1-100)..."
         FAIL_COUNT=$((FAIL_COUNT + 1))
         return 1
     fi
@@ -146,8 +170,9 @@ echo -e "${GREEN}MCP connection initialized${NC}"
 # Send initialized notification
 echo '{"jsonrpc":"2.0","method":"notifications/initialized"}' > "$FIFO_IN"
 
-# Give a moment for the notification to be processed
-sleep 1
+# Give sufficient time for the notification to be processed
+# This prevents race conditions on slower systems
+sleep 2
 
 # Test all tools
 echo -e "${BLUE}Starting tool tests...${NC}"
@@ -197,6 +222,15 @@ test_tool "lunar_to_solar" '{"lunar_date":"2024-01-01","culture":"chinese"}' "Co
 # Test 15: Get zodiac info
 test_tool "get_zodiac_info" '{"date":"1990-01-01","culture":"chinese"}' "Get zodiac information"
 
+# Test 16: Batch check dates
+test_tool "batch_check_dates" '{"dates":["2024-01-01","2024-01-15","2024-02-01"],"activity":"wedding","culture":"chinese"}' "Batch check multiple dates"
+
+# Test 17: Compare dates
+test_tool "compare_dates" '{"dates":["2024-01-01","2024-01-15"],"activity":"wedding","culture":"chinese"}' "Compare dates side-by-side"
+
+# Test 18: Get lucky hours
+test_tool "get_lucky_hours" '{"date":"2024-01-01","activity":"signing_contract","culture":"chinese"}' "Get lucky hours for the day"
+
 # Test list tools capability
 echo -e "${BLUE}Testing list tools capability...${NC}"
 TEST_COUNT=$((TEST_COUNT + 1))
@@ -210,11 +244,19 @@ if [ -n "$list_response" ] && echo "$list_response" | grep -q '"tools"'; then
     # Count tools in response
     tool_count=$(echo "$list_response" | grep -o '"name":' | wc -l)
     echo "  Found $tool_count tools"
+
+    # Verify we have all 18 tools
+    if [ "$tool_count" -eq 18 ]; then
+        echo -e "  ${GREEN}✅ All 18 tools are present${NC}"
+    else
+        echo -e "  ${YELLOW}⚠️  Expected 18 tools, but found $tool_count${NC}"
+    fi
 else
     echo -e "${RED}  ❌ FAIL: List tools failed${NC}"
     FAIL_COUNT=$((FAIL_COUNT + 1))
 fi
 
 echo -e "${BLUE}All tests completed!${NC}"
+echo -e "${BLUE}Tested 18 MCP tools + list tools capability${NC}"
 
 # Cleanup will be called by the trap
