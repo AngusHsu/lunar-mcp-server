@@ -5,6 +5,39 @@ All notable changes to the Lunar Calendar MCP Server will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-01-03
+
+### Fixed
+- **Code Quality**: Fixed all ruff linting issues (124 auto-fixed, 5 noqa comments for intentional imports)
+- **Type Safety**: Resolved all 20 mypy type errors for strict type checking compliance
+- **Festival Type Checking**: Improved type safety in festival name lookups and regional name handling
+- **Import Validation**: Added proper noqa comments for availability-check imports (skyfield, ephem, chinese_calendar)
+
+### Changed
+- **Code Formatting**: Applied black formatting to all 13 source files
+- **Import Organization**: Sorted imports with isort across 10 files
+- **Ruff Configuration**: Updated pyproject.toml to use new `lint` section format (deprecated top-level settings)
+- **Mypy Configuration**: Added pytz and skyfield to ignored imports list
+
+### Improved
+- **Test Coverage**: Enhanced test_mcp_server.sh to test all 18 tools (previously 15)
+  - Added `batch_check_dates` test
+  - Added `compare_dates` test
+  - Added `get_lucky_hours` test
+- **Test Validation**: Improved JSON-RPC 2.0 response structure validation
+- **Test Reliability**: Increased initialization delay from 1s to 2s to prevent race conditions
+- **Test Documentation**: Added header comments explaining FIFO-based testing approach
+- **Tool Count Verification**: Added validation to ensure all 18 tools are present
+
+### Technical Details
+- All code now passes professional Python quality standards:
+  - ✅ black (code formatting)
+  - ✅ isort (import sorting)
+  - ✅ ruff (linting - 100% pass rate)
+  - ✅ mypy (type checking - strict mode)
+- Test suite: 18/18 tools passing with comprehensive validation
+- 3 commits: formatting fixes, type error resolution, test improvements
+
 ## [0.1.0] - 2025-01-03
 
 ### Added
@@ -101,4 +134,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-cultural support (Islamic, Hindu, Western) - focused exclusively on Chinese traditions
 - Dependencies: `convertdate`, `hijri-converter` (no longer needed)
 
+[0.1.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.0
