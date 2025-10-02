@@ -3,19 +3,20 @@ Astronomical calculations for lunar calendar operations.
 """
 
 import math
-from datetime import datetime, date, timedelta
-from typing import Dict, List, Any, Tuple, Optional
-import pytz
+from datetime import datetime, timedelta
+from typing import Any
 
 try:
     from skyfield.api import load, utc
     from skyfield.searchlib import find_discrete, find_maxima
+
     SKYFIELD_AVAILABLE = True
 except ImportError:
     SKYFIELD_AVAILABLE = False
 
 try:
     import ephem
+
     EPHEM_AVAILABLE = True
 except ImportError:
     EPHEM_AVAILABLE = False
@@ -26,16 +27,16 @@ class LunarCalculator:
 
     def __init__(self) -> None:
         """Initialize the lunar calculator."""
-        self._cache: Dict[str, Any] = {}
+        self._cache: dict[str, Any] = {}
 
         if SKYFIELD_AVAILABLE:
             self.ts = load.timescale()
-            self.eph = load('de421.bsp')
-            self.earth = self.eph['earth']
-            self.moon = self.eph['moon']
-            self.sun = self.eph['sun']
+            self.eph = load("de421.bsp")
+            self.earth = self.eph["earth"]
+            self.moon = self.eph["moon"]
+            self.sun = self.eph["sun"]
 
-    def _parse_location(self, location: str) -> Tuple[float, float]:
+    def _parse_location(self, location: str) -> tuple[float, float]:
         """Parse location string to lat/lon coordinates."""
         if location == "0,0":
             return 0.0, 0.0
@@ -69,9 +70,17 @@ class LunarCalculator:
             return "Waxing Crescent"
         elif 0.25 <= illumination < 0.75:
             if phase_angle < 180:
-                return "First Quarter" if abs(illumination - 0.5) < 0.1 else "Waxing Gibbous"
+                return (
+                    "First Quarter"
+                    if abs(illumination - 0.5) < 0.1
+                    else "Waxing Gibbous"
+                )
             else:
-                return "Third Quarter" if abs(illumination - 0.5) < 0.1 else "Waning Gibbous"
+                return (
+                    "Third Quarter"
+                    if abs(illumination - 0.5) < 0.1
+                    else "Waning Gibbous"
+                )
         elif illumination < 0.99:
             return "Waning Crescent" if phase_angle > 180 else "Waxing Gibbous"
         else:
@@ -86,57 +95,73 @@ class LunarCalculator:
         lunar_day = int((lunar_months % 1) * 29.530588853) + 1
         return min(lunar_day, 30)
 
-    def _get_moon_influence_traditional(self, phase_name: str, lunar_day: int) -> Dict[str, Any]:
+    def _get_moon_influence_traditional(
+        self, phase_name: str, lunar_day: int
+    ) -> dict[str, Any]:
         """Get traditional moon influence based on phase and lunar day."""
         influences = {
             "New Moon": {
-                "good_for": ["new beginnings", "planting seeds", "setting intentions", "meditation"],
+                "good_for": [
+                    "new beginnings",
+                    "planting seeds",
+                    "setting intentions",
+                    "meditation",
+                ],
                 "avoid": ["harvesting", "major decisions", "surgery"],
                 "energy_type": "introspective, new potential",
-                "luck_level": "neutral"
+                "luck_level": "neutral",
             },
             "Waxing Crescent": {
                 "good_for": ["starting projects", "learning", "building", "healing"],
                 "avoid": ["letting go", "ending relationships", "major cuts"],
                 "energy_type": "growing, building momentum",
-                "luck_level": "good"
+                "luck_level": "good",
             },
             "First Quarter": {
-                "good_for": ["making decisions", "taking action", "overcoming obstacles"],
+                "good_for": [
+                    "making decisions",
+                    "taking action",
+                    "overcoming obstacles",
+                ],
                 "avoid": ["passive activities", "waiting"],
                 "energy_type": "active, challenging",
-                "luck_level": "mixed"
+                "luck_level": "mixed",
             },
             "Waxing Gibbous": {
                 "good_for": ["refining", "adjusting", "editing", "improving"],
                 "avoid": ["starting completely new things", "major changes"],
                 "energy_type": "refining, perfecting",
-                "luck_level": "good"
+                "luck_level": "good",
             },
             "Full Moon": {
-                "good_for": ["completion", "celebration", "manifestation", "emotional release"],
+                "good_for": [
+                    "completion",
+                    "celebration",
+                    "manifestation",
+                    "emotional release",
+                ],
                 "avoid": ["starting new projects", "making major life changes"],
                 "energy_type": "culmination, intense energy",
-                "luck_level": "very good"
+                "luck_level": "very good",
             },
             "Waning Gibbous": {
                 "good_for": ["gratitude", "sharing knowledge", "teaching"],
                 "avoid": ["accumulating", "hoarding"],
                 "energy_type": "sharing, giving thanks",
-                "luck_level": "good"
+                "luck_level": "good",
             },
             "Third Quarter": {
                 "good_for": ["releasing", "forgiving", "letting go", "breaking habits"],
                 "avoid": ["holding on", "starting new ventures"],
                 "energy_type": "release, forgiveness",
-                "luck_level": "mixed"
+                "luck_level": "mixed",
             },
             "Waning Crescent": {
                 "good_for": ["rest", "reflection", "clearing out", "preparation"],
                 "avoid": ["intense activities", "major commitments"],
                 "energy_type": "surrender, rest",
-                "luck_level": "neutral"
-            }
+                "luck_level": "neutral",
+            },
         }
 
         base_influence = influences.get(phase_name, influences["New Moon"])
@@ -149,7 +174,9 @@ class LunarCalculator:
 
         return base_influence
 
-    async def get_moon_phase(self, date_str: str, location: str = "0,0") -> Dict[str, Any]:
+    async def get_moon_phase(
+        self, date_str: str, location: str = "0,0"
+    ) -> dict[str, Any]:
         """Get detailed moon phase information for a specific date and location."""
         try:
             target_date = datetime.strptime(date_str, "%Y-%m-%d")
@@ -169,7 +196,7 @@ class LunarCalculator:
 
                 # Moon rise/set times (simplified)
                 rise_time = "06:30"  # Placeholder - would need more complex calculation
-                set_time = "18:30"   # Placeholder
+                set_time = "18:30"  # Placeholder
 
             else:
                 # Fallback calculation using simple astronomical formulas
@@ -185,8 +212,18 @@ class LunarCalculator:
 
             # Get zodiac sign (simplified)
             zodiac_signs = [
-                "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-                "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+                "Aries",
+                "Taurus",
+                "Gemini",
+                "Cancer",
+                "Leo",
+                "Virgo",
+                "Libra",
+                "Scorpio",
+                "Sagittarius",
+                "Capricorn",
+                "Aquarius",
+                "Pisces",
             ]
             zodiac_index = int((target_date.timetuple().tm_yday + lunar_day) / 30) % 12
             zodiac_sign = zodiac_signs[zodiac_index]
@@ -203,13 +240,15 @@ class LunarCalculator:
                 "set_time": set_time,
                 "zodiac_sign": zodiac_sign,
                 "location": f"{lat},{lon}",
-                "influence": influence
+                "influence": influence,
             }
 
         except Exception as e:
             return {"error": f"Failed to calculate moon phase: {str(e)}"}
 
-    async def get_moon_calendar(self, month: int, year: int, location: str = "0,0") -> Dict[str, Any]:
+    async def get_moon_calendar(
+        self, month: int, year: int, location: str = "0,0"
+    ) -> dict[str, Any]:
         """Get monthly calendar with moon phases."""
         try:
             calendar_data = []
@@ -227,26 +266,28 @@ class LunarCalculator:
             while current_date <= end_date:
                 date_str = current_date.strftime("%Y-%m-%d")
                 moon_data = await self.get_moon_phase(date_str, location)
-                calendar_data.append({
-                    "date": date_str,
-                    "day": current_date.day,
-                    "phase_name": moon_data.get("phase_name"),
-                    "illumination": moon_data.get("illumination"),
-                    "lunar_day": moon_data.get("lunar_day")
-                })
+                calendar_data.append(
+                    {
+                        "date": date_str,
+                        "day": current_date.day,
+                        "phase_name": moon_data.get("phase_name"),
+                        "illumination": moon_data.get("illumination"),
+                        "lunar_day": moon_data.get("lunar_day"),
+                    }
+                )
                 current_date += timedelta(days=1)
 
             return {
                 "month": month,
                 "year": year,
                 "location": location,
-                "calendar": calendar_data
+                "calendar": calendar_data,
             }
 
         except Exception as e:
             return {"error": f"Failed to generate moon calendar: {str(e)}"}
 
-    async def get_moon_influence(self, date_str: str, activity: str) -> Dict[str, Any]:
+    async def get_moon_influence(self, date_str: str, activity: str) -> dict[str, Any]:
         """Get how moon phase affects specific activities."""
         try:
             moon_data = await self.get_moon_phase(date_str)
@@ -258,36 +299,38 @@ class LunarCalculator:
                     "Full Moon": "excellent",
                     "Waxing Gibbous": "very good",
                     "New Moon": "avoid",
-                    "Waning Crescent": "poor"
+                    "Waning Crescent": "poor",
                 },
                 "business_opening": {
                     "New Moon": "excellent",
                     "Waxing Crescent": "very good",
                     "Full Moon": "good",
-                    "Waning Gibbous": "poor"
+                    "Waning Gibbous": "poor",
                 },
                 "travel": {
                     "Waxing Crescent": "excellent",
                     "First Quarter": "good",
                     "Third Quarter": "avoid",
-                    "Waning Crescent": "poor"
+                    "Waning Crescent": "poor",
                 },
                 "surgery": {
                     "Third Quarter": "good",
                     "Waning Crescent": "good",
                     "New Moon": "avoid",
-                    "Full Moon": "avoid"
+                    "Full Moon": "avoid",
                 },
                 "planting": {
                     "New Moon": "excellent",
                     "Waxing Crescent": "very good",
                     "Full Moon": "poor",
-                    "Waning Gibbous": "poor"
-                }
+                    "Waning Gibbous": "poor",
+                },
             }
 
             phase_name = moon_data.get("phase_name", "Unknown")
-            activity_rating = activity_adjustments.get(activity, {}).get(phase_name, "neutral")
+            activity_rating = activity_adjustments.get(activity, {}).get(
+                phase_name, "neutral"
+            )
 
             return {
                 "date": date_str,
@@ -295,13 +338,17 @@ class LunarCalculator:
                 "moon_phase": phase_name,
                 "activity_rating": activity_rating,
                 "general_influence": base_influence,
-                "recommendation": self._get_activity_recommendation(activity, phase_name, activity_rating)
+                "recommendation": self._get_activity_recommendation(
+                    activity, phase_name, activity_rating
+                ),
             }
 
         except Exception as e:
             return {"error": f"Failed to calculate moon influence: {str(e)}"}
 
-    def _get_activity_recommendation(self, activity: str, phase: str, rating: str) -> str:
+    def _get_activity_recommendation(
+        self, activity: str, phase: str, rating: str
+    ) -> str:
         """Get detailed recommendation for activity based on moon phase."""
         if rating == "excellent":
             return f"The {phase} is highly favorable for {activity}. This is an optimal time to proceed."
@@ -316,7 +363,9 @@ class LunarCalculator:
         else:
             return f"The {phase} has neutral influence on {activity}. Normal considerations apply."
 
-    async def predict_moon_phases(self, start_date_str: str, end_date_str: str) -> Dict[str, Any]:
+    async def predict_moon_phases(
+        self, start_date_str: str, end_date_str: str
+    ) -> dict[str, Any]:
         """Predict moon phases in a date range."""
         try:
             start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
@@ -331,13 +380,20 @@ class LunarCalculator:
 
                 # Include major phase transitions
                 phase_name = moon_data.get("phase_name")
-                if phase_name in ["New Moon", "First Quarter", "Full Moon", "Third Quarter"]:
-                    phases.append({
-                        "date": date_str,
-                        "phase": phase_name,
-                        "illumination": moon_data.get("illumination"),
-                        "lunar_day": moon_data.get("lunar_day")
-                    })
+                if phase_name in [
+                    "New Moon",
+                    "First Quarter",
+                    "Full Moon",
+                    "Third Quarter",
+                ]:
+                    phases.append(
+                        {
+                            "date": date_str,
+                            "phase": phase_name,
+                            "illumination": moon_data.get("illumination"),
+                            "lunar_day": moon_data.get("lunar_day"),
+                        }
+                    )
 
                 current_date += timedelta(days=1)
 
@@ -345,7 +401,7 @@ class LunarCalculator:
                 "start_date": start_date_str,
                 "end_date": end_date_str,
                 "major_phases": phases,
-                "total_phases": len(phases)
+                "total_phases": len(phases),
             }
 
         except Exception as e:

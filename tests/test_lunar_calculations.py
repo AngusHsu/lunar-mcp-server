@@ -1,8 +1,8 @@
 """Tests for lunar calculations module."""
 
-import pytest
 from datetime import datetime
-from unittest.mock import patch
+
+import pytest
 
 from lunar_mcp_server.lunar_calculations import LunarCalculator
 
@@ -107,7 +107,9 @@ class TestLunarCalculator:
 
     def test_get_activity_recommendation(self):
         """Test activity recommendation generation."""
-        rec = self.calculator._get_activity_recommendation("wedding", "Full Moon", "excellent")
+        rec = self.calculator._get_activity_recommendation(
+            "wedding", "Full Moon", "excellent"
+        )
         assert "Full Moon" in rec
         assert "wedding" in rec
         assert "excellent" in rec.lower() or "optimal" in rec.lower()

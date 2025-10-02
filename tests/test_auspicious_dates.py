@@ -1,8 +1,9 @@
 """Tests for auspicious dates module."""
 
-import pytest
 from datetime import datetime
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
+
+import pytest
 
 from lunar_mcp_server.auspicious_dates import AuspiciousDateChecker
 
@@ -54,11 +55,11 @@ class TestAuspiciousDateChecker:
     @pytest.mark.asyncio
     async def test_check_date(self):
         """Test checking auspicious date."""
-        with patch.object(self.checker.lunar_calc, 'get_moon_phase') as mock_moon:
+        with patch.object(self.checker.lunar_calc, "get_moon_phase") as mock_moon:
             mock_moon.return_value = {
                 "phase_name": "Full Moon",
                 "lunar_day": 15,
-                "influence": {"good_for": ["celebration"], "avoid": ["conflict"]}
+                "influence": {"good_for": ["celebration"], "avoid": ["conflict"]},
             }
 
             result = await self.checker.check_date("2024-01-15", "wedding", "chinese")
@@ -80,13 +81,13 @@ class TestAuspiciousDateChecker:
     @pytest.mark.asyncio
     async def test_find_good_dates(self):
         """Test finding good dates in range."""
-        with patch.object(self.checker, 'check_date') as mock_check:
+        with patch.object(self.checker, "check_date") as mock_check:
             mock_check.return_value = {
                 "auspicious_level": "very_good",
                 "score": 8,
                 "zodiac_day": "Dragon",
                 "lucky_hours": ["09:00-11:00"],
-                "moon_phase": "Full Moon"
+                "moon_phase": "Full Moon",
             }
 
             result = await self.checker.find_good_dates(
@@ -102,10 +103,8 @@ class TestAuspiciousDateChecker:
     @pytest.mark.asyncio
     async def test_get_daily_fortune(self):
         """Test getting daily fortune."""
-        with patch.object(self.checker.lunar_calc, 'get_moon_phase') as mock_moon:
-            mock_moon.return_value = {
-                "phase_name": "Full Moon"
-            }
+        with patch.object(self.checker.lunar_calc, "get_moon_phase") as mock_moon:
+            mock_moon.return_value = {"phase_name": "Full Moon"}
 
             result = await self.checker.get_daily_fortune("2024-01-15", "chinese")
 
@@ -174,7 +173,13 @@ class TestAuspiciousDateChecker:
         result = self.checker._check_element_compatibility("Fire", "Water")
         assert "type" in result
         assert "description" in result
-        assert result["type"] in ["generative", "destructive", "supportive", "weakening", "neutral"]
+        assert result["type"] in [
+            "generative",
+            "destructive",
+            "supportive",
+            "weakening",
+            "neutral",
+        ]
 
     def test_get_compatibility_recommendations(self):
         """Test compatibility recommendations."""

@@ -2,13 +2,11 @@
 Traditional auspicious date checking and fortune calculation.
 """
 
-import json
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
-from pathlib import Path
+from typing import Any
 
-from .lunar_calculations import LunarCalculator
 from .calendar_conversions import CalendarConverter
+from .lunar_calculations import LunarCalculator
 
 
 class AuspiciousDateChecker:
@@ -24,26 +22,92 @@ class AuspiciousDateChecker:
         """Load traditional auspicious date rules and data."""
         # Traditional Chinese Tong Shu (almanac) data
         self.chinese_rules = {
-            "heavenly_stems": ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"],
-            "earthly_branches": ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"],
-            "zodiac_animals": ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
-                             "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"],
+            "heavenly_stems": [
+                "甲",
+                "乙",
+                "丙",
+                "丁",
+                "戊",
+                "己",
+                "庚",
+                "辛",
+                "壬",
+                "癸",
+            ],
+            "earthly_branches": [
+                "子",
+                "丑",
+                "寅",
+                "卯",
+                "辰",
+                "巳",
+                "午",
+                "未",
+                "申",
+                "酉",
+                "戌",
+                "亥",
+            ],
+            "zodiac_animals": [
+                "Rat",
+                "Ox",
+                "Tiger",
+                "Rabbit",
+                "Dragon",
+                "Snake",
+                "Horse",
+                "Goat",
+                "Monkey",
+                "Rooster",
+                "Dog",
+                "Pig",
+            ],
             "five_elements": ["Wood", "Fire", "Earth", "Metal", "Water"],
             "lunar_mansions": [
-                "角", "亢", "氐", "房", "心", "尾", "箕",  # Eastern Azure Dragon
-                "斗", "牛", "女", "虛", "危", "室", "壁",  # Northern Black Tortoise
-                "奎", "婁", "胃", "昴", "畢", "觜", "參",  # Western White Tiger
-                "井", "鬼", "柳", "星", "張", "翼", "軫"   # Southern Vermilion Bird
-            ]
+                "角",
+                "亢",
+                "氐",
+                "房",
+                "心",
+                "尾",
+                "箕",  # Eastern Azure Dragon
+                "斗",
+                "牛",
+                "女",
+                "虛",
+                "危",
+                "室",
+                "壁",  # Northern Black Tortoise
+                "奎",
+                "婁",
+                "胃",
+                "昴",
+                "畢",
+                "觜",
+                "參",  # Western White Tiger
+                "井",
+                "鬼",
+                "柳",
+                "星",
+                "張",
+                "翼",
+                "軫",  # Southern Vermilion Bird
+            ],
         }
 
         # Activity recommendations by lunar mansion
         self.mansion_activities = {
-            "角": {"good": ["wedding", "construction", "moving"], "bad": ["funeral", "medical"]},
+            "角": {
+                "good": ["wedding", "construction", "moving"],
+                "bad": ["funeral", "medical"],
+            },
             "亢": {"good": ["business", "education"], "bad": ["travel", "litigation"]},
             "氐": {"good": ["marriage", "planting"], "bad": ["building", "hunting"]},
             "房": {"good": ["ceremony", "offering"], "bad": ["moving", "burial"]},
-            "心": {"good": ["worship", "meditation"], "bad": ["construction", "business"]},
+            "心": {
+                "good": ["worship", "meditation"],
+                "bad": ["construction", "business"],
+            },
             "尾": {"good": ["fishing", "hunting"], "bad": ["marriage", "celebration"]},
             "箕": {"good": ["demolition", "cleaning"], "bad": ["wedding", "opening"]},
         }
@@ -61,19 +125,44 @@ class AuspiciousDateChecker:
             "Monkey": ["15:00-17:00"],
             "Rooster": ["17:00-19:00"],
             "Dog": ["19:00-21:00"],
-            "Pig": ["21:00-23:00"]
+            "Pig": ["21:00-23:00"],
         }
 
         # Five elements relationships
         self.element_relationships = {
-            "Wood": {"generates": "Fire", "destroys": "Earth", "generated_by": "Water", "destroyed_by": "Metal"},
-            "Fire": {"generates": "Earth", "destroys": "Metal", "generated_by": "Wood", "destroyed_by": "Water"},
-            "Earth": {"generates": "Metal", "destroys": "Water", "generated_by": "Fire", "destroyed_by": "Wood"},
-            "Metal": {"generates": "Water", "destroys": "Wood", "generated_by": "Earth", "destroyed_by": "Fire"},
-            "Water": {"generates": "Wood", "destroys": "Fire", "generated_by": "Metal", "destroyed_by": "Earth"}
+            "Wood": {
+                "generates": "Fire",
+                "destroys": "Earth",
+                "generated_by": "Water",
+                "destroyed_by": "Metal",
+            },
+            "Fire": {
+                "generates": "Earth",
+                "destroys": "Metal",
+                "generated_by": "Wood",
+                "destroyed_by": "Water",
+            },
+            "Earth": {
+                "generates": "Metal",
+                "destroys": "Water",
+                "generated_by": "Fire",
+                "destroyed_by": "Wood",
+            },
+            "Metal": {
+                "generates": "Water",
+                "destroys": "Wood",
+                "generated_by": "Earth",
+                "destroyed_by": "Fire",
+            },
+            "Water": {
+                "generates": "Wood",
+                "destroys": "Fire",
+                "generated_by": "Metal",
+                "destroyed_by": "Earth",
+            },
         }
 
-    def _get_chinese_calendar_info(self, date_obj: datetime) -> Dict[str, Any]:
+    def _get_chinese_calendar_info(self, date_obj: datetime) -> dict[str, Any]:
         """Get Chinese calendar information for a date."""
         # Calculate days since a known reference date
         reference_date = datetime(1900, 1, 31)  # Reference Chinese New Year
@@ -103,10 +192,12 @@ class AuspiciousDateChecker:
             "five_element": self.chinese_rules["five_elements"][element_index],
             "zodiac_year": self.chinese_rules["zodiac_animals"][zodiac_year_index],
             "zodiac_day": self.chinese_rules["zodiac_animals"][zodiac_day_index],
-            "sexagenary_day": days_diff % 60
+            "sexagenary_day": days_diff % 60,
         }
 
-    def _calculate_auspiciousness(self, date_obj: datetime, activity: str, culture: str) -> Dict[str, Any]:
+    def _calculate_auspiciousness(
+        self, date_obj: datetime, activity: str, culture: str
+    ) -> dict[str, Any]:
         """Calculate auspiciousness level for a date and activity."""
         chinese_info = self._get_chinese_calendar_info(date_obj)
         lunar_mansion = chinese_info["lunar_mansion"]
@@ -114,7 +205,9 @@ class AuspiciousDateChecker:
         zodiac_day = chinese_info["zodiac_day"]
 
         # Base auspiciousness from lunar mansion
-        mansion_data = self.mansion_activities.get(lunar_mansion, {"good": [], "bad": []})
+        mansion_data = self.mansion_activities.get(
+            lunar_mansion, {"good": [], "bad": []}
+        )
 
         if activity in mansion_data["good"]:
             base_score = 8
@@ -139,7 +232,7 @@ class AuspiciousDateChecker:
             "business_opening": ["Dragon", "Tiger", "Horse"],
             "travel": ["Horse", "Monkey", "Rooster"],
             "moving": ["Dragon", "Snake", "Pig"],
-            "medical": ["Rabbit", "Ox", "Dog"]
+            "medical": ["Rabbit", "Ox", "Dog"],
         }
 
         if zodiac_day in favorable_animals.get(activity, []):
@@ -166,11 +259,17 @@ class AuspiciousDateChecker:
             "factors": {
                 "lunar_mansion_effect": base_score,
                 "five_element_bonus": element_bonus,
-                "zodiac_bonus": zodiac_bonus
-            }
+                "zodiac_bonus": zodiac_bonus,
+            },
         }
 
-    async def check_date(self, date_str: str, activity: str, culture: str = "chinese", find_alternatives: bool = True) -> Dict[str, Any]:
+    async def check_date(
+        self,
+        date_str: str,
+        activity: str,
+        culture: str = "chinese",
+        find_alternatives: bool = True,
+    ) -> dict[str, Any]:
         """Check if a date is auspicious for an activity."""
         try:
             date_obj = datetime.strptime(date_str, "%Y-%m-%d")
@@ -180,7 +279,9 @@ class AuspiciousDateChecker:
 
             # Calculate auspiciousness
             if culture == "chinese":
-                auspiciousness = self._calculate_auspiciousness(date_obj, activity, culture)
+                auspiciousness = self._calculate_auspiciousness(
+                    date_obj, activity, culture
+                )
             else:
                 # For other cultures, use simplified calculation
                 auspiciousness = {"score": 5, "level": "neutral", "factors": {}}
@@ -189,7 +290,9 @@ class AuspiciousDateChecker:
             zodiac_day = chinese_info.get("zodiac_day", "Unknown")
 
             # Get lucky hours
-            lucky_hours = self.zodiac_hours.get(zodiac_day, ["09:00-11:00", "13:00-15:00"])
+            lucky_hours = self.zodiac_hours.get(
+                zodiac_day, ["09:00-11:00", "13:00-15:00"]
+            )
 
             # Generate recommendations
             good_activities = []
@@ -200,7 +303,11 @@ class AuspiciousDateChecker:
                 avoid_activities = ["conflicts", "major endings"]
             elif auspiciousness["level"] == "poor":
                 good_activities = ["rest", "planning", "preparation"]
-                avoid_activities = [activity, "important decisions", "major investments"]
+                avoid_activities = [
+                    activity,
+                    "important decisions",
+                    "major investments",
+                ]
             else:
                 good_activities = ["routine activities", "daily tasks"]
                 avoid_activities = ["high-risk activities"]
@@ -208,7 +315,9 @@ class AuspiciousDateChecker:
             # Convert lunar date using calendar converter when possible
             lunar_date = "Unknown"
             try:
-                lunar_info = await self.calendar_converter.solar_to_lunar(date_str, culture)
+                lunar_info = await self.calendar_converter.solar_to_lunar(
+                    date_str, culture
+                )
             except Exception:
                 lunar_info = {"error": "conversion failed"}
 
@@ -217,13 +326,10 @@ class AuspiciousDateChecker:
                     lunar_year = lunar_info.get("lunar_year")
                     lunar_month = lunar_info.get("lunar_month")
                     lunar_day = lunar_info.get("lunar_day")
-                    lunar_date = (
-                        lunar_info.get("lunar_date_string")
-                        or "-".join(
-                            str(part)
-                            for part in (lunar_year, lunar_month, lunar_day)
-                            if part is not None
-                        )
+                    lunar_date = lunar_info.get("lunar_date_string") or "-".join(
+                        str(part)
+                        for part in (lunar_year, lunar_month, lunar_day)
+                        if part is not None
                     )
 
             if not lunar_date or lunar_date == "Unknown":
@@ -235,12 +341,16 @@ class AuspiciousDateChecker:
                 )
 
             # Generate detailed explanation
-            explanation = self._generate_explanation(auspiciousness, chinese_info, moon_data, activity)
+            explanation = self._generate_explanation(
+                auspiciousness, chinese_info, moon_data, activity
+            )
 
             # Find alternative dates if score is low (and alternatives are requested)
             alternatives = []
             if find_alternatives and auspiciousness["score"] < 7:
-                alternatives = await self._find_alternative_dates(date_obj, activity, culture)
+                alternatives = await self._find_alternative_dates(
+                    date_obj, activity, culture
+                )
 
             return {
                 "date": date_str,
@@ -255,17 +365,21 @@ class AuspiciousDateChecker:
                 "lunar_mansion": chinese_info.get("lunar_mansion", "Unknown"),
                 "moon_phase": moon_data.get("phase_name", "Unknown"),
                 "moon_influence": moon_data.get("influence", {}),
-                "recommendations": self._generate_recommendations(auspiciousness, activity),
+                "recommendations": self._generate_recommendations(
+                    auspiciousness, activity
+                ),
                 "calculation_factors": auspiciousness.get("factors", {}),
                 "explanation": explanation["summary"],
                 "reasoning": explanation["reasoning"],
-                "better_alternatives": alternatives if alternatives else None
+                "better_alternatives": alternatives if alternatives else None,
             }
 
         except Exception as e:
             return {"error": f"Failed to check auspicious date: {str(e)}"}
 
-    def _generate_recommendations(self, auspiciousness: Dict[str, Any], activity: str) -> str:
+    def _generate_recommendations(
+        self, auspiciousness: dict[str, Any], activity: str
+    ) -> str:
         """Generate detailed recommendations based on auspiciousness."""
         level = auspiciousness["level"]
 
@@ -281,9 +395,12 @@ class AuspiciousDateChecker:
             return f"Unfavorable day for {activity}. Traditional wisdom suggests avoiding this activity today. Consider waiting for a more auspicious time."
 
     def _generate_explanation(
-        self, auspiciousness: Dict[str, Any], chinese_info: Dict[str, Any],
-        moon_data: Dict[str, Any], activity: str
-    ) -> Dict[str, Any]:
+        self,
+        auspiciousness: dict[str, Any],
+        chinese_info: dict[str, Any],
+        moon_data: dict[str, Any],
+        activity: str,
+    ) -> dict[str, Any]:
         """Generate detailed explanation of why a date is auspicious or not."""
         reasoning = []
         level = auspiciousness["level"]
@@ -303,7 +420,7 @@ class AuspiciousDateChecker:
             "Goat": "nurturing and creative energy, favorable for family matters",
             "Monkey": "innovative and playful energy, good for problem-solving",
             "Dog": "loyal and protective energy, favorable for security matters",
-            "Pig": "generous and peaceful energy, good for rest and enjoyment"
+            "Pig": "generous and peaceful energy, good for rest and enjoyment",
         }
         if zodiac_day in zodiac_desc:
             reasoning.append(f"Zodiac day: {zodiac_day} - {zodiac_desc[zodiac_day]}")
@@ -316,11 +433,17 @@ class AuspiciousDateChecker:
             "Fire": "represents energy, passion, and transformation",
             "Earth": "represents stability, grounding, and nurturing",
             "Metal": "represents precision, clarity, and refinement",
-            "Water": "represents flow, adaptability, and wisdom"
+            "Water": "represents flow, adaptability, and wisdom",
         }
         if five_element in element_desc:
-            effect = "enhances" if element_bonus > 0 else "neutral for" if element_bonus == 0 else "challenges"
-            reasoning.append(f"Five element: {five_element} - {element_desc[five_element]}, which {effect} your activity")
+            effect = (
+                "enhances"
+                if element_bonus > 0
+                else "neutral for" if element_bonus == 0 else "challenges"
+            )
+            reasoning.append(
+                f"Five element: {five_element} - {element_desc[five_element]}, which {effect} your activity"
+            )
 
         # Moon phase explanation
         moon_phase = moon_data.get("phase_name", "Unknown")
@@ -332,15 +455,21 @@ class AuspiciousDateChecker:
                 moon_effect = "decreasing energy, better for completion and reflection"
             else:
                 moon_effect = "transitional energy"
-            reasoning.append(f"Moon phase: {moon_phase} ({moon_illumination:.0%} illuminated) - {moon_effect}")
+            reasoning.append(
+                f"Moon phase: {moon_phase} ({moon_illumination:.0%} illuminated) - {moon_effect}"
+            )
 
         # Lunar mansion explanation
         lunar_mansion = chinese_info.get("lunar_mansion", "Unknown")
         mansion_effect = factors.get("lunar_mansion_effect", 5)
         if mansion_effect >= 8:
-            reasoning.append(f"Lunar mansion: {lunar_mansion} - highly favorable for this activity")
+            reasoning.append(
+                f"Lunar mansion: {lunar_mansion} - highly favorable for this activity"
+            )
         elif mansion_effect <= 2:
-            reasoning.append(f"Lunar mansion: {lunar_mansion} - not recommended for this activity")
+            reasoning.append(
+                f"Lunar mansion: {lunar_mansion} - not recommended for this activity"
+            )
         else:
             reasoning.append(f"Lunar mansion: {lunar_mansion} - neutral influence")
 
@@ -348,7 +477,9 @@ class AuspiciousDateChecker:
         if level in ["very_good", "good"]:
             summary = f"This is a {level.replace('_', ' ')} day for {activity} because multiple traditional factors align favorably."
         elif level == "neutral":
-            summary = f"This is an average day for {activity} with mixed traditional factors."
+            summary = (
+                f"This is an average day for {activity} with mixed traditional factors."
+            )
         else:
             summary = f"This is a {level.replace('_', ' ')} day for {activity} as traditional factors suggest caution."
 
@@ -359,13 +490,17 @@ class AuspiciousDateChecker:
                 "base_score": factors.get("lunar_mansion_effect", 0),
                 "element_bonus": factors.get("five_element_bonus", 0),
                 "zodiac_bonus": factors.get("zodiac_bonus", 0),
-                "final_score": auspiciousness.get("score", 0)
-            }
+                "final_score": auspiciousness.get("score", 0),
+            },
         }
 
     async def _find_alternative_dates(
-        self, reference_date: datetime, activity: str, culture: str, days_to_check: int = 14
-    ) -> List[Dict[str, Any]]:
+        self,
+        reference_date: datetime,
+        activity: str,
+        culture: str,
+        days_to_check: int = 14,
+    ) -> list[dict[str, Any]]:
         """Find better alternative dates near the reference date."""
         alternatives = []
 
@@ -377,7 +512,9 @@ class AuspiciousDateChecker:
 
                 try:
                     # Prevent recursive alternative searches
-                    result = await self.check_date(date_str, activity, culture, find_alternatives=False)
+                    result = await self.check_date(
+                        date_str, activity, culture, find_alternatives=False
+                    )
 
                     # Only include dates with score >= 7
                     if result.get("score", 0) >= 7:
@@ -390,15 +527,21 @@ class AuspiciousDateChecker:
                         if result.get("moon_phase"):
                             reason_parts.append(f"{result['moon_phase']}")
 
-                        reason = ", ".join(reason_parts) if reason_parts else "favorable traditional factors"
+                        reason = (
+                            ", ".join(reason_parts)
+                            if reason_parts
+                            else "favorable traditional factors"
+                        )
 
-                        alternatives.append({
-                            "date": date_str,
-                            "score": result.get("score", 0),
-                            "level": result.get("auspicious_level", "unknown"),
-                            "reason": reason,
-                            "days_away": offset * direction
-                        })
+                        alternatives.append(
+                            {
+                                "date": date_str,
+                                "score": result.get("score", 0),
+                                "level": result.get("auspicious_level", "unknown"),
+                                "reason": reason,
+                                "days_away": offset * direction,
+                            }
+                        )
 
                 except Exception:
                     continue
@@ -416,15 +559,19 @@ class AuspiciousDateChecker:
         return alternatives[:3]  # Return top 3
 
     async def find_good_dates(
-        self, start_date_str: str, end_date_str: str, activity: str,
-        culture: str = "chinese", limit: int = 10
-    ) -> Dict[str, Any]:
+        self,
+        start_date_str: str,
+        end_date_str: str,
+        activity: str,
+        culture: str = "chinese",
+        limit: int = 10,
+    ) -> dict[str, Any]:
         """Find good dates for an activity within a date range."""
         try:
             start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
             end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
-            good_dates = []
+            good_dates: list[dict[str, Any]] = []
             current_date = start_date
 
             while current_date <= end_date and len(good_dates) < limit:
@@ -432,14 +579,16 @@ class AuspiciousDateChecker:
                 check_result = await self.check_date(date_str, activity, culture)
 
                 if check_result.get("auspicious_level") in ["very_good", "good"]:
-                    good_dates.append({
-                        "date": date_str,
-                        "level": check_result["auspicious_level"],
-                        "score": check_result.get("score", 0),
-                        "zodiac_day": check_result.get("zodiac_day"),
-                        "lucky_hours": check_result.get("lucky_hours", []),
-                        "moon_phase": check_result.get("moon_phase")
-                    })
+                    good_dates.append(
+                        {
+                            "date": date_str,
+                            "level": check_result["auspicious_level"],
+                            "score": check_result.get("score", 0),
+                            "zodiac_day": check_result.get("zodiac_day"),
+                            "lucky_hours": check_result.get("lucky_hours", []),
+                            "moon_phase": check_result.get("moon_phase"),
+                        }
+                    )
 
                 current_date += timedelta(days=1)
 
@@ -452,13 +601,15 @@ class AuspiciousDateChecker:
                 "search_period": f"{start_date_str} to {end_date_str}",
                 "found_dates": len(good_dates),
                 "good_dates": good_dates[:limit],
-                "best_date": good_dates[0] if good_dates else None
+                "best_date": good_dates[0] if good_dates else None,
             }
 
         except Exception as e:
             return {"error": f"Failed to find good dates: {str(e)}"}
 
-    async def get_daily_fortune(self, date_str: str, culture: str = "chinese") -> Dict[str, Any]:
+    async def get_daily_fortune(
+        self, date_str: str, culture: str = "chinese"
+    ) -> dict[str, Any]:
         """Get daily fortune and luck information."""
         try:
             date_obj = datetime.strptime(date_str, "%Y-%m-%d")
@@ -474,9 +625,19 @@ class AuspiciousDateChecker:
 
             # Adjust based on lunar mansion
             lunar_mansion = chinese_info["lunar_mansion"]
-            if lunar_mansion in ["角", "房", "心", "井"]:  # Generally auspicious mansions
+            if lunar_mansion in [
+                "角",
+                "房",
+                "心",
+                "井",
+            ]:  # Generally auspicious mansions
                 fortune_score += 2
-            elif lunar_mansion in ["尾", "箕", "危", "室"]:  # Generally inauspicious mansions
+            elif lunar_mansion in [
+                "尾",
+                "箕",
+                "危",
+                "室",
+            ]:  # Generally inauspicious mansions
                 fortune_score -= 2
 
             # Adjust based on five elements
@@ -486,7 +647,7 @@ class AuspiciousDateChecker:
                 "Fire": 2,  # Energy and passion
                 "Earth": 0,  # Stability (neutral)
                 "Metal": -1,  # Cutting, separation
-                "Water": 1   # Flow and adaptability
+                "Water": 1,  # Flow and adaptability
             }
             fortune_score += element_fortune.get(five_element, 0)
 
@@ -505,16 +666,24 @@ class AuspiciousDateChecker:
                 fortune_description = "A very auspicious day with excellent fortune. Great opportunities await."
             elif fortune_score >= 6:
                 fortune_level = "good"
-                fortune_description = "A favorable day with good fortune. Positive developments likely."
+                fortune_description = (
+                    "A favorable day with good fortune. Positive developments likely."
+                )
             elif fortune_score >= 4:
                 fortune_level = "average"
-                fortune_description = "A balanced day with average fortune. Steady progress expected."
+                fortune_description = (
+                    "A balanced day with average fortune. Steady progress expected."
+                )
             elif fortune_score >= 2:
                 fortune_level = "challenging"
-                fortune_description = "A challenging day requiring extra care. Proceed with caution."
+                fortune_description = (
+                    "A challenging day requiring extra care. Proceed with caution."
+                )
             else:
                 fortune_level = "difficult"
-                fortune_description = "A difficult day with obstacles. Best to wait for better times."
+                fortune_description = (
+                    "A difficult day with obstacles. Best to wait for better times."
+                )
 
             return {
                 "date": date_str,
@@ -527,26 +696,30 @@ class AuspiciousDateChecker:
                 "lunar_mansion": lunar_mansion,
                 "moon_phase": moon_phase,
                 "lucky_colors": self._get_lucky_colors(five_element),
-                "lucky_numbers": self._get_lucky_numbers(chinese_info["sexagenary_day"]),
-                "lucky_directions": self._get_lucky_directions(chinese_info["earthly_branch"]),
-                "advice": self._get_daily_advice(fortune_level, five_element)
+                "lucky_numbers": self._get_lucky_numbers(
+                    chinese_info["sexagenary_day"]
+                ),
+                "lucky_directions": self._get_lucky_directions(
+                    chinese_info["earthly_branch"]
+                ),
+                "advice": self._get_daily_advice(fortune_level, five_element),
             }
 
         except Exception as e:
             return {"error": f"Failed to get daily fortune: {str(e)}"}
 
-    def _get_lucky_colors(self, element: str) -> List[str]:
+    def _get_lucky_colors(self, element: str) -> list[str]:
         """Get lucky colors based on five elements."""
         color_map = {
             "Wood": ["green", "brown"],
             "Fire": ["red", "orange", "purple"],
             "Earth": ["yellow", "beige", "brown"],
             "Metal": ["white", "gold", "silver"],
-            "Water": ["blue", "black", "gray"]
+            "Water": ["blue", "black", "gray"],
         }
         return color_map.get(element, ["white"])
 
-    def _get_lucky_numbers(self, sexagenary_day: int) -> List[int]:
+    def _get_lucky_numbers(self, sexagenary_day: int) -> list[int]:
         """Get lucky numbers based on sexagenary cycle."""
         digits = [sexagenary_day % 10, (sexagenary_day + 5) % 10]
         normalized = {(digit or 10) for digit in digits}
@@ -554,17 +727,21 @@ class AuspiciousDateChecker:
         lucky_numbers = sorted(normalized.union(extended))
         return lucky_numbers if lucky_numbers else [8]
 
-    def _get_lucky_directions(self, branch: str) -> List[str]:
+    def _get_lucky_directions(self, branch: str) -> list[str]:
         """Get lucky directions based on earthly branch."""
         direction_map = {
             "子": ["North"],
-            "丑": ["Northeast"], "寅": ["Northeast"],
+            "丑": ["Northeast"],
+            "寅": ["Northeast"],
             "卯": ["East"],
-            "辰": ["Southeast"], "巳": ["Southeast"],
+            "辰": ["Southeast"],
+            "巳": ["Southeast"],
             "午": ["South"],
-            "未": ["Southwest"], "申": ["Southwest"],
+            "未": ["Southwest"],
+            "申": ["Southwest"],
             "酉": ["West"],
-            "戌": ["Northwest"], "亥": ["Northwest"]
+            "戌": ["Northwest"],
+            "亥": ["Northwest"],
         }
         return direction_map.get(branch, ["Center"])
 
@@ -575,7 +752,7 @@ class AuspiciousDateChecker:
             "good": "A favorable day for progress. Focus on positive actions and maintain optimism.",
             "average": "Maintain steady effort. Good day for routine tasks and careful planning.",
             "challenging": "Exercise patience and caution. Avoid major decisions and conflicts.",
-            "difficult": "Practice mindfulness and restraint. Focus on internal cultivation and preparation."
+            "difficult": "Practice mindfulness and restraint. Focus on internal cultivation and preparation.",
         }
 
         element_advice = {
@@ -583,14 +760,14 @@ class AuspiciousDateChecker:
             "Fire": "Channel your energy positively. Good for communication and creative endeavors.",
             "Earth": "Focus on stability and grounding. Good for consolidation and organization.",
             "Metal": "Time for clarity and precision. Good for analysis and refinement.",
-            "Water": "Embrace flexibility and flow. Good for adaptation and intuitive decisions."
+            "Water": "Embrace flexibility and flow. Good for adaptation and intuitive decisions.",
         }
 
         return f"{base_advice.get(fortune_level, '')} {element_advice.get(element, '')}"
 
     async def check_zodiac_compatibility(
         self, date1_str: str, date2_str: str, culture: str = "chinese"
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Check zodiac compatibility between two dates."""
         try:
             date1_obj = datetime.strptime(date1_str, "%Y-%m-%d")
@@ -604,18 +781,78 @@ class AuspiciousDateChecker:
 
             # Traditional zodiac compatibility matrix
             compatibility_matrix = {
-                "Rat": {"best": ["Dragon", "Monkey"], "good": ["Ox"], "conflict": ["Horse"], "harm": ["Goat"]},
-                "Ox": {"best": ["Snake", "Rooster"], "good": ["Rat"], "conflict": ["Goat"], "harm": ["Horse"]},
-                "Tiger": {"best": ["Horse", "Dog"], "good": ["Pig"], "conflict": ["Monkey"], "harm": ["Snake"]},
-                "Rabbit": {"best": ["Goat", "Pig"], "good": ["Dog"], "conflict": ["Rooster"], "harm": ["Dragon"]},
-                "Dragon": {"best": ["Rat", "Monkey"], "good": ["Rooster"], "conflict": ["Dog"], "harm": ["Rabbit"]},
-                "Snake": {"best": ["Ox", "Rooster"], "good": ["Monkey"], "conflict": ["Pig"], "harm": ["Tiger"]},
-                "Horse": {"best": ["Tiger", "Dog"], "good": ["Goat"], "conflict": ["Rat"], "harm": ["Ox"]},
-                "Goat": {"best": ["Rabbit", "Pig"], "good": ["Horse"], "conflict": ["Ox"], "harm": ["Rat"]},
-                "Monkey": {"best": ["Rat", "Dragon"], "good": ["Snake"], "conflict": ["Tiger"], "harm": ["Pig"]},
-                "Rooster": {"best": ["Ox", "Snake"], "good": ["Dragon"], "conflict": ["Rabbit"], "harm": ["Dog"]},
-                "Dog": {"best": ["Tiger", "Horse"], "good": ["Rabbit"], "conflict": ["Dragon"], "harm": ["Rooster"]},
-                "Pig": {"best": ["Rabbit", "Goat"], "good": ["Tiger"], "conflict": ["Snake"], "harm": ["Monkey"]}
+                "Rat": {
+                    "best": ["Dragon", "Monkey"],
+                    "good": ["Ox"],
+                    "conflict": ["Horse"],
+                    "harm": ["Goat"],
+                },
+                "Ox": {
+                    "best": ["Snake", "Rooster"],
+                    "good": ["Rat"],
+                    "conflict": ["Goat"],
+                    "harm": ["Horse"],
+                },
+                "Tiger": {
+                    "best": ["Horse", "Dog"],
+                    "good": ["Pig"],
+                    "conflict": ["Monkey"],
+                    "harm": ["Snake"],
+                },
+                "Rabbit": {
+                    "best": ["Goat", "Pig"],
+                    "good": ["Dog"],
+                    "conflict": ["Rooster"],
+                    "harm": ["Dragon"],
+                },
+                "Dragon": {
+                    "best": ["Rat", "Monkey"],
+                    "good": ["Rooster"],
+                    "conflict": ["Dog"],
+                    "harm": ["Rabbit"],
+                },
+                "Snake": {
+                    "best": ["Ox", "Rooster"],
+                    "good": ["Monkey"],
+                    "conflict": ["Pig"],
+                    "harm": ["Tiger"],
+                },
+                "Horse": {
+                    "best": ["Tiger", "Dog"],
+                    "good": ["Goat"],
+                    "conflict": ["Rat"],
+                    "harm": ["Ox"],
+                },
+                "Goat": {
+                    "best": ["Rabbit", "Pig"],
+                    "good": ["Horse"],
+                    "conflict": ["Ox"],
+                    "harm": ["Rat"],
+                },
+                "Monkey": {
+                    "best": ["Rat", "Dragon"],
+                    "good": ["Snake"],
+                    "conflict": ["Tiger"],
+                    "harm": ["Pig"],
+                },
+                "Rooster": {
+                    "best": ["Ox", "Snake"],
+                    "good": ["Dragon"],
+                    "conflict": ["Rabbit"],
+                    "harm": ["Dog"],
+                },
+                "Dog": {
+                    "best": ["Tiger", "Horse"],
+                    "good": ["Rabbit"],
+                    "conflict": ["Dragon"],
+                    "harm": ["Rooster"],
+                },
+                "Pig": {
+                    "best": ["Rabbit", "Goat"],
+                    "good": ["Tiger"],
+                    "conflict": ["Snake"],
+                    "harm": ["Monkey"],
+                },
             }
 
             compatibility = compatibility_matrix.get(zodiac1, {})
@@ -649,26 +886,43 @@ class AuspiciousDateChecker:
                 "element_relationship": self._check_element_compatibility(
                     chinese_info1["five_element"], chinese_info2["five_element"]
                 ),
-                "recommendations": self._get_compatibility_recommendations(level)
+                "recommendations": self._get_compatibility_recommendations(level),
             }
 
         except Exception as e:
             return {"error": f"Failed to check zodiac compatibility: {str(e)}"}
 
-    def _check_element_compatibility(self, element1: str, element2: str) -> Dict[str, str]:
+    def _check_element_compatibility(
+        self, element1: str, element2: str
+    ) -> dict[str, str]:
         """Check five elements compatibility."""
         relation1 = self.element_relationships.get(element1, {})
 
         if element2 == relation1.get("generates"):
-            return {"type": "generative", "description": f"{element1} generates {element2} - very harmonious"}
+            return {
+                "type": "generative",
+                "description": f"{element1} generates {element2} - very harmonious",
+            }
         elif element2 == relation1.get("generated_by"):
-            return {"type": "supportive", "description": f"{element1} is supported by {element2} - harmonious"}
+            return {
+                "type": "supportive",
+                "description": f"{element1} is supported by {element2} - harmonious",
+            }
         elif element2 == relation1.get("destroys"):
-            return {"type": "destructive", "description": f"{element1} destroys {element2} - conflicting"}
+            return {
+                "type": "destructive",
+                "description": f"{element1} destroys {element2} - conflicting",
+            }
         elif element2 == relation1.get("destroyed_by"):
-            return {"type": "weakening", "description": f"{element1} is weakened by {element2} - challenging"}
+            return {
+                "type": "weakening",
+                "description": f"{element1} is weakened by {element2} - challenging",
+            }
         else:
-            return {"type": "neutral", "description": f"{element1} and {element2} have neutral relationship"}
+            return {
+                "type": "neutral",
+                "description": f"{element1} and {element2} have neutral relationship",
+            }
 
     def _get_compatibility_recommendations(self, level: str) -> str:
         """Get recommendations based on compatibility level."""
@@ -677,6 +931,6 @@ class AuspiciousDateChecker:
             "good": "Good compatibility. Communication and mutual respect will enhance the relationship.",
             "neutral": "Average compatibility. Success depends on effort and understanding from both sides.",
             "conflict": "Potential challenges ahead. Focus on compromise and finding common ground.",
-            "challenging": "Difficult combination. Consider whether the benefits outweigh the challenges."
+            "challenging": "Difficult combination. Consider whether the benefits outweigh the challenges.",
         }
         return recommendations.get(level, "No specific recommendations available.")

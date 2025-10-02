@@ -1,8 +1,9 @@
 """Pytest configuration and fixtures."""
 
-import pytest
 import asyncio
-from typing import Generator
+from collections.abc import Generator
+
+import pytest
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +22,7 @@ def sample_dates():
         "invalid_date": "invalid-date",
         "spring_festival": "2024-02-10",
         "mid_autumn": "2024-09-17",
-        "christmas": "2024-12-25"
+        "christmas": "2024-12-25",
     }
 
 
@@ -35,7 +36,7 @@ def sample_activities():
         "surgery",
         "moving",
         "planting",
-        "celebration"
+        "celebration",
     ]
 
 
@@ -57,8 +58,8 @@ def mock_moon_data():
         "influence": {
             "good_for": ["completion", "celebration"],
             "avoid": ["starting new projects"],
-            "energy_type": "culmination"
-        }
+            "energy_type": "culmination",
+        },
     }
 
 
@@ -73,11 +74,11 @@ def mock_festival_data():
                 "culture": "chinese",
                 "significance": "Beginning of lunar new year",
                 "traditions": ["family reunion", "fireworks"],
-                "is_major": True
+                "is_major": True,
             }
         ],
         "festival_count": 1,
-        "is_major_festival": True
+        "is_major_festival": True,
     }
 
 
@@ -87,13 +88,6 @@ def mock_zodiac_data():
     return {
         "date": "2024-01-15",
         "culture": "chinese",
-        "year_zodiac": {
-            "animal": "Dragon",
-            "element": "Wood",
-            "yin_yang": "Yang"
-        },
-        "daily_zodiac": {
-            "animal": "Ox",
-            "traits": {"personality": "reliable, strong"}
-        }
+        "year_zodiac": {"animal": "Dragon", "element": "Wood", "yin_yang": "Yang"},
+        "daily_zodiac": {"animal": "Ox", "traits": {"personality": "reliable, strong"}},
     }

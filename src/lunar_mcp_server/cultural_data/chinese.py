@@ -2,8 +2,8 @@
 Chinese cultural data and traditional calendar information.
 """
 
-from typing import Dict, List, Any
 from datetime import datetime
+from typing import Any
 
 
 class ChineseData:
@@ -19,79 +19,255 @@ class ChineseData:
         # Twenty-Eight Lunar Mansions (二十八宿)
         self.lunar_mansions = {
             # Eastern Azure Dragon (东方青龙)
-            "角": {"name": "Jiao", "english": "Horn", "element": "Wood", "animal": "Dragon", "direction": "East"},
-            "亢": {"name": "Kang", "english": "Neck", "element": "Wood", "animal": "Dragon", "direction": "East"},
-            "氐": {"name": "Di", "english": "Root", "element": "Earth", "animal": "Raccoon", "direction": "East"},
-            "房": {"name": "Fang", "english": "Room", "element": "Sun", "animal": "Rabbit", "direction": "East"},
-            "心": {"name": "Xin", "english": "Heart", "element": "Moon", "animal": "Fox", "direction": "East"},
-            "尾": {"name": "Wei", "english": "Tail", "element": "Fire", "animal": "Tiger", "direction": "East"},
-            "箕": {"name": "Ji", "english": "Winnowing Basket", "element": "Water", "animal": "Leopard", "direction": "East"},
-
+            "角": {
+                "name": "Jiao",
+                "english": "Horn",
+                "element": "Wood",
+                "animal": "Dragon",
+                "direction": "East",
+            },
+            "亢": {
+                "name": "Kang",
+                "english": "Neck",
+                "element": "Wood",
+                "animal": "Dragon",
+                "direction": "East",
+            },
+            "氐": {
+                "name": "Di",
+                "english": "Root",
+                "element": "Earth",
+                "animal": "Raccoon",
+                "direction": "East",
+            },
+            "房": {
+                "name": "Fang",
+                "english": "Room",
+                "element": "Sun",
+                "animal": "Rabbit",
+                "direction": "East",
+            },
+            "心": {
+                "name": "Xin",
+                "english": "Heart",
+                "element": "Moon",
+                "animal": "Fox",
+                "direction": "East",
+            },
+            "尾": {
+                "name": "Wei",
+                "english": "Tail",
+                "element": "Fire",
+                "animal": "Tiger",
+                "direction": "East",
+            },
+            "箕": {
+                "name": "Ji",
+                "english": "Winnowing Basket",
+                "element": "Water",
+                "animal": "Leopard",
+                "direction": "East",
+            },
             # Northern Black Tortoise (北方玄武)
-            "斗": {"name": "Dou", "english": "Dipper", "element": "Wood", "animal": "Unicorn", "direction": "North"},
-            "牛": {"name": "Niu", "english": "Ox", "element": "Earth", "animal": "Ox", "direction": "North"},
-            "女": {"name": "Nu", "english": "Girl", "element": "Earth", "animal": "Bat", "direction": "North"},
-            "虛": {"name": "Xu", "english": "Emptiness", "element": "Sun", "animal": "Rat", "direction": "North"},
-            "危": {"name": "Wei", "english": "Rooftop", "element": "Moon", "animal": "Swallow", "direction": "North"},
-            "室": {"name": "Shi", "english": "Encampment", "element": "Fire", "animal": "Pig", "direction": "North"},
-            "壁": {"name": "Bi", "english": "Wall", "element": "Water", "animal": "Porcupine", "direction": "North"},
-
+            "斗": {
+                "name": "Dou",
+                "english": "Dipper",
+                "element": "Wood",
+                "animal": "Unicorn",
+                "direction": "North",
+            },
+            "牛": {
+                "name": "Niu",
+                "english": "Ox",
+                "element": "Earth",
+                "animal": "Ox",
+                "direction": "North",
+            },
+            "女": {
+                "name": "Nu",
+                "english": "Girl",
+                "element": "Earth",
+                "animal": "Bat",
+                "direction": "North",
+            },
+            "虛": {
+                "name": "Xu",
+                "english": "Emptiness",
+                "element": "Sun",
+                "animal": "Rat",
+                "direction": "North",
+            },
+            "危": {
+                "name": "Wei",
+                "english": "Rooftop",
+                "element": "Moon",
+                "animal": "Swallow",
+                "direction": "North",
+            },
+            "室": {
+                "name": "Shi",
+                "english": "Encampment",
+                "element": "Fire",
+                "animal": "Pig",
+                "direction": "North",
+            },
+            "壁": {
+                "name": "Bi",
+                "english": "Wall",
+                "element": "Water",
+                "animal": "Porcupine",
+                "direction": "North",
+            },
             # Western White Tiger (西方白虎)
-            "奎": {"name": "Kui", "english": "Legs", "element": "Wood", "animal": "Wolf", "direction": "West"},
-            "婁": {"name": "Lou", "english": "Bond", "element": "Metal", "animal": "Dog", "direction": "West"},
-            "胃": {"name": "Wei", "english": "Stomach", "element": "Earth", "animal": "Pheasant", "direction": "West"},
-            "昴": {"name": "Mao", "english": "Hairy Head", "element": "Sun", "animal": "Cock", "direction": "West"},
-            "畢": {"name": "Bi", "english": "Net", "element": "Moon", "animal": "Crow", "direction": "West"},
-            "觜": {"name": "Zi", "english": "Turtle Beak", "element": "Fire", "animal": "Monkey", "direction": "West"},
-            "參": {"name": "Shen", "english": "Three Stars", "element": "Water", "animal": "Ape", "direction": "West"},
-
+            "奎": {
+                "name": "Kui",
+                "english": "Legs",
+                "element": "Wood",
+                "animal": "Wolf",
+                "direction": "West",
+            },
+            "婁": {
+                "name": "Lou",
+                "english": "Bond",
+                "element": "Metal",
+                "animal": "Dog",
+                "direction": "West",
+            },
+            "胃": {
+                "name": "Wei",
+                "english": "Stomach",
+                "element": "Earth",
+                "animal": "Pheasant",
+                "direction": "West",
+            },
+            "昴": {
+                "name": "Mao",
+                "english": "Hairy Head",
+                "element": "Sun",
+                "animal": "Cock",
+                "direction": "West",
+            },
+            "畢": {
+                "name": "Bi",
+                "english": "Net",
+                "element": "Moon",
+                "animal": "Crow",
+                "direction": "West",
+            },
+            "觜": {
+                "name": "Zi",
+                "english": "Turtle Beak",
+                "element": "Fire",
+                "animal": "Monkey",
+                "direction": "West",
+            },
+            "參": {
+                "name": "Shen",
+                "english": "Three Stars",
+                "element": "Water",
+                "animal": "Ape",
+                "direction": "West",
+            },
             # Southern Vermilion Bird (南方朱雀)
-            "井": {"name": "Jing", "english": "Well", "element": "Wood", "animal": "Tapir", "direction": "South"},
-            "鬼": {"name": "Gui", "english": "Ghost", "element": "Metal", "animal": "Sheep", "direction": "South"},
-            "柳": {"name": "Liu", "english": "Willow", "element": "Earth", "animal": "Deer", "direction": "South"},
-            "星": {"name": "Xing", "english": "Star", "element": "Sun", "animal": "Horse", "direction": "South"},
-            "張": {"name": "Zhang", "english": "Extended Net", "element": "Moon", "animal": "Deer", "direction": "South"},
-            "翼": {"name": "Yi", "english": "Wings", "element": "Fire", "animal": "Snake", "direction": "South"},
-            "軫": {"name": "Zhen", "english": "Chariot", "element": "Water", "animal": "Earthworm", "direction": "South"}
+            "井": {
+                "name": "Jing",
+                "english": "Well",
+                "element": "Wood",
+                "animal": "Tapir",
+                "direction": "South",
+            },
+            "鬼": {
+                "name": "Gui",
+                "english": "Ghost",
+                "element": "Metal",
+                "animal": "Sheep",
+                "direction": "South",
+            },
+            "柳": {
+                "name": "Liu",
+                "english": "Willow",
+                "element": "Earth",
+                "animal": "Deer",
+                "direction": "South",
+            },
+            "星": {
+                "name": "Xing",
+                "english": "Star",
+                "element": "Sun",
+                "animal": "Horse",
+                "direction": "South",
+            },
+            "張": {
+                "name": "Zhang",
+                "english": "Extended Net",
+                "element": "Moon",
+                "animal": "Deer",
+                "direction": "South",
+            },
+            "翼": {
+                "name": "Yi",
+                "english": "Wings",
+                "element": "Fire",
+                "animal": "Snake",
+                "direction": "South",
+            },
+            "軫": {
+                "name": "Zhen",
+                "english": "Chariot",
+                "element": "Water",
+                "animal": "Earthworm",
+                "direction": "South",
+            },
         }
 
         # Traditional activities and their auspiciousness by mansion
         self.mansion_activities = {
             "角": {
-                "auspicious": ["weddings", "ceremonies", "construction", "moving", "planting"],
+                "auspicious": [
+                    "weddings",
+                    "ceremonies",
+                    "construction",
+                    "moving",
+                    "planting",
+                ],
                 "inauspicious": ["funerals", "medical procedures", "lawsuits"],
-                "neutral": ["travel", "business meetings"]
+                "neutral": ["travel", "business meetings"],
             },
             "亢": {
                 "auspicious": ["education", "learning", "teaching", "business opening"],
                 "inauspicious": ["travel", "litigation", "medical procedures"],
-                "neutral": ["routine work", "planning"]
+                "neutral": ["routine work", "planning"],
             },
             "氐": {
                 "auspicious": ["marriage", "planting", "building foundations"],
                 "inauspicious": ["hunting", "cutting", "demolition"],
-                "neutral": ["cooking", "crafting"]
+                "neutral": ["cooking", "crafting"],
             },
             "房": {
                 "auspicious": ["ceremonies", "offerings", "worship", "meditation"],
                 "inauspicious": ["moving", "burial", "major changes"],
-                "neutral": ["reading", "studying"]
+                "neutral": ["reading", "studying"],
             },
             "心": {
                 "auspicious": ["spiritual practices", "meditation", "healing"],
                 "inauspicious": ["construction", "business", "heavy work"],
-                "neutral": ["rest", "contemplation"]
+                "neutral": ["rest", "contemplation"],
             },
             "尾": {
                 "auspicious": ["fishing", "hunting", "martial arts"],
                 "inauspicious": ["marriage", "celebration", "formal ceremonies"],
-                "neutral": ["exercise", "competition"]
+                "neutral": ["exercise", "competition"],
             },
             "箕": {
-                "auspicious": ["cleaning", "organizing", "demolition", "ending projects"],
+                "auspicious": [
+                    "cleaning",
+                    "organizing",
+                    "demolition",
+                    "ending projects",
+                ],
                 "inauspicious": ["weddings", "opening ceremonies", "new beginnings"],
-                "neutral": ["maintenance", "repairs"]
-            }
+                "neutral": ["maintenance", "repairs"],
+            },
         }
 
         # Five Elements interactions
@@ -105,18 +281,23 @@ class ChineseData:
                 "colors": ["green", "cyan"],
                 "direction": "East",
                 "season": "Spring",
-                "emotions": ["kindness", "patience"]
+                "emotions": ["kindness", "patience"],
             },
             "Fire": {
                 "generates": "Earth",
                 "destroys": "Metal",
                 "generated_by": "Wood",
                 "destroyed_by": "Water",
-                "characteristics": ["energy", "passion", "transformation", "illumination"],
+                "characteristics": [
+                    "energy",
+                    "passion",
+                    "transformation",
+                    "illumination",
+                ],
                 "colors": ["red", "purple"],
                 "direction": "South",
                 "season": "Summer",
-                "emotions": ["joy", "excitement"]
+                "emotions": ["joy", "excitement"],
             },
             "Earth": {
                 "generates": "Metal",
@@ -127,7 +308,7 @@ class ChineseData:
                 "colors": ["yellow", "brown"],
                 "direction": "Center",
                 "season": "Late Summer",
-                "emotions": ["thoughtfulness", "care"]
+                "emotions": ["thoughtfulness", "care"],
             },
             "Metal": {
                 "generates": "Water",
@@ -138,7 +319,7 @@ class ChineseData:
                 "colors": ["white", "silver", "gold"],
                 "direction": "West",
                 "season": "Autumn",
-                "emotions": ["grief", "letting go"]
+                "emotions": ["grief", "letting go"],
             },
             "Water": {
                 "generates": "Wood",
@@ -149,8 +330,8 @@ class ChineseData:
                 "colors": ["black", "blue"],
                 "direction": "North",
                 "season": "Winter",
-                "emotions": ["fear", "will"]
-            }
+                "emotions": ["fear", "will"],
+            },
         }
 
         # Zodiac animal detailed information
@@ -165,7 +346,7 @@ class ChineseData:
                 "best_matches": ["Dragon", "Monkey", "Ox"],
                 "worst_matches": ["Horse", "Goat"],
                 "famous_people": ["William Shakespeare", "Mozart", "Truman Capote"],
-                "career_suits": ["business", "politics", "literature", "research"]
+                "career_suits": ["business", "politics", "literature", "research"],
             },
             "Ox": {
                 "years": [1925, 1937, 1949, 1961, 1973, 1985, 1997, 2009, 2021, 2033],
@@ -177,7 +358,7 @@ class ChineseData:
                 "best_matches": ["Snake", "Rooster", "Rat"],
                 "worst_matches": ["Goat", "Horse"],
                 "famous_people": ["Napoleon", "Van Gogh", "Walt Disney"],
-                "career_suits": ["agriculture", "engineering", "medicine", "teaching"]
+                "career_suits": ["agriculture", "engineering", "medicine", "teaching"],
             },
             "Tiger": {
                 "years": [1926, 1938, 1950, 1962, 1974, 1986, 1998, 2010, 2022, 2034],
@@ -189,7 +370,12 @@ class ChineseData:
                 "best_matches": ["Horse", "Dog", "Pig"],
                 "worst_matches": ["Monkey", "Snake"],
                 "famous_people": ["Marco Polo", "Beethoven", "Queen Elizabeth II"],
-                "career_suits": ["leadership", "military", "adventure", "entertainment"]
+                "career_suits": [
+                    "leadership",
+                    "military",
+                    "adventure",
+                    "entertainment",
+                ],
             },
             "Rabbit": {
                 "years": [1927, 1939, 1951, 1963, 1975, 1987, 1999, 2011, 2023, 2035],
@@ -201,7 +387,7 @@ class ChineseData:
                 "best_matches": ["Goat", "Pig", "Dog"],
                 "worst_matches": ["Rooster", "Dragon"],
                 "famous_people": ["Einstein", "Confucius", "Moon"],
-                "career_suits": ["arts", "literature", "medicine", "fashion"]
+                "career_suits": ["arts", "literature", "medicine", "fashion"],
             },
             "Dragon": {
                 "years": [1928, 1940, 1952, 1964, 1976, 1988, 2000, 2012, 2024, 2036],
@@ -213,7 +399,12 @@ class ChineseData:
                 "best_matches": ["Rat", "Monkey", "Rooster"],
                 "worst_matches": ["Dog", "Rabbit"],
                 "famous_people": ["Bruce Lee", "John Lennon", "Salvador Dali"],
-                "career_suits": ["leadership", "innovation", "arts", "entrepreneurship"]
+                "career_suits": [
+                    "leadership",
+                    "innovation",
+                    "arts",
+                    "entrepreneurship",
+                ],
             },
             "Snake": {
                 "years": [1929, 1941, 1953, 1965, 1977, 1989, 2001, 2013, 2025, 2037],
@@ -225,7 +416,12 @@ class ChineseData:
                 "best_matches": ["Ox", "Rooster", "Monkey"],
                 "worst_matches": ["Pig", "Tiger"],
                 "famous_people": ["Gandhi", "JFK", "Abraham Lincoln"],
-                "career_suits": ["philosophy", "psychology", "investigation", "finance"]
+                "career_suits": [
+                    "philosophy",
+                    "psychology",
+                    "investigation",
+                    "finance",
+                ],
             },
             "Horse": {
                 "years": [1930, 1942, 1954, 1966, 1978, 1990, 2002, 2014, 2026, 2038],
@@ -237,7 +433,7 @@ class ChineseData:
                 "best_matches": ["Tiger", "Dog", "Goat"],
                 "worst_matches": ["Rat", "Ox"],
                 "famous_people": ["Rembrandt", "Chopin", "Neil Armstrong"],
-                "career_suits": ["sports", "travel", "sales", "communication"]
+                "career_suits": ["sports", "travel", "sales", "communication"],
             },
             "Goat": {
                 "years": [1931, 1943, 1955, 1967, 1979, 1991, 2003, 2015, 2027, 2039],
@@ -249,7 +445,7 @@ class ChineseData:
                 "best_matches": ["Rabbit", "Pig", "Horse"],
                 "worst_matches": ["Ox", "Rat"],
                 "famous_people": ["Michelangelo", "Mark Twain", "Steve Jobs"],
-                "career_suits": ["arts", "literature", "music", "design"]
+                "career_suits": ["arts", "literature", "music", "design"],
             },
             "Monkey": {
                 "years": [1932, 1944, 1956, 1968, 1980, 1992, 2004, 2016, 2028, 2040],
@@ -261,7 +457,7 @@ class ChineseData:
                 "best_matches": ["Rat", "Dragon", "Snake"],
                 "worst_matches": ["Tiger", "Pig"],
                 "famous_people": ["Leonardo da Vinci", "Charles Dickens", "Tom Hanks"],
-                "career_suits": ["science", "technology", "entertainment", "business"]
+                "career_suits": ["science", "technology", "entertainment", "business"],
             },
             "Rooster": {
                 "years": [1933, 1945, 1957, 1969, 1981, 1993, 2005, 2017, 2029, 2041],
@@ -273,7 +469,12 @@ class ChineseData:
                 "best_matches": ["Ox", "Snake", "Dragon"],
                 "worst_matches": ["Rabbit", "Dog"],
                 "famous_people": ["Confucius", "Rudyard Kipling", "Serena Williams"],
-                "career_suits": ["public relations", "journalism", "military", "restaurant"]
+                "career_suits": [
+                    "public relations",
+                    "journalism",
+                    "military",
+                    "restaurant",
+                ],
             },
             "Dog": {
                 "years": [1934, 1946, 1958, 1970, 1982, 1994, 2006, 2018, 2030, 2042],
@@ -284,8 +485,12 @@ class ChineseData:
                 "lucky_flowers": ["rose", "cymbidium orchids"],
                 "best_matches": ["Tiger", "Horse", "Rabbit"],
                 "worst_matches": ["Dragon", "Rooster"],
-                "famous_people": ["Winston Churchill", "Mother Teresa", "Michael Jackson"],
-                "career_suits": ["law", "medicine", "education", "social work"]
+                "famous_people": [
+                    "Winston Churchill",
+                    "Mother Teresa",
+                    "Michael Jackson",
+                ],
+                "career_suits": ["law", "medicine", "education", "social work"],
             },
             "Pig": {
                 "years": [1935, 1947, 1959, 1971, 1983, 1995, 2007, 2019, 2031, 2043],
@@ -296,38 +501,127 @@ class ChineseData:
                 "lucky_flowers": ["hydrangea", "pitcher plant"],
                 "best_matches": ["Rabbit", "Goat", "Tiger"],
                 "worst_matches": ["Snake", "Monkey"],
-                "famous_people": ["Ernest Hemingway", "Ronald Reagan", "Arnold Schwarzenegger"],
-                "career_suits": ["retail", "hospitality", "entertainment", "healthcare"]
-            }
+                "famous_people": [
+                    "Ernest Hemingway",
+                    "Ronald Reagan",
+                    "Arnold Schwarzenegger",
+                ],
+                "career_suits": [
+                    "retail",
+                    "hospitality",
+                    "entertainment",
+                    "healthcare",
+                ],
+            },
         }
 
         # Traditional Chinese calendar terms
         self.calendar_terms = {
             "jieqi": {  # 24 Solar Terms
-                "立春": {"name": "Lichun", "english": "Beginning of Spring", "date": "Feb 4-5"},
-                "雨水": {"name": "Yushui", "english": "Rain Water", "date": "Feb 19-20"},
-                "惊蛰": {"name": "Jingzhe", "english": "Awakening of Insects", "date": "Mar 5-6"},
-                "春分": {"name": "Chunfen", "english": "Spring Equinox", "date": "Mar 20-21"},
-                "清明": {"name": "Qingming", "english": "Pure Brightness", "date": "Apr 4-5"},
+                "立春": {
+                    "name": "Lichun",
+                    "english": "Beginning of Spring",
+                    "date": "Feb 4-5",
+                },
+                "雨水": {
+                    "name": "Yushui",
+                    "english": "Rain Water",
+                    "date": "Feb 19-20",
+                },
+                "惊蛰": {
+                    "name": "Jingzhe",
+                    "english": "Awakening of Insects",
+                    "date": "Mar 5-6",
+                },
+                "春分": {
+                    "name": "Chunfen",
+                    "english": "Spring Equinox",
+                    "date": "Mar 20-21",
+                },
+                "清明": {
+                    "name": "Qingming",
+                    "english": "Pure Brightness",
+                    "date": "Apr 4-5",
+                },
                 "谷雨": {"name": "Guyu", "english": "Grain Rain", "date": "Apr 19-20"},
-                "立夏": {"name": "Lixia", "english": "Beginning of Summer", "date": "May 5-6"},
-                "小满": {"name": "Xiaoman", "english": "Lesser Fullness", "date": "May 20-21"},
-                "芒种": {"name": "Mangzhong", "english": "Grain in Ear", "date": "Jun 5-6"},
-                "夏至": {"name": "Xiazhi", "english": "Summer Solstice", "date": "Jun 21-22"},
-                "小暑": {"name": "Xiaoshu", "english": "Lesser Heat", "date": "Jul 6-7"},
-                "大暑": {"name": "Dashu", "english": "Greater Heat", "date": "Jul 22-23"},
-                "立秋": {"name": "Liqiu", "english": "Beginning of Autumn", "date": "Aug 7-8"},
-                "处暑": {"name": "Chushu", "english": "Stopping the Heat", "date": "Aug 22-23"},
+                "立夏": {
+                    "name": "Lixia",
+                    "english": "Beginning of Summer",
+                    "date": "May 5-6",
+                },
+                "小满": {
+                    "name": "Xiaoman",
+                    "english": "Lesser Fullness",
+                    "date": "May 20-21",
+                },
+                "芒种": {
+                    "name": "Mangzhong",
+                    "english": "Grain in Ear",
+                    "date": "Jun 5-6",
+                },
+                "夏至": {
+                    "name": "Xiazhi",
+                    "english": "Summer Solstice",
+                    "date": "Jun 21-22",
+                },
+                "小暑": {
+                    "name": "Xiaoshu",
+                    "english": "Lesser Heat",
+                    "date": "Jul 6-7",
+                },
+                "大暑": {
+                    "name": "Dashu",
+                    "english": "Greater Heat",
+                    "date": "Jul 22-23",
+                },
+                "立秋": {
+                    "name": "Liqiu",
+                    "english": "Beginning of Autumn",
+                    "date": "Aug 7-8",
+                },
+                "处暑": {
+                    "name": "Chushu",
+                    "english": "Stopping the Heat",
+                    "date": "Aug 22-23",
+                },
                 "白露": {"name": "Bailu", "english": "White Dew", "date": "Sep 7-8"},
-                "秋分": {"name": "Qiufen", "english": "Autumn Equinox", "date": "Sep 22-23"},
+                "秋分": {
+                    "name": "Qiufen",
+                    "english": "Autumn Equinox",
+                    "date": "Sep 22-23",
+                },
                 "寒露": {"name": "Hanlu", "english": "Cold Dew", "date": "Oct 8-9"},
-                "霜降": {"name": "Shuangjiang", "english": "Frost's Descent", "date": "Oct 23-24"},
-                "立冬": {"name": "Lidong", "english": "Beginning of Winter", "date": "Nov 7-8"},
-                "小雪": {"name": "Xiaoxue", "english": "Lesser Snow", "date": "Nov 22-23"},
+                "霜降": {
+                    "name": "Shuangjiang",
+                    "english": "Frost's Descent",
+                    "date": "Oct 23-24",
+                },
+                "立冬": {
+                    "name": "Lidong",
+                    "english": "Beginning of Winter",
+                    "date": "Nov 7-8",
+                },
+                "小雪": {
+                    "name": "Xiaoxue",
+                    "english": "Lesser Snow",
+                    "date": "Nov 22-23",
+                },
                 "大雪": {"name": "Daxue", "english": "Greater Snow", "date": "Dec 6-7"},
-                "冬至": {"name": "Dongzhi", "english": "Winter Solstice", "date": "Dec 21-22"},
-                "小寒": {"name": "Xiaohan", "english": "Lesser Cold", "date": "Jan 5-6"},
-                "大寒": {"name": "Dahan", "english": "Greater Cold", "date": "Jan 20-21"}
+                "冬至": {
+                    "name": "Dongzhi",
+                    "english": "Winter Solstice",
+                    "date": "Dec 21-22",
+                },
+                "小寒": {
+                    "name": "Xiaohan",
+                    "english": "Lesser Cold",
+                    "date": "Jan 5-6",
+                },
+                "大寒": {
+                    "name": "Dahan",
+                    "english": "Greater Cold",
+                    "date": "Jan 20-21",
+                },
             }
         }
 
@@ -338,22 +632,22 @@ class ChineseData:
                     "Clean house thoroughly before New Year",
                     "Prepare red decorations and couplets",
                     "Buy new clothes (preferably red)",
-                    "Stock up on food for family reunion"
+                    "Stock up on food for family reunion",
                 ],
                 "taboos": [
                     "No sweeping on New Year's Day (sweeps away luck)",
                     "No breaking dishes or glasses",
                     "No arguing or crying",
                     "No wearing white or black clothes",
-                    "No cutting hair during first month"
+                    "No cutting hair during first month",
                 ],
                 "activities": [
                     "Family reunion dinner on New Year's Eve",
                     "Give red envelopes (hongbao) to children",
                     "Visit temples and pray for good fortune",
                     "Watch lion and dragon dances",
-                    "Set off firecrackers to scare away evil spirits"
-                ]
+                    "Set off firecrackers to scare away evil spirits",
+                ],
             },
             "general_practices": {
                 "daily_taboos": [
@@ -361,19 +655,19 @@ class ChineseData:
                     "Don't give clocks as gifts (symbolizes death)",
                     "Don't give white flowers (for funerals)",
                     "Don't point with one finger",
-                    "Don't stick chopsticks upright in rice"
+                    "Don't stick chopsticks upright in rice",
                 ],
                 "lucky_practices": [
                     "Use number 8 (sounds like prosperity)",
                     "Face favorable directions when sleeping",
                     "Keep plants in eastern parts of home",
                     "Use feng shui principles in home arrangement",
-                    "Wear jade for protection and luck"
-                ]
-            }
+                    "Wear jade for protection and luck",
+                ],
+            },
         }
 
-    def get_mansion_for_date(self, date_obj: datetime) -> Dict[str, Any]:
+    def get_mansion_for_date(self, date_obj: datetime) -> dict[str, Any]:
         """Get lunar mansion for a specific date."""
         # Calculate days since reference date
         reference_date = datetime(2000, 1, 1)
@@ -387,10 +681,10 @@ class ChineseData:
             "mansion_character": mansion_char,
             "mansion_info": self.lunar_mansions[mansion_char],
             "activities": self.mansion_activities.get(mansion_char, {}),
-            "day_index": mansion_index + 1
+            "day_index": mansion_index + 1,
         }
 
-    def get_element_for_date(self, date_obj: datetime) -> Dict[str, Any]:
+    def get_element_for_date(self, date_obj: datetime) -> dict[str, Any]:
         """Get five element for a specific date."""
         # Simplified calculation based on year and day
         year_element_index = (date_obj.year - 1900) % 5
@@ -405,29 +699,44 @@ class ChineseData:
             "day_element": day_element,
             "year_element_info": self.five_elements[year_element],
             "day_element_info": self.five_elements[day_element],
-            "interaction": self._get_element_interaction(year_element, day_element)
+            "interaction": self._get_element_interaction(year_element, day_element),
         }
 
-    def _get_element_interaction(self, element1: str, element2: str) -> Dict[str, str]:
+    def _get_element_interaction(self, element1: str, element2: str) -> dict[str, str]:
         """Get interaction between two elements."""
         element1_info = self.five_elements[element1]
 
         if element2 == element1_info["generates"]:
-            return {"type": "generative", "description": f"{element1} generates {element2}"}
+            return {
+                "type": "generative",
+                "description": f"{element1} generates {element2}",
+            }
         elif element2 == element1_info["destroys"]:
-            return {"type": "destructive", "description": f"{element1} destroys {element2}"}
+            return {
+                "type": "destructive",
+                "description": f"{element1} destroys {element2}",
+            }
         elif element2 == element1_info["generated_by"]:
-            return {"type": "supportive", "description": f"{element1} is generated by {element2}"}
+            return {
+                "type": "supportive",
+                "description": f"{element1} is generated by {element2}",
+            }
         elif element2 == element1_info["destroyed_by"]:
-            return {"type": "weakening", "description": f"{element1} is destroyed by {element2}"}
+            return {
+                "type": "weakening",
+                "description": f"{element1} is destroyed by {element2}",
+            }
         else:
-            return {"type": "neutral", "description": f"{element1} and {element2} are neutral"}
+            return {
+                "type": "neutral",
+                "description": f"{element1} and {element2} are neutral",
+            }
 
-    def get_zodiac_details(self, animal: str) -> Dict[str, Any]:
+    def get_zodiac_details(self, animal: str) -> dict[str, Any]:
         """Get detailed zodiac animal information."""
         return self.zodiac_animals_detailed.get(animal, {})
 
-    def get_cultural_advice(self, festival: str, activity: str) -> List[str]:
+    def get_cultural_advice(self, festival: str, activity: str) -> list[str]:
         """Get cultural advice for specific festivals and activities."""
         if festival == "spring_festival":
             practices = self.cultural_practices["spring_festival"]

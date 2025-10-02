@@ -1,8 +1,8 @@
 """Tests for MCP server implementation."""
 
+from unittest.mock import patch
+
 import pytest
-import json
-from unittest.mock import AsyncMock, patch
 
 from lunar_mcp_server.server import LunarMCPServer
 
@@ -17,14 +17,14 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_check_auspicious_date_tool(self):
         """Test check_auspicious_date tool."""
-        with patch.object(self.server.auspicious_checker, 'check_date') as mock_check:
+        with patch.object(self.server.auspicious_checker, "check_date") as mock_check:
             mock_check.return_value = {
                 "date": "2024-01-15",
                 "auspicious_level": "very_good",
                 "score": 8,
                 "good_for": ["wedding", "celebration"],
                 "avoid": ["conflict"],
-                "zodiac_day": "Dragon"
+                "zodiac_day": "Dragon",
             }
 
             result = await self.server._check_auspicious_date(
@@ -38,13 +38,15 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_find_good_dates_tool(self):
         """Test find_good_dates tool."""
-        with patch.object(self.server.auspicious_checker, 'find_good_dates') as mock_find:
+        with patch.object(
+            self.server.auspicious_checker, "find_good_dates"
+        ) as mock_find:
             mock_find.return_value = {
                 "activity": "wedding",
                 "good_dates": [
                     {"date": "2024-01-15", "level": "very_good", "score": 8}
                 ],
-                "found_dates": 1
+                "found_dates": 1,
             }
 
             result = await self.server._find_good_dates(
@@ -58,12 +60,12 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_get_moon_phase_tool(self):
         """Test get_moon_phase tool."""
-        with patch.object(self.server.lunar_calc, 'get_moon_phase') as mock_moon:
+        with patch.object(self.server.lunar_calc, "get_moon_phase") as mock_moon:
             mock_moon.return_value = {
                 "date": "2024-01-15",
                 "phase_name": "Full Moon",
                 "illumination": 0.98,
-                "lunar_day": 15
+                "lunar_day": 15,
             }
 
             result = await self.server._get_moon_phase("2024-01-15", "0,0")
@@ -75,16 +77,18 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_get_lunar_festivals_tool(self):
         """Test get_lunar_festivals tool."""
-        with patch.object(self.server.festival_manager, 'get_festivals_for_date') as mock_festivals:
+        with patch.object(
+            self.server.festival_manager, "get_festivals_for_date"
+        ) as mock_festivals:
             mock_festivals.return_value = {
                 "date": "2024-02-10",
                 "festivals": [
                     {
                         "name": "Chinese New Year",
-                        "significance": "Beginning of lunar new year"
+                        "significance": "Beginning of lunar new year",
                     }
                 ],
-                "festival_count": 1
+                "festival_count": 1,
             }
 
             result = await self.server._get_lunar_festivals("2024-02-10", "chinese")
@@ -96,12 +100,14 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_solar_to_lunar_conversion(self):
         """Test solar to lunar date conversion."""
-        with patch.object(self.server.calendar_converter, 'solar_to_lunar') as mock_convert:
+        with patch.object(
+            self.server.calendar_converter, "solar_to_lunar"
+        ) as mock_convert:
             mock_convert.return_value = {
                 "solar_date": "2024-01-15",
                 "lunar_year": 2024,
                 "lunar_month": 12,
-                "lunar_day": 5
+                "lunar_day": 5,
             }
 
             result = await self.server._solar_to_lunar("2024-01-15", "chinese")
@@ -113,14 +119,13 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_get_zodiac_info_tool(self):
         """Test get_zodiac_info tool."""
-        with patch.object(self.server.calendar_converter, 'get_zodiac_info') as mock_zodiac:
+        with patch.object(
+            self.server.calendar_converter, "get_zodiac_info"
+        ) as mock_zodiac:
             mock_zodiac.return_value = {
                 "date": "2024-01-15",
                 "culture": "chinese",
-                "year_zodiac": {
-                    "animal": "Dragon",
-                    "element": "Wood"
-                }
+                "year_zodiac": {"animal": "Dragon", "element": "Wood"},
             }
 
             result = await self.server._get_zodiac_info("2024-01-15", "chinese")
@@ -140,7 +145,7 @@ class TestLunarMCPServer:
     @pytest.mark.asyncio
     async def test_error_handling(self):
         """Test error handling in tools."""
-        with patch.object(self.server.auspicious_checker, 'check_date') as mock_check:
+        with patch.object(self.server.auspicious_checker, "check_date") as mock_check:
             mock_check.side_effect = Exception("Test error")
 
             # Since the server doesn't have built-in error handling for this method,
@@ -171,7 +176,7 @@ class TestServerHandlers:
             "_get_moon_phase",
             "_get_lunar_festivals",
             "_solar_to_lunar",
-            "_get_zodiac_info"
+            "_get_zodiac_info",
         ]
 
         for method_name in expected_methods:
@@ -181,7 +186,7 @@ class TestServerHandlers:
     def test_tool_schemas(self):
         """Test that tools have proper input schemas."""
         # This is a basic test to ensure tools are properly defined
-        assert hasattr(self.server, '_check_auspicious_date')
-        assert hasattr(self.server, '_find_good_dates')
-        assert hasattr(self.server, '_get_moon_phase')
-        assert hasattr(self.server, '_get_lunar_festivals')
+        assert hasattr(self.server, "_check_auspicious_date")
+        assert hasattr(self.server, "_find_good_dates")
+        assert hasattr(self.server, "_get_moon_phase")
+        assert hasattr(self.server, "_get_lunar_festivals")
