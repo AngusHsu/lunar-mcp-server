@@ -80,7 +80,7 @@ pip install -e .
 
 ```bash
 # Short command (recommended)
-uv run lunar
+uv run lunar-calendar
 
 # Or full command
 uv run lunar-mcp-server
@@ -90,8 +90,8 @@ uvx lunar-mcp-server
 
 # After pip install
 lunar-mcp-server
-# or just
-lunar
+# or short alias
+lunar-calendar
 
 # Using Python module
 python -m lunar_mcp_server.server
