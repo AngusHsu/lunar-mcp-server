@@ -1,6 +1,6 @@
 [project]
 name = "lunar-mcp-server"
-version = "0.1.0"
+version = "1.0.0"
 description = "A comprehensive Chinese Lunar Calendar MCP server providing traditional Chinese lunar calendar information, auspicious date checking, and festival data"
 readme = "README.md"
 license = {text = "MIT"}
