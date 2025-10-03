@@ -5,4 +5,4 @@ startCommand:
     properties: {}
   commandFunction:
     |-
-    (config) => ({ "command": "python", "args": ["-m", "lunar_mcp_server.server"] })
+    config => ({ command: 'uvx', args: ['lunar-mcp-server'] })
