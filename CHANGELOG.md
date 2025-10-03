@@ -5,6 +5,56 @@ All notable changes to the Lunar Calendar MCP Server will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2025-10-03
+
+### 🎉 First Stable Release
+
+This marks the first production-ready release of the Lunar Calendar MCP Server. The server is now fully tested, documented, and ready for widespread use.
+
+### Added
+- **PyPI Publishing**: Now available via `pip install lunar-mcp-server`
+- **GitHub Actions Workflow**: Automated PyPI publishing with quality gates
+- **Smithery.ai Configuration**: Ready for MCP registry publishing
+- **Comprehensive Documentation**:
+  - `docs/usage-examples.md` - Practical examples and integration guides
+  - `docs/tools-reference.md` - Complete API documentation for all 18 tools
+  - `docs/cultural-traditions.md` - Understanding Chinese calendar systems
+  - `docs/development.md` - Contributing and development guide
+  - `docs/smithery-publishing.md` - Publishing to MCP registry
+
+### Changed
+- **Reorganized README**: Streamlined to focus on quick start, now links to detailed docs
+- **Improved Documentation Structure**: Moved detailed content to modular docs/ directory
+
+### Removed
+- **main.py**: Removed unused placeholder file (entry point properly configured in pyproject.toml)
+
+### Quality Assurance
+- ✅ All code quality checks passing (black, isort, ruff, mypy)
+- ✅ 18/18 MCP tools tested and validated (100% pass rate)
+- ✅ Complete test coverage with pytest
+- ✅ Production-ready for PyPI distribution
+
+### Installation
+```bash
+# Using pip
+pip install lunar-mcp-server
+
+# Using uvx (no installation)
+uvx lunar-mcp-server
+
+# Claude Desktop integration
+# Add to claude_desktop_config.json:
+{
+  "mcpServers": {
+    "lunar-calendar": {
+      "command": "uvx",
+      "args": ["lunar-mcp-server"]
+    }
+  }
+}
+```
+
 ## [0.1.1] - 2025-01-03
 
 ### Fixed
@@ -134,5 +184,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-cultural support (Islamic, Hindu, Western) - focused exclusively on Chinese traditions
 - Dependencies: `convertdate`, `hijri-converter` (no longer needed)
 
+[1.0.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.0.0
 [0.1.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.0
