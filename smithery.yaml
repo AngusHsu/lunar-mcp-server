@@ -1,7 +1,5 @@
 # Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
-runtime: python
-
 startCommand:
   type: stdio
   configSchema:
@@ -9,13 +7,9 @@ startCommand:
     type: object
     properties: {}
   commandFunction:
-    # Launch the MCP server
+    # Launch the MCP server using uvx (installs from PyPI)
     |-
-    config => ({ command: 'python', args: ['-m', 'lunar_mcp_server.server'] })
-
-build:
-  dockerfile: Dockerfile
-  dockerBuildPath: "."
+    config => ({ command: 'uvx', args: ['lunar-mcp-server'] })
 
 # Metadata
 author: Lunar MCP Team
