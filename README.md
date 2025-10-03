@@ -21,241 +21,188 @@ A comprehensive Model Context Protocol (MCP) server providing traditional Chines
 
 Perfect for integrating ancient Chinese wisdom into modern AI applications through the Model Context Protocol.
 
-## Features
+## ✨ Features
 
-### Auspicious Date Analysis
-- **Traditional Date Checking**: Determine if dates are favorable for specific activities based on lunar calendar wisdom
-- **Good Date Discovery**: Find optimal dates within date ranges for various activities
-- **Daily Fortune Analysis**: Get comprehensive daily luck and fortune information
-- **Zodiac Compatibility**: Check compatibility between dates based on zodiac systems
+- 🎯 **Auspicious Date Analysis** - Check favorable dates, find good dates, daily fortune, zodiac compatibility
+- 🎊 **Festival Information** - Chinese festivals, next festival, festival details, annual calendars
+- 🌙 **Moon Phase Analysis** - Accurate moon phases, location-aware, activity influence, monthly calendars
+- 📅 **Calendar Conversions** - Solar-lunar conversion, zodiac information, cultural integration
+- ⚡ **Advanced Tools** - Batch checking, date comparison, lucky hours
 
-### Festival & Holiday Information
-- **Chinese Festivals**: Comprehensive support for traditional Chinese festival calendar
-- **Festival Discovery**: Find next upcoming festivals and get detailed information
-- **Annual Planning**: Get complete festival calendars for any year
-- **Cultural Context**: Rich cultural and historical background for each festival
+**[📚 Complete Features List →](./docs/tools-reference.md)**
 
-### Moon Phase Analysis
-- **Accurate Moon Phases**: Calculate precise moon phases with astronomical data
-- **Location-Aware**: Consider geographic location for moon rise/set times
-- **Activity Influence**: Understand how moon phases affect specific activities
-- **Monthly Calendars**: Generate comprehensive monthly moon phase calendars
+## 🚀 Quick Start
 
-### Calendar Conversions
-- **Solar-Lunar Conversion**: Convert between solar (Gregorian) and Chinese lunar calendar
-- **Chinese Zodiac Information**: Get detailed Chinese zodiac information including animals, elements, and compatibility
-- **Cultural Integration**: Seamless integration with Chinese cultural traditions and practices
-
-## Installation
-
-### Using UV (Recommended)
+### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/AngusHsu/lunar-mcp-server.git
-cd lunar-mcp-server
-
-# Install with UV
-uv sync
-
-# Install development dependencies
-uv sync --dev
-```
-
-### Using pip
-
-```bash
-# Install the package
+# Using pip
 pip install lunar-mcp-server
 
-# Or install from source
-pip install -e .
+# Using uvx (no installation needed)
+uvx lunar-mcp-server
+
+# From source
+git clone https://github.com/AngusHsu/lunar-mcp-server.git
+cd lunar-mcp-server
+uv sync
 ```
 
-## Quick Start
-
-### Running the MCP Server
+### Running the Server
 
 ```bash
-# Using UV (development)
+# Using uv
 uv run lunar-mcp-server
 
-# Using uvx (run without installing)
+# Using uvx
 uvx lunar-mcp-server
 
 # After pip install
 lunar-mcp-server
-
-# Using Python module
-python -m lunar_mcp_server.server
 ```
 
-### Basic Usage Examples
+### Claude Desktop Integration
 
-#### Check if a Date is Auspicious
+Add to your Claude Desktop configuration (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "lunar-calendar": {
+      "command": "uvx",
+      "args": ["lunar-mcp-server"]
+    }
+  }
+}
+```
+
+**[📖 Detailed Usage Guide →](./docs/usage-examples.md)**
+
+## 🛠️ Available Tools
+
+### 🎯 Auspicious Date Tools (4)
+- `check_auspicious_date` - Check if date is favorable
+- `find_good_dates` - Find optimal dates
+- `get_daily_fortune` - Daily fortune info
+- `check_zodiac_compatibility` - Zodiac compatibility
+
+### 🎊 Festival Tools (4)
+- `get_lunar_festivals` - Festivals on date
+- `get_next_festival` - Next upcoming festival
+- `get_festival_details` - Festival information
+- `get_annual_festivals` - Annual calendar
+
+### 🌙 Moon Phase Tools (4)
+- `get_moon_phase` - Moon phase info
+- `get_moon_calendar` - Monthly calendar
+- `get_moon_influence` - Activity influence
+- `predict_moon_phases` - Phase predictions
+
+### 📅 Calendar Conversion Tools (3)
+- `solar_to_lunar` - Solar to lunar conversion
+- `lunar_to_solar` - Lunar to solar conversion
+- `get_zodiac_info` - Zodiac information
+
+### ⚡ Advanced Tools (3)
+- `batch_check_dates` - Check multiple dates
+- `compare_dates` - Compare dates
+- `get_lucky_hours` - Lucky hours of day
+
+**[📖 Complete API Reference →](./docs/tools-reference.md)**
+
+## 🏮 Cultural Traditions
+
+Based on traditional Chinese calendar systems:
+
+- **Lunar Calendar** - Traditional lunar-solar calendar
+- **12 Zodiac Animals** - Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig
+- **Five Elements** - Wood, Fire, Earth, Metal, Water
+- **28 Lunar Mansions** - Traditional stellar divisions
+- **Traditional Festivals** - Spring Festival, Mid-Autumn, Dragon Boat, and more
+
+**[📖 Cultural Traditions Guide →](./docs/cultural-traditions.md)**
+
+## 📝 Example Usage
+
 ```python
 import asyncio
 from lunar_mcp_server import LunarMCPServer
 
-async def check_wedding_date():
+async def main():
     server = LunarMCPServer()
+
+    # Check if date is auspicious for wedding
     result = await server._check_auspicious_date(
         date="2024-03-15",
         activity="wedding",
         culture="chinese"
     )
-    print(f"Wedding on 2024-03-15: {result['auspicious_level']}")
-    print(f"Recommendations: {result['recommendations']}")
+    print(f"Auspiciousness: {result['auspicious_level']}")
+    print(f"Score: {result['score']}/10")
 
-asyncio.run(check_wedding_date())
+asyncio.run(main())
 ```
 
-#### Find Good Dates for Business Opening
-```python
-async def find_business_dates():
-    server = LunarMCPServer()
-    result = await server._find_good_dates(
-        start_date="2024-04-01",
-        end_date="2024-04-30",
-        activity="business_opening",
-        culture="chinese",
-        limit=5
-    )
-    print("Best dates for business opening:")
-    for date_info in result['good_dates']:
-        print(f"- {date_info['date']}: {date_info['level']} (score: {date_info['score']})")
+**[📖 More Examples →](./docs/usage-examples.md)**
 
-asyncio.run(find_business_dates())
-```
-
-#### Get Moon Phase Information
-```python
-async def moon_phase_info():
-    server = LunarMCPServer()
-    result = await server._get_moon_phase(
-        date="2024-02-14",
-        location="40.7128,-74.0060"  # New York City
-    )
-    print(f"Moon phase on 2024-02-14: {result['phase_name']}")
-    print(f"Illumination: {result['illumination']:.1%}")
-    print(f"Good for: {', '.join(result['influence']['good_for'])}")
-
-asyncio.run(moon_phase_info())
-```
-
-#### Get Festival Information
-```python
-async def festival_info():
-    server = LunarMCPServer()
-    result = await server._get_lunar_festivals(
-        date="2024-02-10",
-        culture="chinese"
-    )
-    if result['festivals']:
-        festival = result['festivals'][0]
-        print(f"Festival: {festival['name']}")
-        print(f"Significance: {festival['significance']}")
-        print(f"Traditions: {', '.join(festival['traditions'])}")
-
-asyncio.run(festival_info())
-```
-
-## MCP Tools Reference
-
-### Auspicious Date Tools
-
-#### `check_auspicious_date`
-Check if a date is favorable for specific activities.
-
-**Parameters:**
-- `date` (string): Date in YYYY-MM-DD format
-- `activity` (string): Activity type (e.g., wedding, business_opening, travel)
-- `culture` (string, optional): Cultural tradition (chinese)
-
-**Response:**
-```json
-{
-  "date": "2024-02-14",
-  "lunar_date": "2024-1-5",
-  "auspicious_level": "very_good",
-  "score": 8,
-  "good_for": ["wedding", "business_opening", "travel"],
-  "avoid": ["funeral", "major_surgery"],
-  "lucky_hours": ["9:00-11:00", "13:00-15:00"],
-  "zodiac_day": "dragon",
-  "five_elements": "wood",
-  "recommendations": "Excellent day for new beginnings"
-}
-```
-
-## Chinese Cultural Traditions Supported
-
-### Chinese Calendar (Traditional)
-- **Lunar Calendar**: Traditional Chinese lunar calendar with accurate conversions
-- **Zodiac Animals**: 12-year cycle with detailed characteristics and compatibility
-- **Five Elements**: Wood, Fire, Earth, Metal, Water with their interactions
-- **Lunar Mansions**: 28 stellar mansions for detailed auspiciousness calculations
-- **Traditional Festivals**: Spring Festival, Mid-Autumn, Dragon Boat, Qingming, etc.
-
-## Testing
-
-### Running MCP Server Tests
-
-Test the MCP server functionality with our comprehensive test suite:
+## 🧪 Testing
 
 ```bash
-# Run the complete test suite (recommended)
+# Run comprehensive MCP server tests
 ./scripts/test_mcp_final.sh
 
-# Alternative test scripts for different scenarios
-./scripts/test_mcp_simple.sh      # Basic functionality test
-./scripts/test_mcp_server.sh      # FIFO-based test
-```
-
-The comprehensive test suite will verify:
-- ✅ Server startup and STDIO handling
-- ✅ MCP protocol initialization
-- ✅ All 18 available tools across 5 categories
-- ✅ Error handling for invalid inputs
-- ✅ Chinese cultural tradition support
-
-See [Test Documentation](./docs/testing.md) for detailed information about the test suite.
-
-## Development
-
-### Running Unit Tests
-
-```bash
-# Run all tests
-uv run pytest
-
-# Run with coverage
+# Run unit tests
 uv run pytest --cov
-
-# Run specific test file
-uv run pytest tests/test_lunar_calculations.py
 ```
 
-### Code Quality
+**[📖 Testing Guide →](./docs/testing.md)**
+
+## 📦 Publishing
+
+This server is published to:
+
+- **PyPI**: `pip install lunar-mcp-server`
+- **Smithery.ai**: `npx @smithery/cli install lunar-mcp-server` *(coming soon)*
+
+**[📖 Publishing Guide →](./docs/smithery-publishing.md)**
+
+## 🛠️ Development
 
 ```bash
-# Format code
+# Clone and setup
+git clone https://github.com/AngusHsu/lunar-mcp-server.git
+cd lunar-mcp-server
+uv sync --dev
+
+# Code quality
 uv run black src/ tests/
-
-# Sort imports
-uv run isort src/ tests/
-
-# Lint code
 uv run ruff check src/ tests/
-
-# Type checking
 uv run mypy src/
 ```
 
-## License
+**[📖 Development Guide →](./docs/development.md)**
 
-MIT License - see LICENSE file for details.
+## 📚 Documentation
+
+- [📖 Usage Examples](./docs/usage-examples.md) - Practical examples and integration guides
+- [📖 Tools Reference](./docs/tools-reference.md) - Complete API documentation
+- [📖 Cultural Traditions](./docs/cultural-traditions.md) - Understanding Chinese calendar systems
+- [📖 Testing Guide](./docs/testing.md) - Running and writing tests
+- [📖 Development Guide](./docs/development.md) - Contributing to the project
+- [📖 Smithery Publishing](./docs/smithery-publishing.md) - Publishing to MCP registry
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+Built with dedication for preserving and sharing traditional calendar wisdom.
 
 ---
 
-*Built with dedication for preserving and sharing traditional calendar wisdom*
+<div align="center">
+
+**[⭐ Star on GitHub](https://github.com/AngusHsu/lunar-mcp-server)** | **[📦 View on PyPI](https://pypi.org/project/lunar-mcp-server/)** | **[🐛 Report Issues](https://github.com/AngusHsu/lunar-mcp-server/issues)**
+
+</div>
