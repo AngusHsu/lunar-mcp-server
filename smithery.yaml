@@ -1,0 +1,130 @@
+version: 1
+name: lunar-mcp-server
+displayName: "Lunar Calendar MCP Server"
+description: "Traditional Chinese Lunar Calendar for AI - 18 tools for auspicious dates, festivals, moon phases, and zodiac information"
+category: calendar
+tags:
+  - calendar
+  - lunar
+  - chinese
+  - zodiac
+  - fortune
+  - festivals
+  - moon-phases
+  - astrology
+  - five-elements
+
+# Installation method
+install:
+  type: pypi
+  package: lunar-mcp-server
+  command: lunar-mcp-server
+
+# Requirements
+requirements:
+  python: ">=3.11"
+
+# Configuration for Claude Desktop
+claude:
+  config:
+    mcpServers:
+      lunar-calendar:
+        command: uvx
+        args:
+          - lunar-mcp-server
+
+# Metadata
+author: Lunar MCP Team
+homepage: https://github.com/AngusHsu/lunar-mcp-server
+repository: https://github.com/AngusHsu/lunar-mcp-server
+license: MIT
+keywords:
+  - mcp
+  - lunar calendar
+  - chinese calendar
+  - auspicious dates
+  - festivals
+  - moon phases
+  - zodiac
+  - five elements
+  - traditional calendar
+
+# Documentation
+documentation:
+  readme: README.md
+  changelog: CHANGELOG.md
+
+# Tool Categories
+tools:
+  categories:
+    - name: "Auspicious Date Tools"
+      count: 4
+      tools:
+        - check_auspicious_date
+        - find_good_dates
+        - get_daily_fortune
+        - check_zodiac_compatibility
+
+    - name: "Festival Tools"
+      count: 4
+      tools:
+        - get_lunar_festivals
+        - get_next_festival
+        - get_festival_details
+        - get_annual_festivals
+
+    - name: "Moon Phase Tools"
+      count: 4
+      tools:
+        - get_moon_phase
+        - get_moon_calendar
+        - get_moon_influence
+        - predict_moon_phases
+
+    - name: "Calendar Conversion Tools"
+      count: 3
+      tools:
+        - solar_to_lunar
+        - lunar_to_solar
+        - get_zodiac_info
+
+    - name: "Advanced Tools"
+      count: 3
+      tools:
+        - batch_check_dates
+        - compare_dates
+        - get_lucky_hours
+
+# Examples
+examples:
+  - name: "Check Wedding Date"
+    description: "Check if a date is auspicious for a wedding"
+    tool: check_auspicious_date
+    params:
+      date: "2024-03-15"
+      activity: "wedding"
+      culture: "chinese"
+
+  - name: "Find Good Business Dates"
+    description: "Find optimal dates for business opening"
+    tool: find_good_dates
+    params:
+      start_date: "2024-04-01"
+      end_date: "2024-04-30"
+      activity: "business_opening"
+      culture: "chinese"
+      limit: 5
+
+  - name: "Get Moon Phase"
+    description: "Get current moon phase information"
+    tool: get_moon_phase
+    params:
+      date: "2024-01-01"
+      location: "40.7128,-74.0060"
+
+  - name: "Next Festival"
+    description: "Find next upcoming Chinese festival"
+    tool: get_next_festival
+    params:
+      date: "2024-01-01"
+      culture: "chinese"
