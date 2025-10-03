@@ -1,5 +1,45 @@
 # GitHub Actions Workflows
 
+## ci.yaml - Continuous Integration Workflow
+
+This workflow runs code quality checks and tests on every pull request and push to main/develop branches.
+
+### Workflow Jobs
+
+1. **Code Quality Checks** (runs first)
+   - Black formatting validation
+   - isort import sorting validation
+   - Ruff linting
+   - Mypy type checking
+
+2. **Unit Tests** (runs in parallel after quality checks)
+   - Runs pytest with coverage
+   - Tests all Python modules
+   - Generates coverage reports
+   - Uploads coverage artifact
+
+3. **MCP Server Tests** (runs in parallel after quality checks)
+   - Runs comprehensive MCP server tests
+   - Validates all 18 tools
+   - Uses `./scripts/test_mcp_final.sh`
+
+4. **Test Matrix** (runs in parallel after quality checks)
+   - Tests on Python 3.11 and 3.12
+   - Ensures compatibility across versions
+
+### Triggers
+
+- **Pull Requests** to `main` or `develop` branches
+- **Direct pushes** to `main` or `develop` branches
+
+### Usage
+
+No setup required - the workflow runs automatically when:
+- You create a pull request targeting main/develop
+- You push commits to main/develop branches
+
+All PR checks must pass before the PR can be merged (if branch protection is enabled).
+
 ## publish.yaml - PyPI Publishing Workflow
 
 This workflow automatically publishes the package to PyPI when a new GitHub release is created.
