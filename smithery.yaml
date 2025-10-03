@@ -1,37 +1,15 @@
-version: 1
-name: lunar-mcp-server
-displayName: "Lunar Calendar MCP Server"
-description: "Traditional Chinese Lunar Calendar for AI - 18 tools for auspicious dates, festivals, moon phases, and zodiac information"
-category: calendar
-tags:
-  - calendar
-  - lunar
-  - chinese
-  - zodiac
-  - fortune
-  - festivals
-  - moon-phases
-  - astrology
-  - five-elements
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
-# Installation method
-install:
-  type: pypi
-  package: lunar-mcp-server
-  command: lunar-mcp-server
-
-# Requirements
-requirements:
-  python: ">=3.11"
-
-# Configuration for Claude Desktop
-claude:
-  config:
-    mcpServers:
-      lunar-calendar:
-        command: uvx
-        args:
-          - lunar-mcp-server
+startCommand:
+  type: stdio
+  configSchema:
+    # No configuration required - all tools work out of the box
+    type: object
+    properties: {}
+  commandFunction:
+    # Launch the MCP server using uvx (auto-installs from PyPI)
+    |-
+    config => ({ command: 'uvx', args: ['lunar-mcp-server'] })
 
 # Metadata
 author: Lunar MCP Team
