@@ -1,0 +1,116 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-checks:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Check code formatting with black
+        run: uv run black --check src/ tests/
+
+      - name: Check import sorting with isort
+        run: uv run isort --check src/ tests/
+
+      - name: Lint with ruff
+        run: uv run ruff check src/ tests/
+
+      - name: Type check with mypy
+        run: uv run mypy src/
+
+  tests:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Run comprehensive MCP server tests
+        run: |
+          chmod +x scripts/test_mcp_final.sh
+          ./scripts/test_mcp_final.sh
+
+      - name: Run unit tests with pytest
+        run: uv run pytest --cov --cov-report=xml
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: [quality-checks, tests]
+    permissions:
+      id-token: write  # Required for trusted publishing
+    environment:
+      name: pypi
+      url: https://pypi.org/p/lunar-mcp-server
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build package
+        run: uv build
+
+      - name: Verify package contents
+        run: |
+          tar -tzf dist/*.tar.gz | head -20
+          unzip -l dist/*.whl | head -20
+
+      - name: Publish to PyPI (Trusted Publisher)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # If you haven't set up Trusted Publishers, use the token method below:
+        # with:
+        #   password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Create release artifacts
+        if: success()
+        run: |
+          echo "✅ Published lunar-mcp-server to PyPI" >> $GITHUB_STEP_SUMMARY
+          echo "📦 Release: ${{ github.event.release.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 PyPI: https://pypi.org/project/lunar-mcp-server/" >> $GITHUB_STEP_SUMMARY
