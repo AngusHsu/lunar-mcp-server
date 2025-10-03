@@ -25,6 +25,7 @@ ENV/
 *~
 
 # AI assistant files (not in repo)
+CLAUDE.md
 
 # Testing
 .coverage
