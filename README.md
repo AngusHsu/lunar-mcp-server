@@ -76,11 +76,24 @@ pip install -e .
 
 ### Running the MCP Server
 
+**Easiest ways to run:**
+
 ```bash
-# Using UV
+# Short command (recommended)
+uv run lunar
+
+# Or full command
 uv run lunar-mcp-server
 
-# Or using Python directly
+# Using uvx (run without installing)
+uvx lunar-mcp-server
+
+# After pip install
+lunar-mcp-server
+# or just
+lunar
+
+# Using Python module
 python -m lunar_mcp_server.server
 ```
 
