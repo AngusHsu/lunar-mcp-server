@@ -1,21 +1,13 @@
 # Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
 
-runtime: python
-
-startCommand:
-  type: stdio
-  configSchema:
-    # No configuration required - all tools work out of the box
-    type: object
-    properties: {}
-  commandFunction:
-    # Launch the MCP server
-    |-
-    config => ({ command: 'python', args: ['-m', 'lunar_mcp_server.server'] })
+runtime: container
 
 build:
   dockerfile: Dockerfile
-  dockerBuildPath: "."
+  dockerBuildPath: .
+
+startCommand:
+  type: http
 
 # Metadata
 author: Lunar MCP Team

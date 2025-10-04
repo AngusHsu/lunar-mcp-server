@@ -29,6 +29,9 @@ ENV PATH="/app/.venv/bin:$PATH"
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
-# Run the MCP server using the installed console script
-CMD ["lunar-mcp-server"]
+# Expose port for HTTP/SSE transport
+EXPOSE 3000
+
+# Run the MCP server using HTTP/SSE transport for Smithery
+CMD ["lunar-mcp-server-http"]
 

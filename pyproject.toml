@@ -69,6 +69,7 @@ Changelog = "https://github.com/AngusHsu/lunar-mcp-server/blob/main/CHANGELOG.md
 
 [project.scripts]
 lunar-mcp-server = "lunar_mcp_server.server:main"
+lunar-mcp-server-http = "lunar_mcp_server.server:main_http"
 
 [build-system]
 requires = ["hatchling"]

@@ -756,7 +756,7 @@ class LunarMCPServer:
 
         return activity_map.get(zodiac_animal, ["general_activities"])
 
-    async def run(self, transport_type: str = "stdio") -> None:
+    async def run(self, transport_type: str = "stdio", host: str = "0.0.0.0", port: int = 3000) -> None:
         """Run the MCP server."""
         if transport_type == "stdio":
             from mcp.server.stdio import stdio_server
@@ -769,18 +769,62 @@ class LunarMCPServer:
                         notification_options=NotificationOptions(tools_changed=True)
                     ),
                 )
+        elif transport_type == "sse":
+            from mcp.server.sse import SseServerTransport
+            from starlette.applications import Starlette
+            from starlette.routing import Route
+            import uvicorn
+
+            sse = SseServerTransport("/messages")
+
+            async def handle_sse(request):
+                async with sse.connect_sse(
+                    request.scope, request.receive, request._send
+                ) as streams:
+                    await self.server.run(
+                        streams[0],
+                        streams[1],
+                        self.server.create_initialization_options(
+                            notification_options=NotificationOptions(tools_changed=True)
+                        ),
+                    )
+
+            async def handle_messages(request):
+                await sse.handle_post_message(request.scope, request.receive, request._send)
+
+            starlette_app = Starlette(
+                routes=[
+                    Route("/sse", endpoint=handle_sse),
+                    Route("/messages", endpoint=handle_messages, methods=["POST"]),
+                ]
+            )
+
+            uvicorn.run(starlette_app, host=host, port=port)
 
 
 async def _run_server() -> None:
     """Start the MCP server event loop."""
+    import os
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
     server = LunarMCPServer()
-    await server.run()
+
+    if transport == "sse":
+        await server.run(transport_type="sse")
+    else:
+        await server.run()
 
 
 def main() -> None:
     """Synchronous entry point for console scripts."""
     logging.basicConfig(level=logging.INFO)
     asyncio.run(_run_server())
+
+
+def main_http() -> None:
+    """Entry point for HTTP/SSE mode."""
+    import os
+    os.environ["MCP_TRANSPORT"] = "sse"
+    main()
 
 
 if __name__ == "__main__":
