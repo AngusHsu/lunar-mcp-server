@@ -29,6 +29,6 @@ ENV PATH="/app/.venv/bin:$PATH"
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
-# Run the MCP server directly using the venv Python
-CMD ["python", "-m", "lunar_mcp_server.server"]
+# Run the MCP server using the installed console script
+CMD ["lunar-mcp-server"]
 
