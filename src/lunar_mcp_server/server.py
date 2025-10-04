@@ -37,7 +37,7 @@ class LunarMCPServer:
             return [
                 Tool(
                     name="check_auspicious_date",
-                    description="Check if a date is favorable for specific activities",
+                    description="Analyzes whether a specific date is favorable for particular activities based on traditional Chinese calendar principles, including zodiac signs, five elements, lunar mansions, and other cultural factors. Returns a comprehensive score (0-10), auspiciousness level (very_good/good/neutral/poor/very_poor), and detailed analysis including what the date is good for and what to avoid.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -60,7 +60,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="find_good_dates",
-                    description="Find optimal dates in a range for specific activities",
+                    description="Searches through a specified date range to identify the most auspicious dates for a particular activity. This tool evaluates each date in the range using traditional Chinese calendar methods and returns the top favorable dates ranked by their auspiciousness score. Ideal for planning important events like weddings, business openings, or travel. You can limit the number of results to get only the best options.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -92,7 +92,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_daily_fortune",
-                    description="Get daily fortune and luck information",
+                    description="Provides comprehensive daily fortune analysis based on traditional Chinese almanac (通胜/黄历). Returns detailed information about the day's general energy, lucky directions, favorable colors, what activities are suitable, what to avoid, and overall fortune predictions. This gives a holistic view of the day's auspiciousness beyond specific activities.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -111,7 +111,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="check_zodiac_compatibility",
-                    description="Check compatibility between dates based on zodiac",
+                    description="Analyzes the compatibility between two dates based on their Chinese zodiac animals and five elements. This is traditionally used for checking compatibility between birth dates for relationships, partnerships, or selecting compatible dates for joint ventures. Returns compatibility score, detailed analysis of how the zodiac signs interact, and recommendations.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -134,7 +134,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_lunar_festivals",
-                    description="Get festivals for a specific date",
+                    description="Retrieves all traditional festivals and cultural celebrations occurring on a specific date. For Chinese culture, this includes major festivals like Spring Festival (Chinese New Year), Mid-Autumn Festival, Dragon Boat Festival, and many others. Returns festival names, significance, traditional customs, and cultural importance of each celebration.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -153,7 +153,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_next_festival",
-                    description="Find next upcoming festival",
+                    description="Finds the next upcoming traditional festival after a given reference date. Useful for planning ahead and understanding which cultural celebration is approaching. Returns the festival name, exact date when it occurs, days remaining until the festival, and brief information about its significance and traditions.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -172,7 +172,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_festival_details",
-                    description="Get detailed festival information",
+                    description="Provides in-depth information about a specific traditional festival including its historical origins, cultural significance, traditional customs and practices, symbolic meanings, typical foods, activities, and how it's celebrated. Perfect for learning about cultural traditions or planning authentic festival celebrations.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -191,7 +191,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_annual_festivals",
-                    description="Get all festivals for a year",
+                    description="Generates a complete calendar of all traditional festivals for an entire year. Returns a chronologically ordered list of all cultural celebrations including their dates (both solar and lunar), names, and brief descriptions. Excellent for creating cultural event calendars, planning year-round celebrations, or understanding the annual rhythm of traditional observances.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -207,7 +207,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_moon_phase",
-                    description="Get current moon phase with details",
+                    description="Calculates precise moon phase information for a specific date and location using astronomical algorithms. Returns the moon phase name (new moon, waxing crescent, first quarter, waxing gibbous, full moon, waning gibbous, last quarter, waning crescent), illumination percentage, moon age in days, rise/set times, and position data. Location-aware calculations provide accurate local times.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -226,7 +226,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_moon_calendar",
-                    description="Get monthly calendar with moon phases",
+                    description="Creates a comprehensive monthly calendar showing moon phases for each day of the month. Displays daily moon phase names, illumination percentages, and highlights important lunar events (new moons, full moons, quarters). Perfect for gardening, fishing, photography planning, or any activities influenced by lunar cycles. Provides both visual and detailed numerical moon data.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -243,7 +243,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_moon_influence",
-                    description="Get how moon affects specific activities",
+                    description="Analyzes how the moon's phase on a specific date influences various activities based on traditional beliefs and lunar wisdom. Different moon phases are believed to affect activities differently - e.g., new moons for new beginnings, full moons for completion, waxing moons for growth activities. Returns recommendations on whether the lunar phase supports or hinders the specified activity, with detailed explanations of the lunar influence.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -261,7 +261,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="predict_moon_phases",
-                    description="Predict future moon phases in date range",
+                    description="Predicts and lists all major moon phase transitions (new moons, first quarters, full moons, last quarters) within a specified date range. Provides exact dates and times for each lunar phase event. Useful for planning activities around specific moon phases, scheduling lunar observations, or understanding the lunar cycle progression over time. Includes astronomical accuracy for reliable predictions.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -279,7 +279,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="solar_to_lunar",
-                    description="Convert solar date to lunar date",
+                    description="Converts Gregorian (solar) calendar dates to traditional lunar calendar dates. Returns the corresponding lunar year, month, day, and leap month information if applicable. For Chinese calendar, also includes the year's zodiac animal, heavenly stem and earthly branch designations. Essential for finding lunar dates for traditional festivals, birth dates, or cultural events that follow the lunar calendar.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -298,7 +298,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="lunar_to_solar",
-                    description="Convert lunar date to solar date",
+                    description="Converts traditional lunar calendar dates to Gregorian (solar) calendar dates. Accurately handles leap months and provides the exact solar date equivalent. Useful for determining when lunar-based festivals occur on the solar calendar, converting lunar birth dates to solar dates, or scheduling events based on lunar calendar information. Includes validation for proper lunar date formats.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -317,7 +317,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_zodiac_info",
-                    description="Get zodiac animal/sign information for date",
+                    description="Retrieves comprehensive zodiac information for a specific date. For Chinese zodiac, returns the zodiac animal (one of 12: Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, Pig), associated element (Wood, Fire, Earth, Metal, Water), personality traits, compatible signs, lucky numbers, colors, and cultural significance. Provides both yearly and daily zodiac information based on the heavenly stems and earthly branches system.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -336,7 +336,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="batch_check_dates",
-                    description="Check multiple dates at once for efficiency",
+                    description="Efficiently analyzes multiple dates simultaneously for a specific activity's auspiciousness. Processes up to 30 dates in a single request, returning scores and levels for each date. Also identifies and highlights the best and worst dates in the batch. This bulk analysis tool is perfect for quickly evaluating several potential dates for an event, comparing options across a non-continuous date range, or conducting comparative analysis of multiple candidates.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -360,7 +360,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="compare_dates",
-                    description="Compare multiple dates side-by-side",
+                    description="Performs comprehensive side-by-side comparison of multiple dates (up to 10) across various dimensions. For each date, returns auspiciousness analysis (if activity specified), moon phase details, festivals occurring, and zodiac information. Presents all information in an organized comparative format, making it easy to see differences and similarities. If an activity is specified, also provides a recommendation for which date is most suitable. Ideal for final decision-making between several good options.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -384,7 +384,7 @@ class LunarMCPServer:
                 ),
                 Tool(
                     name="get_lucky_hours",
-                    description="Get auspicious hours within a specific day",
+                    description="Identifies the most auspicious hours within a specific day based on traditional Chinese time divisions (12 two-hour periods corresponding to the 12 zodiac animals). Each period is analyzed and scored for general favorability and activity-specific suitability. Returns detailed information for each time period including its Chinese name, zodiac animal, auspiciousness score, suitable activities, and recommendations. Perfect for timing important activities, meetings, ceremonies, or decisions within a chosen date for maximum favorable energy.",
                     inputSchema={
                         "type": "object",
                         "properties": {
