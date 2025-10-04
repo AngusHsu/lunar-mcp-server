@@ -8,6 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP Compatible](https://img.shields.io/badge/MCP-2024--11--05-green.svg)](https://modelcontextprotocol.io)
 [![Tests](https://img.shields.io/badge/tests-18%2F18%20passing-brightgreen.svg)](./scripts/test_mcp_final.sh)
+[![smithery badge](https://smithery.ai/badge/lunar-mcp-server)](https://smithery.ai/server/lunar-mcp-server)
 
 **18 Tools** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
 
@@ -34,6 +35,16 @@ Perfect for integrating ancient Chinese wisdom into modern AI applications throu
 ## 🚀 Quick Start
 
 ### Installation
+
+### Installing via Smithery
+
+To install lunar-mcp-server automatically via [Smithery](https://smithery.ai/server/lunar-mcp-server):
+
+```bash
+npx -y @smithery/cli install lunar-mcp-server
+```
+
+### Installing Manually
 
 ```bash
 # Using pip
@@ -162,7 +173,7 @@ uv run pytest --cov
 This server is published to:
 
 - **PyPI**: `pip install lunar-mcp-server`
-- **Smithery.ai**: `npx @smithery/cli install lunar-mcp-server` *(coming soon)*
+- **Smithery.ai**: `npx -y @smithery/cli install lunar-mcp-server` *(coming soon)*
 
 **[📖 Publishing Guide →](./docs/smithery-publishing.md)**
 
