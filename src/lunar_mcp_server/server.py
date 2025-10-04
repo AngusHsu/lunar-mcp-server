@@ -822,9 +822,41 @@ def main() -> None:
 
 def main_http() -> None:
     """Entry point for HTTP/SSE mode."""
-    import os
-    os.environ["MCP_TRANSPORT"] = "sse"
-    main()
+    logging.basicConfig(level=logging.INFO)
+    server = LunarMCPServer()
+
+    # Import HTTP dependencies
+    from mcp.server.sse import SseServerTransport
+    from starlette.applications import Starlette
+    from starlette.routing import Route
+    import uvicorn
+
+    sse = SseServerTransport("/messages")
+
+    async def handle_sse(request):
+        async with sse.connect_sse(
+            request.scope, request.receive, request._send
+        ) as streams:
+            await server.server.run(
+                streams[0],
+                streams[1],
+                server.server.create_initialization_options(
+                    notification_options=NotificationOptions(tools_changed=True)
+                ),
+            )
+
+    async def handle_messages(request):
+        await sse.handle_post_message(request.scope, request.receive, request._send)
+
+    starlette_app = Starlette(
+        routes=[
+            Route("/sse", endpoint=handle_sse),
+            Route("/messages", endpoint=handle_messages, methods=["POST"]),
+        ]
+    )
+
+    # Run uvicorn directly (it manages its own event loop)
+    uvicorn.run(starlette_app, host="0.0.0.0", port=3000)
 
 
 if __name__ == "__main__":
