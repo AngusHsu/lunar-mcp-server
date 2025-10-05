@@ -14,12 +14,12 @@ echo -e "${BLUE}=== MCP Server Test Suite ===${NC}"
 # Test 1: Server can start
 echo -e "${BLUE}Test 1: Server startup test${NC}"
 # In STDIO mode, server should exit cleanly when input stream closes (EOF)
-timeout 3s uv run lunar-mcp-server < /dev/null > /dev/null 2>&1
-EXIT_CODE=$?
-if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 124 ]; then
+timeout 3s uv run lunar-mcp-server < /dev/null > /dev/null 2>&1 || EXIT_CODE=$?
+if [ ${EXIT_CODE:-0} -eq 0 ] || [ ${EXIT_CODE:-0} -eq 124 ]; then
     echo -e "${GREEN}✅ Server handles STDIO correctly${NC}"
 else
     echo -e "${RED}❌ Server failed to start (exit code: $EXIT_CODE)${NC}"
+    exit 1
 fi
 
 # Test 2: Server responds to initialize
