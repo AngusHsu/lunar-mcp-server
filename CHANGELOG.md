@@ -5,6 +5,22 @@ All notable changes to the Lunar Calendar MCP Server will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-10-05
+
+### Changed
+- **Enhanced Tool Descriptions**: Updated all 18 MCP tool descriptions with comprehensive documentation
+  - Added detailed explanations of functionality, methodology, and return values
+  - Included specific use cases and practical applications for each tool
+  - Improved context for AI applications and users to understand tool capabilities
+  - Better discoverability through richer descriptions
+
+### Improved
+- **Documentation Quality**: Tool descriptions now provide clear guidance on:
+  - What each tool does and how it works
+  - Expected output and data formats
+  - When and why to use each tool
+  - Special features and limitations
+
 ## [1.0.0] - 2025-10-03
 
 ### 🎉 First Stable Release
@@ -184,6 +200,7 @@ uvx lunar-mcp-server
 - Multi-cultural support (Islamic, Hindu, Western) - focused exclusively on Chinese traditions
 - Dependencies: `convertdate`, `hijri-converter` (no longer needed)
 
+[1.0.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.0.0
 [0.1.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.1
 [0.1.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.0
