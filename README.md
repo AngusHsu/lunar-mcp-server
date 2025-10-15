@@ -8,8 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP Compatible](https://img.shields.io/badge/MCP-2024--11--05-green.svg)](https://modelcontextprotocol.io)
 [![CI](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml/badge.svg)](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/AngusHsu/lunar-mcp-server/branch/main/graph/badge.svg)](https://codecov.io/gh/AngusHsu/lunar-mcp-server)
 [![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](./scripts/test_mcp_final.sh)
-[![Coverage](https://img.shields.io/badge/coverage-51%25-yellow.svg)](./htmlcov/index.html)
 [![PyPI version](https://badge.fury.io/py/lunar-mcp-server.svg)](https://pypi.org/project/lunar-mcp-server/)
 
 **18 Tools** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
