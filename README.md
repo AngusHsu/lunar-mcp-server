@@ -7,7 +7,10 @@
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP Compatible](https://img.shields.io/badge/MCP-2024--11--05-green.svg)](https://modelcontextprotocol.io)
-[![Tests](https://img.shields.io/badge/tests-18%2F18%20passing-brightgreen.svg)](./scripts/test_mcp_final.sh)
+[![CI](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml/badge.svg)](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml)
+[![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](./scripts/test_mcp_final.sh)
+[![Coverage](https://img.shields.io/badge/coverage-51%25-yellow.svg)](./htmlcov/index.html)
+[![PyPI version](https://badge.fury.io/py/lunar-mcp-server.svg)](https://pypi.org/project/lunar-mcp-server/)
 
 **18 Tools** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
 
@@ -31,35 +34,25 @@ Perfect for integrating ancient Chinese wisdom into modern AI applications throu
 
 **[📚 Complete Features List →](./docs/tools-reference.md)**
 
-## 🚀 Quick Start
+## 🚀 Quick Start in 30 Seconds
 
-### Installation
+### One-Line Installation
 
-```bash
-# Using pip
-pip install lunar-mcp-server
-
-# Using uvx (no installation needed)
-uvx lunar-mcp-server
-
-# From source
-git clone https://github.com/AngusHsu/lunar-mcp-server.git
-cd lunar-mcp-server
-uv sync
-```
-
-### Running the Server
+The fastest way to get started - no Python installation required:
 
 ```bash
-# Using uv
-uv run lunar-mcp-server
-
-# Using uvx
+# Install and run with uvx (recommended)
 uvx lunar-mcp-server
-
-# After pip install
-lunar-mcp-server
 ```
+
+### Try It Out
+
+Once running, you can immediately ask questions like:
+
+- "Is today a good day for a wedding?"
+- "When is the next Chinese festival?"
+- "What's my Chinese zodiac sign if I was born in 1990?"
+- "Find me 3 auspicious dates for moving house in March 2024"
 
 ### Claude Desktop Integration
 
@@ -74,6 +67,26 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
     }
   }
 }
+```
+
+Then restart Claude Desktop and start asking about lunar calendar information!
+
+### Alternative Installation Methods
+
+```bash
+# Using pip
+pip install lunar-mcp-server
+lunar-mcp-server
+
+# Using uv
+uv tool install lunar-mcp-server
+lunar-mcp-server
+
+# From source (for development)
+git clone https://github.com/AngusHsu/lunar-mcp-server.git
+cd lunar-mcp-server
+uv sync
+uv run lunar-mcp-server
 ```
 
 **[📖 Detailed Usage Guide →](./docs/usage-examples.md)**
@@ -124,6 +137,8 @@ Based on traditional Chinese calendar systems:
 
 ## 📝 Example Usage
 
+### Python API
+
 ```python
 import asyncio
 from lunar_mcp_server import LunarMCPServer
@@ -141,6 +156,35 @@ async def main():
     print(f"Score: {result['score']}/10")
 
 asyncio.run(main())
+```
+
+### Example Output
+
+Here's what you can expect when checking an auspicious date:
+
+```json
+{
+  "date": "2024-03-15",
+  "activity": "wedding",
+  "auspicious_level": "Very Auspicious",
+  "score": 8.5,
+  "lunar_date": {
+    "year": 2024,
+    "month": 2,
+    "day": 6,
+    "zodiac": "Dragon",
+    "element": "Wood"
+  },
+  "recommendations": [
+    "Excellent day for new beginnings",
+    "Dragon day brings good fortune",
+    "Wood element supports growth"
+  ],
+  "lucky_hours": ["7-9 AM", "11 AM-1 PM", "5-7 PM"],
+  "favorable_colors": ["red", "gold", "purple"],
+  "things_to_do": ["Marriage ceremony", "Important contracts", "Grand openings"],
+  "things_to_avoid": ["Funerals", "Moving house", "Starting construction"]
+}
 ```
 
 **[📖 More Examples →](./docs/usage-examples.md)**
