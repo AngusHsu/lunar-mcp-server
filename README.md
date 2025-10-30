@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/angushsu-lunar-mcp-server-badge.png)](https://mseep.ai/app/angushsu-lunar-mcp-server)
+
 <div align="center">
 
 # 🌙 Lunar Calendar MCP Server
