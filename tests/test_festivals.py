@@ -44,7 +44,9 @@ class TestFestivalManager:
         result = await self.manager.get_next_festival("2024-01-01", "chinese")
 
         # Check for search_date or reference_date field
-        assert "search_date" in result or "reference_date" in result or "error" in result
+        assert (
+            "search_date" in result or "reference_date" in result or "error" in result
+        )
         # If festival found, check structure
         if "festival" in result:
             assert "name" in result["festival"]
@@ -141,8 +143,7 @@ class TestFestivalManager:
         if "festivals" in result and len(result["festivals"]) > 1:
             # If festivals have dates, they should be ordered
             festivals_with_dates = [
-                f for f in result["festivals"]
-                if "date" in f or "solar_date" in f
+                f for f in result["festivals"] if "date" in f or "solar_date" in f
             ]
 
             if len(festivals_with_dates) > 1:
@@ -170,7 +171,9 @@ class TestFestivalManager:
         # End of year
         result_end = await self.manager.get_festivals_for_date("2024-12-31", "chinese")
         # Start of year
-        result_start = await self.manager.get_festivals_for_date("2024-01-01", "chinese")
+        result_start = await self.manager.get_festivals_for_date(
+            "2024-01-01", "chinese"
+        )
 
         assert "date" in result_end
         assert "date" in result_start
@@ -232,8 +235,12 @@ class TestFestivalManager:
     async def test_festival_search_case_sensitivity(self):
         """Test festival details search with different cases."""
         # This tests implementation details - may need adjustment
-        result_lower = await self.manager.get_festival_details("spring festival", "chinese")
-        result_title = await self.manager.get_festival_details("Spring Festival", "chinese")
+        result_lower = await self.manager.get_festival_details(
+            "spring festival", "chinese"
+        )
+        result_title = await self.manager.get_festival_details(
+            "Spring Festival", "chinese"
+        )
 
         # Both should return same festival or both should error
         if "error" not in result_lower and "error" not in result_title:

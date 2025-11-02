@@ -182,7 +182,18 @@ class BaZiCalculator:
         # 丙辛 years: start from 庚 (6)
         # 丁壬 years: start from 壬 (8)
         # 戊癸 years: start from 甲 (0)
-        month_stem_base_map = {0: 2, 1: 4, 2: 6, 3: 8, 4: 0, 5: 2, 6: 4, 7: 6, 8: 8, 9: 0}
+        month_stem_base_map = {
+            0: 2,
+            1: 4,
+            2: 6,
+            3: 8,
+            4: 0,
+            5: 2,
+            6: 4,
+            7: 6,
+            8: 8,
+            9: 0,
+        }
         month_stem_base = month_stem_base_map[year_stem_idx % 5 * 2]
 
         stem_idx = (month_stem_base + branch_idx) % 10
@@ -295,7 +306,18 @@ class BaZiCalculator:
 
         # Hour stem formula based on day stem
         # Same pattern as month stem calculation
-        hour_stem_base_map = {0: 0, 1: 2, 2: 4, 3: 6, 4: 8, 5: 0, 6: 2, 7: 4, 8: 6, 9: 8}
+        hour_stem_base_map = {
+            0: 0,
+            1: 2,
+            2: 4,
+            3: 6,
+            4: 8,
+            5: 0,
+            6: 2,
+            7: 4,
+            8: 6,
+            9: 8,
+        }
         hour_stem_base = hour_stem_base_map[day_stem_idx]
 
         stem_idx = (hour_stem_base + branch_idx) % 10
@@ -657,11 +679,7 @@ class BaZiCalculator:
             compatibility_level = (
                 "Excellent"
                 if score >= 8
-                else "Good"
-                if score >= 6
-                else "Fair"
-                if score >= 4
-                else "Challenging"
+                else "Good" if score >= 6 else "Fair" if score >= 4 else "Challenging"
             )
 
             return {

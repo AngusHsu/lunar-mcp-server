@@ -62,7 +62,7 @@ class TestBaZiCalculator:
         year_after = result_after["four_pillars"]["year"]["branch"]["zodiac"]
 
         assert year_before == "Rabbit"  # 1999 is Rabbit year
-        assert year_after == "Dragon"   # 2000 is Dragon year
+        assert year_after == "Dragon"  # 2000 is Dragon year
 
     @pytest.mark.asyncio
     async def test_calculate_bazi_day_master(self):
@@ -522,7 +522,13 @@ class TestBaZiCalculator:
             pillar = result["four_pillars"][pillar_name]
             assert "meaning" in pillar
             assert len(pillar["meaning"]) > 0
-            assert "year" in pillar["meaning"].lower() or pillar_name in pillar["meaning"].lower() or "self" in pillar["meaning"].lower() or "spouse" in pillar["meaning"].lower() or "children" in pillar["meaning"].lower()
+            assert (
+                "year" in pillar["meaning"].lower()
+                or pillar_name in pillar["meaning"].lower()
+                or "self" in pillar["meaning"].lower()
+                or "spouse" in pillar["meaning"].lower()
+                or "children" in pillar["meaning"].lower()
+            )
 
     @pytest.mark.asyncio
     async def test_compatibility_strengths_and_challenges(self):
@@ -575,8 +581,6 @@ class TestBaZiCalculator:
     @pytest.mark.asyncio
     async def test_compatibility_both_invalid_dates(self):
         """Test compatibility with both invalid dates."""
-        result = await self.calculator.get_compatibility(
-            "invalid1", "invalid2", 8
-        )
+        result = await self.calculator.get_compatibility("invalid1", "invalid2", 8)
 
         assert "error" in result

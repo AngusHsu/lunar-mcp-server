@@ -110,8 +110,18 @@ class TestCalendarConverter:
         assert len(self.converter.zodiac_animals) == 12
 
         expected_animals = [
-            "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
-            "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
+            "Rat",
+            "Ox",
+            "Tiger",
+            "Rabbit",
+            "Dragon",
+            "Snake",
+            "Horse",
+            "Goat",
+            "Monkey",
+            "Rooster",
+            "Dog",
+            "Pig",
         ]
 
         assert self.converter.zodiac_animals == expected_animals

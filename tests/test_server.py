@@ -205,8 +205,7 @@ class TestBaZiServerIntegration:
     async def test_calculate_bazi_tool(self):
         """Test calculate_bazi tool through server."""
         result = await self.server._calculate_bazi(
-            birth_datetime="1990-05-15 14:30",
-            timezone_offset=8
+            birth_datetime="1990-05-15 14:30", timezone_offset=8
         )
 
         assert "eight_characters" in result
@@ -218,8 +217,7 @@ class TestBaZiServerIntegration:
     async def test_calculate_bazi_invalid_datetime(self):
         """Test calculate_bazi with invalid datetime."""
         result = await self.server._calculate_bazi(
-            birth_datetime="invalid-datetime",
-            timezone_offset=8
+            birth_datetime="invalid-datetime", timezone_offset=8
         )
 
         assert "error" in result
@@ -230,7 +228,7 @@ class TestBaZiServerIntegration:
         result = await self.server._calculate_bazi_compatibility(
             birth_datetime1="1990-05-15 14:30",
             birth_datetime2="1992-08-20 10:00",
-            timezone_offset=8
+            timezone_offset=8,
         )
 
         assert "person1" in result
@@ -243,9 +241,7 @@ class TestBaZiServerIntegration:
     async def test_calculate_bazi_compatibility_invalid_dates(self):
         """Test calculate_bazi_compatibility with invalid dates."""
         result = await self.server._calculate_bazi_compatibility(
-            birth_datetime1="invalid1",
-            birth_datetime2="invalid2",
-            timezone_offset=8
+            birth_datetime1="invalid1", birth_datetime2="invalid2", timezone_offset=8
         )
 
         assert "error" in result
@@ -254,13 +250,11 @@ class TestBaZiServerIntegration:
     async def test_calculate_bazi_different_timezones(self):
         """Test calculate_bazi with different timezone offsets."""
         result_utc8 = await self.server._calculate_bazi(
-            birth_datetime="2000-01-01 12:00",
-            timezone_offset=8
+            birth_datetime="2000-01-01 12:00", timezone_offset=8
         )
 
         result_utc0 = await self.server._calculate_bazi(
-            birth_datetime="2000-01-01 12:00",
-            timezone_offset=0
+            birth_datetime="2000-01-01 12:00", timezone_offset=0
         )
 
         # Different timezones should produce different adjusted times
@@ -270,8 +264,7 @@ class TestBaZiServerIntegration:
     async def test_bazi_tool_output_structure(self):
         """Test that BaZi tool output has complete structure."""
         result = await self.server._calculate_bazi(
-            birth_datetime="1995-07-20 09:30",
-            timezone_offset=8
+            birth_datetime="1995-07-20 09:30", timezone_offset=8
         )
 
         # Verify all required fields are present
@@ -297,7 +290,7 @@ class TestBaZiServerIntegration:
         result = await self.server._calculate_bazi_compatibility(
             birth_datetime1="1988-04-05 11:00",
             birth_datetime2="1990-09-18 13:00",
-            timezone_offset=8
+            timezone_offset=8,
         )
 
         # Verify all required fields
@@ -357,7 +350,10 @@ class TestServerToolIntegration:
         result = await self.server._get_next_festival("2024-01-01", "chinese")
 
         # Check for any valid response field
-        assert any(key in result for key in ["festival", "next_festival", "search_date", "error"])
+        assert any(
+            key in result
+            for key in ["festival", "next_festival", "search_date", "error"]
+        )
 
     @pytest.mark.asyncio
     async def test_get_festival_details_tool(self):

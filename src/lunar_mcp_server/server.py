@@ -808,7 +808,9 @@ class LunarMCPServer:
         self, birth_datetime: str, timezone_offset: int = 8
     ) -> dict[str, Any]:
         """Calculate BaZi (Eight Characters) for a birth datetime."""
-        return await self.bazi_calculator.calculate_bazi(birth_datetime, timezone_offset)
+        return await self.bazi_calculator.calculate_bazi(
+            birth_datetime, timezone_offset
+        )
 
     async def _calculate_bazi_compatibility(
         self, birth_datetime1: str, birth_datetime2: str, timezone_offset: int = 8
