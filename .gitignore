@@ -48,3 +48,6 @@ coverage.xml
 *.tmp
 *.bak
 final_verification.json
+
+# Test output files
+test_*.json
