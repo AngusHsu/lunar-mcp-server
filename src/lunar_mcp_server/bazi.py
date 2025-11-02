@@ -129,7 +129,6 @@ class BaZiCalculator:
         Returns:
             Dictionary containing month pillar information
         """
-        year = birth_date.year
         month = birth_date.month
         day = birth_date.day
 
@@ -152,16 +151,14 @@ class BaZiCalculator:
 
         # Find current solar term month
         branch_idx = 0
-        stem_offset = 0
 
-        for term_month, term_day, s_offset, b_idx in solar_terms:
+        for term_month, term_day, _s_offset, b_idx in solar_terms:
             if (
                 month == term_month
                 and day >= term_day
                 or month == (term_month % 12) + 1
                 and day < term_day
             ):
-                stem_offset = s_offset
                 branch_idx = b_idx
                 break
 
