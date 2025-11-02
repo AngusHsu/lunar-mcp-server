@@ -533,7 +533,9 @@ class TestBaZiCalculator:
     @pytest.mark.asyncio
     async def test_compatibility_strengths_and_challenges(self):
         """Test that compatibility returns strengths and challenges."""
-        await self.calculator.get_compatibility("1988-03-15 10:00", "1990-07-20 14:00", 8)
+        await self.calculator.get_compatibility(
+            "1988-03-15 10:00", "1990-07-20 14:00", 8
+        )
 
         strengths = self.calculator._get_compatibility_strengths("Wood", "Fire")
         challenges = self.calculator._get_compatibility_challenges("Wood", "Fire")
