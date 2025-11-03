@@ -12,7 +12,7 @@
 [![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](./scripts/test_mcp_final.sh)
 [![PyPI version](https://badge.fury.io/py/lunar-mcp-server.svg)](https://pypi.org/project/lunar-mcp-server/)
 
-**18 Tools** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
+**20 Tools** | **BaZi (八字)** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
 
 ---
 
@@ -30,6 +30,7 @@ Perfect for integrating ancient Chinese wisdom into modern AI applications throu
 - 🎊 **Festival Information** - Chinese festivals, next festival, festival details, annual calendars
 - 🌙 **Moon Phase Analysis** - Accurate moon phases, location-aware, activity influence, monthly calendars
 - 📅 **Calendar Conversions** - Solar-lunar conversion, zodiac information, cultural integration
+- 🔮 **BaZi (八字) Four Pillars** - Birth chart analysis, destiny calculation, compatibility reading
 - ⚡ **Advanced Tools** - Batch checking, date comparison, lucky hours
 
 **[📚 Complete Features List →](./docs/tools-reference.md)**
@@ -53,6 +54,8 @@ Once running, you can immediately ask questions like:
 - "When is the next Chinese festival?"
 - "What's my Chinese zodiac sign if I was born in 1990?"
 - "Find me 3 auspicious dates for moving house in March 2024"
+- "Calculate my BaZi (八字) for 1990-05-15 14:30"
+- "Check our BaZi compatibility for marriage"
 
 ### Claude Desktop Integration
 
@@ -116,10 +119,84 @@ uv run lunar-mcp-server
 - `lunar_to_solar` - Lunar to solar conversion
 - `get_zodiac_info` - Zodiac information
 
+### 🔮 BaZi (八字) Tools (2)
+- `calculate_bazi` - Calculate Four Pillars of Destiny
+- `calculate_bazi_compatibility` - BaZi compatibility analysis
+
 ### ⚡ Advanced Tools (3)
 - `batch_check_dates` - Check multiple dates
 - `compare_dates` - Compare dates
 - `get_lucky_hours` - Lucky hours of day
+
+**[📖 Complete API Reference →](./docs/tools-reference.md)**
+
+## 🔮 BaZi (八字) - Four Pillars of Destiny
+
+The BaZi feature provides authentic traditional Chinese fortune-telling based on birth date and time.
+
+### What is BaZi?
+
+BaZi (八字), also known as "Four Pillars of Destiny" or "Eight Characters," is a traditional Chinese astrological system that analyzes a person's destiny and characteristics based on the cosmic energies present at their birth. Each person has four pillars (year, month, day, hour), and each pillar consists of two characters (a Heavenly Stem and an Earthly Branch), totaling eight characters.
+
+### Features
+
+- **Complete Four Pillars Analysis**: Year (年柱), Month (月柱), Day (日柱), Hour (时柱)
+- **Heavenly Stems & Earthly Branches**: All 10 stems (天干) and 12 branches (地支)
+- **Five Elements Analysis**: Wood, Fire, Earth, Metal, Water distribution and balance
+- **Day Master (日主)**: Your core element and personality traits
+- **Life Stage Insights**: How each pillar influences different life periods
+- **Element Recommendations**: Favorable colors, directions, and career paths
+- **Compatibility Analysis**: Relationship harmony based on element interactions
+- **Timezone Support**: Accurate calculations for any timezone
+
+### Example Usage
+
+```python
+from lunar_mcp_server.bazi import BaZiCalculator
+
+calculator = BaZiCalculator()
+
+# Calculate BaZi chart
+result = await calculator.calculate_bazi("1990-05-15 14:30", timezone_offset=8)
+
+print(f"Eight Characters: {result['eight_characters']}")
+# Output: 庚午乙巳丙子乙未
+
+print(f"Day Master: {result['day_master']['element']} {result['day_master']['polarity']}")
+# Output: Day Master: Fire Yang
+
+# Check compatibility
+compat = await calculator.get_compatibility(
+    "1990-05-15 14:30",
+    "1992-08-20 10:00",
+    timezone_offset=8
+)
+
+print(f"Compatibility: {compat['compatibility_score']}/10 - {compat['compatibility_level']}")
+# Output: Compatibility: 8/10 - Excellent
+print(f"Relationship: {compat['element_relationship']}")
+# Output: Wood generates Fire - supportive relationship
+```
+
+### Understanding Your BaZi Chart
+
+Each pillar represents different aspects of your life:
+
+- **Year Pillar (年柱)**: Ancestors, early life (0-15 years), inherited characteristics
+- **Month Pillar (月柱)**: Parents, youth (16-30 years), career development
+- **Day Pillar (日柱)**: Self, spouse, middle age (31-45 years), marriage
+- **Hour Pillar (时柱)**: Children, later life (46+ years), legacy
+
+The **Day Master** (your day pillar's Heavenly Stem) represents your core self and is the most important element in BaZi analysis.
+
+### Element Relationships
+
+BaZi uses two key cycles:
+
+- **Generation Cycle (生)**: Wood → Fire → Earth → Metal → Water → Wood
+- **Control Cycle (克)**: Wood → Earth → Water → Fire → Metal → Wood
+
+These relationships determine compatibility and element balance in your chart.
 
 **[📖 Complete API Reference →](./docs/tools-reference.md)**
 

@@ -12,6 +12,7 @@ from mcp.server.lowlevel import NotificationOptions
 from mcp.types import TextContent, Tool
 
 from .auspicious_dates import AuspiciousDateChecker
+from .bazi import BaZiCalculator
 from .calendar_conversions import CalendarConverter
 from .festivals import FestivalManager
 from .lunar_calculations import LunarCalculator
@@ -26,6 +27,7 @@ class LunarMCPServer:
         self.auspicious_checker = AuspiciousDateChecker()
         self.festival_manager = FestivalManager()
         self.calendar_converter = CalendarConverter()
+        self.bazi_calculator = BaZiCalculator()
         self._setup_handlers()
 
     def _setup_handlers(self) -> None:
@@ -405,6 +407,48 @@ class LunarMCPServer:
                         "required": ["date"],
                     },
                 ),
+                Tool(
+                    name="calculate_bazi",
+                    description="Calculates BaZi (八字, Eight Characters) or Four Pillars of Destiny based on birth date and time. BaZi is a traditional Chinese fortune-telling method that analyzes the cosmic energies present at birth through four pillars (year, month, day, hour), each with a heavenly stem and earthly branch. Returns comprehensive analysis including: the eight characters, day master element, elemental balance, personality insights, life stage influences, favorable colors/directions, and career suggestions. Essential for understanding one's destiny, personality, and life path in Chinese metaphysics.",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "birth_datetime": {
+                                "type": "string",
+                                "description": "Birth date and time in YYYY-MM-DD HH:MM format (24-hour)",
+                            },
+                            "timezone_offset": {
+                                "type": "integer",
+                                "description": "Timezone offset in hours from UTC (default: 8 for China Standard Time)",
+                                "default": 8,
+                            },
+                        },
+                        "required": ["birth_datetime"],
+                    },
+                ),
+                Tool(
+                    name="calculate_bazi_compatibility",
+                    description="Analyzes compatibility between two people based on their BaZi (Eight Characters) charts. Compares the four pillars and elemental compositions of both individuals to assess relationship harmony, strengths, and challenges. Returns compatibility score (0-10), compatibility level (Excellent/Good/Fair/Challenging), element relationship analysis, and detailed insights about how the two destinies interact. Traditionally used for marriage compatibility, business partnerships, or understanding relationship dynamics in Chinese culture.",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "birth_datetime1": {
+                                "type": "string",
+                                "description": "First person's birth date and time in YYYY-MM-DD HH:MM format",
+                            },
+                            "birth_datetime2": {
+                                "type": "string",
+                                "description": "Second person's birth date and time in YYYY-MM-DD HH:MM format",
+                            },
+                            "timezone_offset": {
+                                "type": "integer",
+                                "description": "Timezone offset in hours from UTC",
+                                "default": 8,
+                            },
+                        },
+                        "required": ["birth_datetime1", "birth_datetime2"],
+                    },
+                ),
             ]
 
         @self.server.call_tool()
@@ -449,6 +493,10 @@ class LunarMCPServer:
                     result = await self._compare_dates(**arguments)
                 elif name == "get_lucky_hours":
                     result = await self._get_lucky_hours(**arguments)
+                elif name == "calculate_bazi":
+                    result = await self._calculate_bazi(**arguments)
+                elif name == "calculate_bazi_compatibility":
+                    result = await self._calculate_bazi_compatibility(**arguments)
                 else:
                     raise ValueError(f"Unknown tool: {name}")
 
@@ -755,6 +803,22 @@ class LunarMCPServer:
         }
 
         return activity_map.get(zodiac_animal, ["general_activities"])
+
+    async def _calculate_bazi(
+        self, birth_datetime: str, timezone_offset: int = 8
+    ) -> dict[str, Any]:
+        """Calculate BaZi (Eight Characters) for a birth datetime."""
+        return await self.bazi_calculator.calculate_bazi(
+            birth_datetime, timezone_offset
+        )
+
+    async def _calculate_bazi_compatibility(
+        self, birth_datetime1: str, birth_datetime2: str, timezone_offset: int = 8
+    ) -> dict[str, Any]:
+        """Calculate BaZi compatibility between two birth datetimes."""
+        return await self.bazi_calculator.get_compatibility(
+            birth_datetime1, birth_datetime2, timezone_offset
+        )
 
     async def run(self, transport_type: str = "stdio") -> None:
         """Run the MCP server."""
