@@ -9,7 +9,16 @@ from typing import Any
 
 from mcp.server import Server
 from mcp.server.lowlevel import NotificationOptions
-from mcp.types import TextContent, Tool
+from mcp.types import (
+    GetPromptResult,
+    Prompt,
+    PromptArgument,
+    PromptMessage,
+    Resource,
+    TextContent,
+    TextResourceContents,
+    Tool,
+)
 
 from .auspicious_dates import AuspiciousDateChecker
 from .bazi import BaZiCalculator
@@ -507,6 +516,634 @@ class LunarMCPServer:
                 return [
                     TextContent(type="text", text=json.dumps(error_result, indent=2))
                 ]
+
+        @self.server.list_prompts()
+        async def handle_list_prompts() -> list[Prompt]:
+            """List available prompts."""
+            return [
+                Prompt(
+                    name="check_wedding_date",
+                    description="Check if a date is auspicious for a wedding ceremony based on traditional Chinese calendar",
+                    arguments=[
+                        PromptArgument(
+                            name="date",
+                            description="The date to check in YYYY-MM-DD format",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="calculate_bazi_chart",
+                    description="Calculate BaZi (Four Pillars of Destiny) chart for a person's birth date and time",
+                    arguments=[
+                        PromptArgument(
+                            name="birth_datetime",
+                            description="Birth date and time in YYYY-MM-DD HH:MM format",
+                            required=True,
+                        ),
+                        PromptArgument(
+                            name="timezone_offset",
+                            description="Timezone offset from UTC in hours (default: 8 for China)",
+                            required=False,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="find_auspicious_dates",
+                    description="Find the most auspicious dates for a specific activity within a date range",
+                    arguments=[
+                        PromptArgument(
+                            name="start_date",
+                            description="Start date of the range in YYYY-MM-DD format",
+                            required=True,
+                        ),
+                        PromptArgument(
+                            name="end_date",
+                            description="End date of the range in YYYY-MM-DD format",
+                            required=True,
+                        ),
+                        PromptArgument(
+                            name="activity",
+                            description="The activity type (e.g., wedding, business_opening, travel, moving)",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="get_daily_almanac",
+                    description="Get comprehensive daily almanac information including fortune, festivals, and recommendations",
+                    arguments=[
+                        PromptArgument(
+                            name="date",
+                            description="The date to check in YYYY-MM-DD format",
+                            required=True,
+                        ),
+                    ],
+                ),
+                Prompt(
+                    name="check_relationship_compatibility",
+                    description="Analyze relationship compatibility between two people based on their BaZi charts",
+                    arguments=[
+                        PromptArgument(
+                            name="person1_datetime",
+                            description="First person's birth date and time in YYYY-MM-DD HH:MM format",
+                            required=True,
+                        ),
+                        PromptArgument(
+                            name="person2_datetime",
+                            description="Second person's birth date and time in YYYY-MM-DD HH:MM format",
+                            required=True,
+                        ),
+                    ],
+                ),
+            ]
+
+        @self.server.get_prompt()
+        async def handle_get_prompt(
+            name: str, arguments: dict[str, str] | None
+        ) -> GetPromptResult:
+            """Get a specific prompt."""
+            if arguments is None:
+                arguments = {}
+
+            if name == "check_wedding_date":
+                date = arguments.get("date")
+                if not date:
+                    raise ValueError("Missing required argument: date")
+                return GetPromptResult(
+                    description="Check if a date is auspicious for a wedding",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Please check if {date} is an auspicious date for a wedding ceremony. Use the check_auspicious_date tool with activity='wedding' and provide a detailed analysis including the lunar date, zodiac influences, and any recommendations.",
+                            ),
+                        ),
+                    ],
+                )
+            elif name == "calculate_bazi_chart":
+                birth_datetime = arguments.get("birth_datetime")
+                if not birth_datetime:
+                    raise ValueError("Missing required argument: birth_datetime")
+                tz_offset = arguments.get("timezone_offset", "8")
+                return GetPromptResult(
+                    description="Calculate BaZi chart for birth date and time",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Please calculate the BaZi (Four Pillars of Destiny) chart for someone born on {birth_datetime} with timezone offset {tz_offset}. Use the calculate_bazi tool and provide a comprehensive analysis including:\n1. The four pillars (year, month, day, hour)\n2. The eight characters (Heavenly Stems and Earthly Branches)\n3. Five elements distribution and balance\n4. Day Master analysis\n5. Personality insights\n6. Life recommendations",
+                            ),
+                        ),
+                    ],
+                )
+            elif name == "find_auspicious_dates":
+                start_date = arguments.get("start_date")
+                end_date = arguments.get("end_date")
+                activity = arguments.get("activity")
+                if not start_date:
+                    raise ValueError("Missing required argument: start_date")
+                if not end_date:
+                    raise ValueError("Missing required argument: end_date")
+                if not activity:
+                    raise ValueError("Missing required argument: activity")
+                return GetPromptResult(
+                    description="Find auspicious dates for an activity",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Please find the most auspicious dates for '{activity}' between {start_date} and {end_date}. Use the find_good_dates tool and provide:\n1. Top recommended dates with scores\n2. Explanation of why each date is favorable\n3. Any dates to avoid and why\n4. Additional recommendations for the activity",
+                            ),
+                        ),
+                    ],
+                )
+            elif name == "get_daily_almanac":
+                date = arguments.get("date")
+                if not date:
+                    raise ValueError("Missing required argument: date")
+                return GetPromptResult(
+                    description="Get daily almanac information",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Please provide a comprehensive daily almanac for {date}. Include:\n1. Daily fortune using get_daily_fortune tool\n2. Any festivals on this date using get_lunar_festivals tool\n3. Moon phase using get_moon_phase tool\n4. Lucky hours using get_lucky_hours tool\n5. Overall recommendations for the day",
+                            ),
+                        ),
+                    ],
+                )
+            elif name == "check_relationship_compatibility":
+                person1 = arguments.get("person1_datetime")
+                person2 = arguments.get("person2_datetime")
+                if not person1:
+                    raise ValueError("Missing required argument: person1_datetime")
+                if not person2:
+                    raise ValueError("Missing required argument: person2_datetime")
+                return GetPromptResult(
+                    description="Check relationship compatibility",
+                    messages=[
+                        PromptMessage(
+                            role="user",
+                            content=TextContent(
+                                type="text",
+                                text=f"Please analyze the relationship compatibility between two people:\n- Person 1: born {person1}\n- Person 2: born {person2}\n\nUse the calculate_bazi_compatibility tool and provide:\n1. Compatibility score and level\n2. Element relationship analysis\n3. Strengths of the relationship\n4. Potential challenges\n5. Recommendations for harmony",
+                            ),
+                        ),
+                    ],
+                )
+            else:
+                raise ValueError(f"Unknown prompt: {name}")
+
+        @self.server.list_resources()
+        async def handle_list_resources() -> list[Resource]:
+            """List available resources."""
+            # Note: MCP Resource expects AnyUrl for uri but accepts string at runtime.
+            # The pydantic model coerces strings to AnyUrl automatically.
+            return [
+                Resource(
+                    uri="lunar://zodiac/animals",  # type: ignore[arg-type]
+                    name="Chinese Zodiac Animals",
+                    description="Information about the 12 Chinese zodiac animals and their characteristics",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="lunar://elements/five",  # type: ignore[arg-type]
+                    name="Five Elements",
+                    description="Information about the Five Elements (Wu Xing) and their relationships",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="lunar://festivals/major",  # type: ignore[arg-type]
+                    name="Major Chinese Festivals",
+                    description="List of major traditional Chinese festivals with descriptions",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="lunar://stems-branches/heavenly",  # type: ignore[arg-type]
+                    name="Heavenly Stems",
+                    description="The 10 Heavenly Stems (Tiangan) used in Chinese calendar",
+                    mimeType="application/json",
+                ),
+                Resource(
+                    uri="lunar://stems-branches/earthly",  # type: ignore[arg-type]
+                    name="Earthly Branches",
+                    description="The 12 Earthly Branches (Dizhi) used in Chinese calendar",
+                    mimeType="application/json",
+                ),
+            ]
+
+        @self.server.read_resource()
+        async def handle_read_resource(uri: str) -> list[TextResourceContents]:
+            """Read a specific resource."""
+            content: dict[str, Any]
+            if uri == "lunar://zodiac/animals":
+                content = {
+                    "zodiac_animals": [
+                        {
+                            "order": 1,
+                            "animal": "Rat",
+                            "chinese": "鼠",
+                            "element": "Water",
+                            "yin_yang": "Yang",
+                            "traits": ["clever", "quick-witted", "resourceful"],
+                        },
+                        {
+                            "order": 2,
+                            "animal": "Ox",
+                            "chinese": "牛",
+                            "element": "Earth",
+                            "yin_yang": "Yin",
+                            "traits": ["diligent", "dependable", "strong"],
+                        },
+                        {
+                            "order": 3,
+                            "animal": "Tiger",
+                            "chinese": "虎",
+                            "element": "Wood",
+                            "yin_yang": "Yang",
+                            "traits": ["brave", "competitive", "confident"],
+                        },
+                        {
+                            "order": 4,
+                            "animal": "Rabbit",
+                            "chinese": "兔",
+                            "element": "Wood",
+                            "yin_yang": "Yin",
+                            "traits": ["gentle", "elegant", "alert"],
+                        },
+                        {
+                            "order": 5,
+                            "animal": "Dragon",
+                            "chinese": "龍",
+                            "element": "Earth",
+                            "yin_yang": "Yang",
+                            "traits": ["confident", "intelligent", "enthusiastic"],
+                        },
+                        {
+                            "order": 6,
+                            "animal": "Snake",
+                            "chinese": "蛇",
+                            "element": "Fire",
+                            "yin_yang": "Yin",
+                            "traits": ["wise", "enigmatic", "intuitive"],
+                        },
+                        {
+                            "order": 7,
+                            "animal": "Horse",
+                            "chinese": "馬",
+                            "element": "Fire",
+                            "yin_yang": "Yang",
+                            "traits": ["animated", "active", "energetic"],
+                        },
+                        {
+                            "order": 8,
+                            "animal": "Goat",
+                            "chinese": "羊",
+                            "element": "Earth",
+                            "yin_yang": "Yin",
+                            "traits": ["calm", "gentle", "sympathetic"],
+                        },
+                        {
+                            "order": 9,
+                            "animal": "Monkey",
+                            "chinese": "猴",
+                            "element": "Metal",
+                            "yin_yang": "Yang",
+                            "traits": ["sharp", "smart", "curiosity"],
+                        },
+                        {
+                            "order": 10,
+                            "animal": "Rooster",
+                            "chinese": "雞",
+                            "element": "Metal",
+                            "yin_yang": "Yin",
+                            "traits": ["observant", "hardworking", "courageous"],
+                        },
+                        {
+                            "order": 11,
+                            "animal": "Dog",
+                            "chinese": "狗",
+                            "element": "Earth",
+                            "yin_yang": "Yang",
+                            "traits": ["loyal", "honest", "prudent"],
+                        },
+                        {
+                            "order": 12,
+                            "animal": "Pig",
+                            "chinese": "豬",
+                            "element": "Water",
+                            "yin_yang": "Yin",
+                            "traits": ["compassionate", "generous", "diligent"],
+                        },
+                    ],
+                    "cycle_years": "12-year cycle",
+                    "description": "The Chinese Zodiac consists of 12 animals that appear in a fixed order, each associated with specific personality traits and elements.",
+                }
+            elif uri == "lunar://elements/five":
+                content = {
+                    "five_elements": [
+                        {
+                            "element": "Wood",
+                            "chinese": "木",
+                            "color": "green",
+                            "season": "spring",
+                            "direction": "east",
+                            "generates": "Fire",
+                            "controls": "Earth",
+                        },
+                        {
+                            "element": "Fire",
+                            "chinese": "火",
+                            "color": "red",
+                            "season": "summer",
+                            "direction": "south",
+                            "generates": "Earth",
+                            "controls": "Metal",
+                        },
+                        {
+                            "element": "Earth",
+                            "chinese": "土",
+                            "color": "yellow",
+                            "season": "late summer",
+                            "direction": "center",
+                            "generates": "Metal",
+                            "controls": "Water",
+                        },
+                        {
+                            "element": "Metal",
+                            "chinese": "金",
+                            "color": "white",
+                            "season": "autumn",
+                            "direction": "west",
+                            "generates": "Water",
+                            "controls": "Wood",
+                        },
+                        {
+                            "element": "Water",
+                            "chinese": "水",
+                            "color": "black",
+                            "season": "winter",
+                            "direction": "north",
+                            "generates": "Wood",
+                            "controls": "Fire",
+                        },
+                    ],
+                    "cycles": {
+                        "generation": "Wood → Fire → Earth → Metal → Water → Wood (生)",
+                        "control": "Wood → Earth → Water → Fire → Metal → Wood (克)",
+                    },
+                    "description": "Wu Xing (Five Elements) is a fivefold conceptual scheme used in Chinese philosophy, traditional medicine, and calendar systems.",
+                }
+            elif uri == "lunar://festivals/major":
+                content = {
+                    "festivals": [
+                        {
+                            "name": "Spring Festival",
+                            "chinese": "春節",
+                            "lunar_date": "1st month, 1st day",
+                            "description": "Chinese New Year, the most important traditional festival",
+                        },
+                        {
+                            "name": "Lantern Festival",
+                            "chinese": "元宵節",
+                            "lunar_date": "1st month, 15th day",
+                            "description": "Marks the end of New Year celebrations with lanterns",
+                        },
+                        {
+                            "name": "Qingming Festival",
+                            "chinese": "清明節",
+                            "solar_term": "Around April 4-6",
+                            "description": "Tomb-sweeping day to honor ancestors",
+                        },
+                        {
+                            "name": "Dragon Boat Festival",
+                            "chinese": "端午節",
+                            "lunar_date": "5th month, 5th day",
+                            "description": "Commemorates poet Qu Yuan with dragon boat races",
+                        },
+                        {
+                            "name": "Qixi Festival",
+                            "chinese": "七夕節",
+                            "lunar_date": "7th month, 7th day",
+                            "description": "Chinese Valentine's Day based on legend of the Cowherd and Weaver Girl",
+                        },
+                        {
+                            "name": "Mid-Autumn Festival",
+                            "chinese": "中秋節",
+                            "lunar_date": "8th month, 15th day",
+                            "description": "Moon worship festival with mooncakes",
+                        },
+                        {
+                            "name": "Double Ninth Festival",
+                            "chinese": "重陽節",
+                            "lunar_date": "9th month, 9th day",
+                            "description": "Climbing heights and honoring elders",
+                        },
+                        {
+                            "name": "Winter Solstice",
+                            "chinese": "冬至",
+                            "solar_term": "Around December 21-23",
+                            "description": "Important solar term for family gatherings",
+                        },
+                    ],
+                    "description": "Major traditional Chinese festivals based on the lunar calendar and solar terms.",
+                }
+            elif uri == "lunar://stems-branches/heavenly":
+                content = {
+                    "heavenly_stems": [
+                        {
+                            "order": 1,
+                            "stem": "Jia",
+                            "chinese": "甲",
+                            "element": "Wood",
+                            "yin_yang": "Yang",
+                        },
+                        {
+                            "order": 2,
+                            "stem": "Yi",
+                            "chinese": "乙",
+                            "element": "Wood",
+                            "yin_yang": "Yin",
+                        },
+                        {
+                            "order": 3,
+                            "stem": "Bing",
+                            "chinese": "丙",
+                            "element": "Fire",
+                            "yin_yang": "Yang",
+                        },
+                        {
+                            "order": 4,
+                            "stem": "Ding",
+                            "chinese": "丁",
+                            "element": "Fire",
+                            "yin_yang": "Yin",
+                        },
+                        {
+                            "order": 5,
+                            "stem": "Wu",
+                            "chinese": "戊",
+                            "element": "Earth",
+                            "yin_yang": "Yang",
+                        },
+                        {
+                            "order": 6,
+                            "stem": "Ji",
+                            "chinese": "己",
+                            "element": "Earth",
+                            "yin_yang": "Yin",
+                        },
+                        {
+                            "order": 7,
+                            "stem": "Geng",
+                            "chinese": "庚",
+                            "element": "Metal",
+                            "yin_yang": "Yang",
+                        },
+                        {
+                            "order": 8,
+                            "stem": "Xin",
+                            "chinese": "辛",
+                            "element": "Metal",
+                            "yin_yang": "Yin",
+                        },
+                        {
+                            "order": 9,
+                            "stem": "Ren",
+                            "chinese": "壬",
+                            "element": "Water",
+                            "yin_yang": "Yang",
+                        },
+                        {
+                            "order": 10,
+                            "stem": "Gui",
+                            "chinese": "癸",
+                            "element": "Water",
+                            "yin_yang": "Yin",
+                        },
+                    ],
+                    "cycle": "10-stem cycle (Tiangan 天干)",
+                    "description": "The Heavenly Stems are used together with Earthly Branches to form the 60-year cycle of the Chinese calendar.",
+                }
+            elif uri == "lunar://stems-branches/earthly":
+                content = {
+                    "earthly_branches": [
+                        {
+                            "order": 1,
+                            "branch": "Zi",
+                            "chinese": "子",
+                            "zodiac": "Rat",
+                            "hour": "23:00-01:00",
+                            "month": 11,
+                        },
+                        {
+                            "order": 2,
+                            "branch": "Chou",
+                            "chinese": "丑",
+                            "zodiac": "Ox",
+                            "hour": "01:00-03:00",
+                            "month": 12,
+                        },
+                        {
+                            "order": 3,
+                            "branch": "Yin",
+                            "chinese": "寅",
+                            "zodiac": "Tiger",
+                            "hour": "03:00-05:00",
+                            "month": 1,
+                        },
+                        {
+                            "order": 4,
+                            "branch": "Mao",
+                            "chinese": "卯",
+                            "zodiac": "Rabbit",
+                            "hour": "05:00-07:00",
+                            "month": 2,
+                        },
+                        {
+                            "order": 5,
+                            "branch": "Chen",
+                            "chinese": "辰",
+                            "zodiac": "Dragon",
+                            "hour": "07:00-09:00",
+                            "month": 3,
+                        },
+                        {
+                            "order": 6,
+                            "branch": "Si",
+                            "chinese": "巳",
+                            "zodiac": "Snake",
+                            "hour": "09:00-11:00",
+                            "month": 4,
+                        },
+                        {
+                            "order": 7,
+                            "branch": "Wu",
+                            "chinese": "午",
+                            "zodiac": "Horse",
+                            "hour": "11:00-13:00",
+                            "month": 5,
+                        },
+                        {
+                            "order": 8,
+                            "branch": "Wei",
+                            "chinese": "未",
+                            "zodiac": "Goat",
+                            "hour": "13:00-15:00",
+                            "month": 6,
+                        },
+                        {
+                            "order": 9,
+                            "branch": "Shen",
+                            "chinese": "申",
+                            "zodiac": "Monkey",
+                            "hour": "15:00-17:00",
+                            "month": 7,
+                        },
+                        {
+                            "order": 10,
+                            "branch": "You",
+                            "chinese": "酉",
+                            "zodiac": "Rooster",
+                            "hour": "17:00-19:00",
+                            "month": 8,
+                        },
+                        {
+                            "order": 11,
+                            "branch": "Xu",
+                            "chinese": "戌",
+                            "zodiac": "Dog",
+                            "hour": "19:00-21:00",
+                            "month": 9,
+                        },
+                        {
+                            "order": 12,
+                            "branch": "Hai",
+                            "chinese": "亥",
+                            "zodiac": "Pig",
+                            "hour": "21:00-23:00",
+                            "month": 10,
+                        },
+                    ],
+                    "cycle": "12-branch cycle (Dizhi 地支)",
+                    "description": "The Earthly Branches correspond to the 12 zodiac animals and are used for time, dates, and years.",
+                }
+            else:
+                raise ValueError(f"Unknown resource: {uri}")
+
+            # Note: MCP TextResourceContents expects AnyUrl for uri but accepts string at runtime.
+            return [
+                TextResourceContents(
+                    uri=uri,  # type: ignore[arg-type]
+                    text=json.dumps(content, indent=2, ensure_ascii=False),
+                    mimeType="application/json",
+                )
+            ]
 
     async def _check_auspicious_date(
         self, date: str, activity: str, culture: str = "chinese"
