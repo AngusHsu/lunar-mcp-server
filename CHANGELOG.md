@@ -5,6 +5,58 @@ All notable changes to the Lunar Calendar MCP Server will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-12-06
+
+### Added
+
+#### MCP Prompts (5 new prompts)
+- **check_wedding_date**: Check if a date is auspicious for a wedding ceremony
+- **calculate_bazi_chart**: Calculate BaZi (Four Pillars of Destiny) chart for a birth datetime
+- **find_auspicious_dates**: Find the most auspicious dates for a specific activity within a date range
+- **get_daily_almanac**: Get comprehensive daily almanac including fortune, festivals, moon phase, and lucky hours
+- **check_relationship_compatibility**: Analyze relationship compatibility between two people based on BaZi charts
+
+#### MCP Resources (5 new resources)
+- **lunar://zodiac/animals**: Information about the 12 Chinese zodiac animals and their characteristics
+- **lunar://elements/five**: Information about the Five Elements (Wu Xing) and their relationships
+- **lunar://festivals/major**: List of major traditional Chinese festivals with descriptions
+- **lunar://stems-branches/heavenly**: The 10 Heavenly Stems (Tiangan) used in Chinese calendar
+- **lunar://stems-branches/earthly**: The 12 Earthly Branches (Dizhi) used in Chinese calendar
+
+#### Testing
+- Added comprehensive integration tests for prompts and resources (`tests/test_prompts_resources.py`)
+- 20 new tests covering all prompt and resource handlers
+- Improved patch coverage from 14.75% to 95.16%
+
+### Improved
+
+#### LobeHub MCP Marketplace Quality
+- Added MCP prompts to meet marketplace requirements (包含提示詞)
+- Added MCP resources to meet marketplace requirements (包含資源)
+- Improved quality score compliance for LobeHub marketplace
+
+#### Code Quality
+- Added proper input validation for required prompt arguments
+- Improved type safety with documented type ignore comments for MCP AnyUrl coercion
+- Fixed Black formatting and Ruff linting issues
+
+### Quality Assurance
+- ✅ All tests passing (182+ tests)
+- ✅ Code quality checks passing (black, ruff, mypy)
+- ✅ CI/CD pipeline green
+- ✅ No breaking changes
+
+### Files Changed
+- **Modified**: `src/lunar_mcp_server/server.py` (+639 lines - prompts and resources handlers)
+- **New**: `tests/test_prompts_resources.py` (399 lines - integration tests)
+- **Modified**: `tests/test_server.py` (additional test cases)
+
+### Migration Notes
+- No breaking changes
+- Purely additive features
+- Existing tools and functionality unchanged
+- New prompts and resources are optional to use
+
 ## [1.1.0] - 2025-11-03
 
 ### 🔮 Major Feature: BaZi (八字) Four Pillars of Destiny
@@ -308,6 +360,8 @@ uvx lunar-mcp-server
 - Multi-cultural support (Islamic, Hindu, Western) - focused exclusively on Chinese traditions
 - Dependencies: `convertdate`, `hijri-converter` (no longer needed)
 
+[1.2.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.2.0
+[1.1.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.1.0
 [1.0.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.0.1
 [1.0.0]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v1.0.0
 [0.1.1]: https://github.com/AngusHsu/lunar-mcp-server/releases/tag/v0.1.1
