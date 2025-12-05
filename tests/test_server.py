@@ -3,7 +3,6 @@
 from unittest.mock import patch
 
 import pytest
-from mcp.types import GetPromptRequest, ListPromptsRequest, ListResourcesRequest, ReadResourceRequest
 
 from lunar_mcp_server.server import LunarMCPServer
 
@@ -518,4 +517,3 @@ class TestServerToolIntegration:
         # Recommendation may or may not be present depending on data
         if "recommendation" in result:
             assert result["recommendation"] in dates or result["recommendation"] is None
-
