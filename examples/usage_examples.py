@@ -8,8 +8,6 @@ and calendar conversions.
 """
 
 import asyncio
-import json
-from datetime import datetime, timedelta
 
 from lunar_mcp_server import LunarMCPServer
 
@@ -30,9 +28,7 @@ class LunarCalendarDemo:
         print("\n1. Checking Wedding Date Auspiciousness")
         print("-" * 40)
         result = await self.server._check_auspicious_date(
-            date="2024-03-15",
-            activity="wedding",
-            culture="chinese"
+            date="2024-03-15", activity="wedding", culture="chinese"
         )
 
         print(f"Date: {result['date']}")
@@ -52,18 +48,22 @@ class LunarCalendarDemo:
             end_date="2024-04-30",
             activity="business_opening",
             culture="chinese",
-            limit=5
+            limit=5,
         )
 
         print(f"Searching period: {result['search_period']}")
         print(f"Found {result['found_dates']} good dates:")
 
-        for i, date_info in enumerate(result.get('good_dates', []), 1):
-            print(f"  {i}. {date_info['date']} - {date_info['level']} (Score: {date_info['score']})")
-            print(f"     Zodiac: {date_info.get('zodiac_day', 'N/A')}, Moon: {date_info.get('moon_phase', 'N/A')}")
+        for i, date_info in enumerate(result.get("good_dates", []), 1):
+            print(
+                f"  {i}. {date_info['date']} - {date_info['level']} (Score: {date_info['score']})"
+            )
+            print(
+                f"     Zodiac: {date_info.get('zodiac_day', 'N/A')}, Moon: {date_info.get('moon_phase', 'N/A')}"
+            )
 
-        if result.get('best_date'):
-            best = result['best_date']
+        if result.get("best_date"):
+            best = result["best_date"]
             print(f"\nBest date: {best['date']} ({best['level']})")
 
     async def demo_daily_fortune(self):
@@ -72,8 +72,7 @@ class LunarCalendarDemo:
         print("-" * 30)
 
         result = await self.server._get_daily_fortune(
-            date="2024-02-14",
-            culture="chinese"
+            date="2024-02-14", culture="chinese"
         )
 
         print(f"Date: {result['date']}")
@@ -93,9 +92,7 @@ class LunarCalendarDemo:
         print("-" * 35)
 
         result = await self.server._check_zodiac_compatibility(
-            date1="2024-01-15",
-            date2="2024-02-15",
-            culture="chinese"
+            date1="2024-01-15", date2="2024-02-15", culture="chinese"
         )
 
         print(f"Date 1: {result['date1']} (Zodiac: {result.get('zodiac1', 'N/A')})")
@@ -104,7 +101,7 @@ class LunarCalendarDemo:
         print(f"Description: {result.get('description', 'N/A')}")
         print(f"Recommendations: {result.get('recommendations', 'N/A')}")
 
-        element_rel = result.get('element_relationship', {})
+        element_rel = result.get("element_relationship", {})
         if element_rel:
             print(f"Element Relationship: {element_rel.get('description', 'N/A')}")
 
@@ -118,34 +115,32 @@ class LunarCalendarDemo:
         print("\n1. Festivals on Chinese New Year 2024")
         print("-" * 40)
         result = await self.server._get_lunar_festivals(
-            date="2024-02-10",
-            culture="chinese"
+            date="2024-02-10", culture="chinese"
         )
 
         print(f"Date: {result['date']}")
         print(f"Festival Count: {result.get('festival_count', 0)}")
         print(f"Major Festival: {'Yes' if result.get('is_major_festival') else 'No'}")
 
-        for festival in result.get('festivals', []):
+        for festival in result.get("festivals", []):
             print(f"\nFestival: {festival['name']}")
             print(f"Significance: {festival.get('significance', 'N/A')}")
             print(f"Traditions: {', '.join(festival.get('traditions', []))}")
             print(f"Foods: {', '.join(festival.get('foods', []))}")
-            if festival.get('lucky_activities'):
+            if festival.get("lucky_activities"):
                 print(f"Lucky Activities: {', '.join(festival['lucky_activities'])}")
 
         # Find next festival
         print("\n2. Finding Next Festival")
         print("-" * 30)
         result = await self.server._get_next_festival(
-            date="2024-03-01",
-            culture="chinese"
+            date="2024-03-01", culture="chinese"
         )
 
-        if result.get('next_festival_date'):
+        if result.get("next_festival_date"):
             print(f"Next festival date: {result['next_festival_date']}")
             print(f"Days until: {result.get('days_until', 'N/A')}")
-            festival = result.get('festival', {})
+            festival = result.get("festival", {})
             print(f"Festival: {festival.get('name', 'N/A')}")
             print(f"Significance: {festival.get('significance', 'N/A')}")
             print(f"Preparation: {result.get('preparation_time', 'N/A')}")
@@ -153,18 +148,15 @@ class LunarCalendarDemo:
         # Get annual festivals
         print("\n3. Annual Festivals for 2024")
         print("-" * 35)
-        result = await self.server._get_annual_festivals(
-            year=2024,
-            culture="chinese"
-        )
+        result = await self.server._get_annual_festivals(year=2024, culture="chinese")
 
         print(f"Year: {result['year']}")
         print(f"Total Festivals: {result.get('total_festivals', 0)}")
         print(f"Major Festivals: {len(result.get('major_festivals', []))}")
 
         print("\nMajor festivals:")
-        for festival in result.get('major_festivals', [])[:5]:  # Show first 5
-            est_date = festival.get('estimated_date', {})
+        for festival in result.get("major_festivals", [])[:5]:  # Show first 5
+            est_date = festival.get("estimated_date", {})
             date_str = f"{est_date.get('year', 'N/A')}-{est_date.get('month', 1):02d}-{est_date.get('day', 1):02d}"
             print(f"  • {festival['name']} - {date_str}")
 
@@ -178,8 +170,7 @@ class LunarCalendarDemo:
         print("\n1. Moon Phase Information")
         print("-" * 30)
         result = await self.server._get_moon_phase(
-            date="2024-02-14",
-            location="40.7128,-74.0060"  # New York
+            date="2024-02-14", location="40.7128,-74.0060"  # New York
         )
 
         print(f"Date: {result['date']}")
@@ -190,7 +181,7 @@ class LunarCalendarDemo:
         print(f"Rise Time: {result.get('rise_time', 'N/A')}")
         print(f"Set Time: {result.get('set_time', 'N/A')}")
 
-        influence = result.get('influence', {})
+        influence = result.get("influence", {})
         if influence:
             print(f"Energy Type: {influence.get('energy_type', 'N/A')}")
             print(f"Good for: {', '.join(influence.get('good_for', []))}")
@@ -203,8 +194,7 @@ class LunarCalendarDemo:
 
         for activity in activities:
             result = await self.server._get_moon_influence(
-                date="2024-02-14",
-                activity=activity
+                date="2024-02-14", activity=activity
             )
 
             print(f"\n{activity.replace('_', ' ').title()}:")
@@ -215,15 +205,16 @@ class LunarCalendarDemo:
         print("\n3. Moon Phase Predictions")
         print("-" * 30)
         result = await self.server._predict_moon_phases(
-            start_date="2024-02-01",
-            end_date="2024-02-29"
+            start_date="2024-02-01", end_date="2024-02-29"
         )
 
         print(f"Period: {result['start_date']} to {result['end_date']}")
         print(f"Major phases found: {result.get('total_phases', 0)}")
 
-        for phase in result.get('major_phases', []):
-            print(f"  • {phase['date']}: {phase['phase']} (Day {phase.get('lunar_day', 'N/A')})")
+        for phase in result.get("major_phases", []):
+            print(
+                f"  • {phase['date']}: {phase['phase']} (Day {phase.get('lunar_day', 'N/A')})"
+            )
 
     async def demo_calendar_conversions(self):
         """Demo: Calendar conversions and zodiac information."""
@@ -235,8 +226,7 @@ class LunarCalendarDemo:
         print("\n1. Solar to Lunar Date Conversion")
         print("-" * 40)
         result = await self.server._solar_to_lunar(
-            solar_date="2024-02-14",
-            culture="chinese"
+            solar_date="2024-02-14", culture="chinese"
         )
 
         print(f"Solar Date: {result.get('solar_date', 'N/A')}")
@@ -244,7 +234,7 @@ class LunarCalendarDemo:
         print(f"Lunar Month: {result.get('lunar_month', 'N/A')}")
         print(f"Lunar Day: {result.get('lunar_day', 'N/A')}")
 
-        zodiac_info = result.get('zodiac_info', {})
+        zodiac_info = result.get("zodiac_info", {})
         if zodiac_info:
             print(f"Zodiac Animal: {zodiac_info.get('animal', 'N/A')}")
             print(f"Element: {zodiac_info.get('element', 'N/A')}")
@@ -254,44 +244,44 @@ class LunarCalendarDemo:
         print("\n2. Detailed Zodiac Information")
         print("-" * 35)
         result = await self.server._get_zodiac_info(
-            date="2024-02-14",
-            culture="chinese"
+            date="2024-02-14", culture="chinese"
         )
 
         print(f"Date: {result['date']}")
         print(f"Culture: {result['culture']}")
 
-        year_zodiac = result.get('year_zodiac', {})
+        year_zodiac = result.get("year_zodiac", {})
         if year_zodiac:
-            print(f"\nYear Zodiac:")
+            print("\nYear Zodiac:")
             print(f"  Animal: {year_zodiac.get('animal', 'N/A')}")
             print(f"  Element: {year_zodiac.get('element', 'N/A')}")
             print(f"  Full Name: {year_zodiac.get('full_name', 'N/A')}")
 
-        daily_zodiac = result.get('daily_zodiac', {})
+        daily_zodiac = result.get("daily_zodiac", {})
         if daily_zodiac:
-            print(f"\nDaily Zodiac:")
+            print("\nDaily Zodiac:")
             print(f"  Animal: {daily_zodiac.get('animal', 'N/A')}")
             print(f"  Influence: {daily_zodiac.get('influence', 'N/A')}")
 
-        hourly_zodiac = result.get('hourly_zodiac', {})
+        hourly_zodiac = result.get("hourly_zodiac", {})
         if hourly_zodiac:
-            print(f"\nHourly Zodiac:")
+            print("\nHourly Zodiac:")
             print(f"  Animal: {hourly_zodiac.get('animal', 'N/A')}")
             print(f"  Hours: {hourly_zodiac.get('hour_range', 'N/A')}")
 
-        compatibility = result.get('compatibility', {})
+        compatibility = result.get("compatibility", {})
         if compatibility:
-            print(f"\nCompatibility:")
+            print("\nCompatibility:")
             print(f"  Best matches: {', '.join(compatibility.get('best_matches', []))}")
-            print(f"  Challenging: {', '.join(compatibility.get('challenging_matches', []))}")
+            print(
+                f"  Challenging: {', '.join(compatibility.get('challenging_matches', []))}"
+            )
 
         # Western zodiac for comparison
         print("\n3. Western Zodiac Information")
         print("-" * 35)
         result = await self.server._get_zodiac_info(
-            date="2024-02-14",
-            culture="western"
+            date="2024-02-14", culture="western"
         )
 
         print(f"Zodiac Sign: {result.get('zodiac_sign', 'N/A')}")
@@ -299,15 +289,15 @@ class LunarCalendarDemo:
         print(f"Quality: {result.get('quality', 'N/A')}")
         print(f"Ruling Planet: {result.get('ruling_planet', 'N/A')}")
 
-        traits = result.get('traits', {})
+        traits = result.get("traits", {})
         if traits:
             print(f"Positive Traits: {', '.join(traits.get('positive', [])[:3])}")
             print(f"Challenges: {', '.join(traits.get('negative', [])[:3])}")
 
-        compatible_signs = result.get('compatible_signs', {})
+        compatible_signs = result.get("compatible_signs", {})
         if isinstance(compatible_signs, dict):
-            compat_list = compatible_signs.get('compatible', [])
-            challenging_list = compatible_signs.get('challenging', [])
+            compat_list = compatible_signs.get("compatible", [])
+            challenging_list = compatible_signs.get("challenging", [])
             if compat_list:
                 print(f"Compatible Signs: {', '.join(compat_list[:4])}")
             if challenging_list:
@@ -325,8 +315,7 @@ class LunarCalendarDemo:
         print("\n1. Islamic Calendar Conversion")
         print("-" * 35)
         result = await self.server._solar_to_lunar(
-            solar_date="2024-02-14",
-            culture="islamic"
+            solar_date="2024-02-14", culture="islamic"
         )
 
         print(f"Solar Date: {result.get('solar_date', 'N/A')}")
@@ -338,17 +327,16 @@ class LunarCalendarDemo:
         # Get Islamic festivals
         print("\n2. Islamic Festivals and Observances")
         print("-" * 40)
-        result = await self.server._get_annual_festivals(
-            year=2024,
-            culture="islamic"
-        )
+        result = await self.server._get_annual_festivals(year=2024, culture="islamic")
 
         print(f"Islamic festivals in {result['year']}:")
-        for festival in result.get('festivals', [])[:5]:
+        for festival in result.get("festivals", [])[:5]:
             print(f"  • {festival['name']}")
-            if festival.get('estimated_date'):
-                est_date = festival['estimated_date']
-                print(f"    Estimated: {est_date.get('year')}-{est_date.get('month', 1):02d}-{est_date.get('day', 1):02d}")
+            if festival.get("estimated_date"):
+                est_date = festival["estimated_date"]
+                print(
+                    f"    Estimated: {est_date.get('year')}-{est_date.get('month', 1):02d}-{est_date.get('day', 1):02d}"
+                )
 
     async def run_all_demos(self):
         """Run all demonstration functions."""

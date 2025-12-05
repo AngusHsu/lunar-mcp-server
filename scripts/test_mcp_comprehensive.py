@@ -5,12 +5,11 @@ Comprehensive MCP server test that starts the server, tests all tools, and stops
 
 import asyncio
 import json
+import signal
 import subprocess
 import sys
-import time
-from typing import Dict, Any, List
-import signal
-import os
+from typing import Any
+
 
 class MCPTester:
     def __init__(self):
@@ -25,7 +24,7 @@ class MCPTester:
             "green": "\033[0;32m",
             "yellow": "\033[1;33m",
             "blue": "\033[0;34m",
-            "nc": "\033[0m"
+            "nc": "\033[0m",
         }
         print(f"{colors.get(color, '')}{message}{colors['nc']}")
 
@@ -39,7 +38,7 @@ class MCPTester:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            bufsize=0
+            bufsize=0,
         )
 
         # Give server time to start
@@ -47,7 +46,10 @@ class MCPTester:
 
         if self.server_process.poll() is not None:
             stdout, stderr = self.server_process.communicate()
-            self.log(f"Server failed to start! Exit code: {self.server_process.returncode}", "red")
+            self.log(
+                f"Server failed to start! Exit code: {self.server_process.returncode}",
+                "red",
+            )
             self.log(f"STDOUT: {stdout}", "red")
             self.log(f"STDERR: {stderr}", "red")
             return False
@@ -67,7 +69,7 @@ class MCPTester:
                 self.server_process.wait()
             self.log("MCP server stopped", "green")
 
-    async def send_message(self, message: Dict[str, Any]) -> Dict[str, Any]:
+    async def send_message(self, message: dict[str, Any]) -> dict[str, Any]:
         """Send a message to the server and get response"""
         if not self.server_process:
             raise Exception("Server not running")
@@ -84,8 +86,8 @@ class MCPTester:
 
         try:
             return json.loads(response_line.strip())
-        except json.JSONDecodeError as e:
-            raise Exception(f"Invalid JSON response: {response_line.strip()}")
+        except json.JSONDecodeError as err:
+            raise Exception(f"Invalid JSON response: {response_line.strip()}") from err
 
     async def initialize_connection(self):
         """Initialize MCP connection"""
@@ -99,8 +101,8 @@ class MCPTester:
             "params": {
                 "protocolVersion": "2024-11-05",
                 "capabilities": {"tools": {}},
-                "clientInfo": {"name": "test-client", "version": "1.0.0"}
-            }
+                "clientInfo": {"name": "test-client", "version": "1.0.0"},
+            },
         }
 
         response = await self.send_message(init_request)
@@ -110,25 +112,17 @@ class MCPTester:
         self.log("MCP connection initialized", "green")
 
         # Send initialized notification
-        initialized_notif = {
-            "jsonrpc": "2.0",
-            "method": "notifications/initialized"
-        }
+        initialized_notif = {"jsonrpc": "2.0", "method": "notifications/initialized"}
         await self.send_message(initialized_notif)
 
         # Give a moment for notification to process
         await asyncio.sleep(0.5)
 
-    async def list_tools(self) -> List[Dict[str, Any]]:
+    async def list_tools(self) -> list[dict[str, Any]]:
         """List available tools"""
         self.log("Listing available tools...")
 
-        request = {
-            "jsonrpc": "2.0",
-            "id": 2,
-            "method": "tools/list",
-            "params": {}
-        }
+        request = {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
 
         response = await self.send_message(request)
         if "error" in response:
@@ -142,7 +136,9 @@ class MCPTester:
 
         return tools
 
-    async def test_tool(self, tool_name: str, arguments: Dict[str, Any], description: str) -> bool:
+    async def test_tool(
+        self, tool_name: str, arguments: dict[str, Any], description: str
+    ) -> bool:
         """Test a single tool"""
         self.test_count += 1
         self.log(f"Test {self.test_count}: {description}")
@@ -151,10 +147,7 @@ class MCPTester:
             "jsonrpc": "2.0",
             "id": self.test_count + 10,
             "method": "tools/call",
-            "params": {
-                "name": tool_name,
-                "arguments": arguments
-            }
+            "params": {"name": tool_name, "arguments": arguments},
         }
 
         try:
@@ -170,7 +163,7 @@ class MCPTester:
                 self.pass_count += 1
                 return True
             else:
-                self.log(f"  ❌ FAIL: No result in response", "red")
+                self.log("  ❌ FAIL: No result in response", "red")
                 self.fail_count += 1
                 return False
 
@@ -190,27 +183,97 @@ class MCPTester:
             await self.initialize_connection()
 
             # List tools
-            tools = await self.list_tools()
+            await self.list_tools()
 
             # Test individual tools
             self.log("Starting tool tests...")
 
             test_cases = [
-                ("check_auspicious_date", {"date": "2024-01-01", "activity": "wedding", "culture": "chinese"}, "Check auspicious date for wedding"),
-                ("find_good_dates", {"start_date": "2024-01-01", "end_date": "2024-01-31", "activity": "business_opening", "culture": "chinese", "limit": 5}, "Find good dates for business opening"),
-                ("get_daily_fortune", {"date": "2024-01-01", "culture": "chinese"}, "Get daily fortune information"),
-                ("check_zodiac_compatibility", {"date1": "1990-01-01", "date2": "1992-01-01", "culture": "chinese"}, "Check zodiac compatibility"),
-                ("get_lunar_festivals", {"date": "2024-02-10", "culture": "chinese"}, "Get lunar festivals for date"),
-                ("get_next_festival", {"date": "2024-01-01", "culture": "chinese"}, "Get next upcoming festival"),
-                ("get_festival_details", {"festival_name": "Chinese New Year", "culture": "chinese"}, "Get festival details"),
-                ("get_annual_festivals", {"year": 2024, "culture": "chinese"}, "Get annual festivals"),
-                ("get_moon_phase", {"date": "2024-01-01", "location": "0,0"}, "Get moon phase information"),
-                ("get_moon_calendar", {"month": 1, "year": 2024, "location": "0,0"}, "Get monthly moon calendar"),
-                ("get_moon_influence", {"date": "2024-01-01", "activity": "planting"}, "Get moon influence on activity"),
-                ("predict_moon_phases", {"start_date": "2024-01-01", "end_date": "2024-01-31"}, "Predict moon phases in range"),
-                ("solar_to_lunar", {"solar_date": "2024-01-01", "culture": "chinese"}, "Convert solar to lunar date"),
-                ("lunar_to_solar", {"lunar_date": "2024-01-01", "culture": "chinese"}, "Convert lunar to solar date"),
-                ("get_zodiac_info", {"date": "1990-01-01", "culture": "chinese"}, "Get zodiac information"),
+                (
+                    "check_auspicious_date",
+                    {"date": "2024-01-01", "activity": "wedding", "culture": "chinese"},
+                    "Check auspicious date for wedding",
+                ),
+                (
+                    "find_good_dates",
+                    {
+                        "start_date": "2024-01-01",
+                        "end_date": "2024-01-31",
+                        "activity": "business_opening",
+                        "culture": "chinese",
+                        "limit": 5,
+                    },
+                    "Find good dates for business opening",
+                ),
+                (
+                    "get_daily_fortune",
+                    {"date": "2024-01-01", "culture": "chinese"},
+                    "Get daily fortune information",
+                ),
+                (
+                    "check_zodiac_compatibility",
+                    {
+                        "date1": "1990-01-01",
+                        "date2": "1992-01-01",
+                        "culture": "chinese",
+                    },
+                    "Check zodiac compatibility",
+                ),
+                (
+                    "get_lunar_festivals",
+                    {"date": "2024-02-10", "culture": "chinese"},
+                    "Get lunar festivals for date",
+                ),
+                (
+                    "get_next_festival",
+                    {"date": "2024-01-01", "culture": "chinese"},
+                    "Get next upcoming festival",
+                ),
+                (
+                    "get_festival_details",
+                    {"festival_name": "Chinese New Year", "culture": "chinese"},
+                    "Get festival details",
+                ),
+                (
+                    "get_annual_festivals",
+                    {"year": 2024, "culture": "chinese"},
+                    "Get annual festivals",
+                ),
+                (
+                    "get_moon_phase",
+                    {"date": "2024-01-01", "location": "0,0"},
+                    "Get moon phase information",
+                ),
+                (
+                    "get_moon_calendar",
+                    {"month": 1, "year": 2024, "location": "0,0"},
+                    "Get monthly moon calendar",
+                ),
+                (
+                    "get_moon_influence",
+                    {"date": "2024-01-01", "activity": "planting"},
+                    "Get moon influence on activity",
+                ),
+                (
+                    "predict_moon_phases",
+                    {"start_date": "2024-01-01", "end_date": "2024-01-31"},
+                    "Predict moon phases in range",
+                ),
+                (
+                    "solar_to_lunar",
+                    {"solar_date": "2024-01-01", "culture": "chinese"},
+                    "Convert solar to lunar date",
+                ),
+                (
+                    "lunar_to_solar",
+                    {"lunar_date": "2024-01-01", "culture": "chinese"},
+                    "Convert lunar to solar date",
+                ),
+                (
+                    "get_zodiac_info",
+                    {"date": "1990-01-01", "culture": "chinese"},
+                    "Get zodiac information",
+                ),
             ]
 
             for tool_name, arguments, description in test_cases:
@@ -240,6 +303,7 @@ class MCPTester:
             self.log("Some tests failed!", "red")
             return False
 
+
 async def main():
     tester = MCPTester()
 
@@ -264,6 +328,7 @@ async def main():
         tester.log(f"Unexpected error: {str(e)}", "red")
         tester.stop_server()
         sys.exit(1)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
