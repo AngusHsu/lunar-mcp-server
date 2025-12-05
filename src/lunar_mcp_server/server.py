@@ -16,7 +16,6 @@ from mcp.types import (
     PromptMessage,
     Resource,
     TextContent,
-    TextResourceContents,
     Tool,
 )
 
@@ -738,10 +737,12 @@ class LunarMCPServer:
             ]
 
         @self.server.read_resource()
-        async def handle_read_resource(uri: str) -> list[TextResourceContents]:
+        async def handle_read_resource(uri: str) -> str:
             """Read a specific resource."""
+            # Convert AnyUrl to string if needed
+            uri_str = str(uri)
             content: dict[str, Any]
-            if uri == "lunar://zodiac/animals":
+            if uri_str == "lunar://zodiac/animals":
                 content = {
                     "zodiac_animals": [
                         {
@@ -844,7 +845,7 @@ class LunarMCPServer:
                     "cycle_years": "12-year cycle",
                     "description": "The Chinese Zodiac consists of 12 animals that appear in a fixed order, each associated with specific personality traits and elements.",
                 }
-            elif uri == "lunar://elements/five":
+            elif uri_str == "lunar://elements/five":
                 content = {
                     "five_elements": [
                         {
@@ -899,7 +900,7 @@ class LunarMCPServer:
                     },
                     "description": "Wu Xing (Five Elements) is a fivefold conceptual scheme used in Chinese philosophy, traditional medicine, and calendar systems.",
                 }
-            elif uri == "lunar://festivals/major":
+            elif uri_str == "lunar://festivals/major":
                 content = {
                     "festivals": [
                         {
@@ -953,7 +954,7 @@ class LunarMCPServer:
                     ],
                     "description": "Major traditional Chinese festivals based on the lunar calendar and solar terms.",
                 }
-            elif uri == "lunar://stems-branches/heavenly":
+            elif uri_str == "lunar://stems-branches/heavenly":
                 content = {
                     "heavenly_stems": [
                         {
@@ -1030,7 +1031,7 @@ class LunarMCPServer:
                     "cycle": "10-stem cycle (Tiangan 天干)",
                     "description": "The Heavenly Stems are used together with Earthly Branches to form the 60-year cycle of the Chinese calendar.",
                 }
-            elif uri == "lunar://stems-branches/earthly":
+            elif uri_str == "lunar://stems-branches/earthly":
                 content = {
                     "earthly_branches": [
                         {
@@ -1134,16 +1135,9 @@ class LunarMCPServer:
                     "description": "The Earthly Branches correspond to the 12 zodiac animals and are used for time, dates, and years.",
                 }
             else:
-                raise ValueError(f"Unknown resource: {uri}")
+                raise ValueError(f"Unknown resource: {uri_str}")
 
-            # Note: MCP TextResourceContents expects AnyUrl for uri but accepts string at runtime.
-            return [
-                TextResourceContents(
-                    uri=uri,  # type: ignore[arg-type]
-                    text=json.dumps(content, indent=2, ensure_ascii=False),
-                    mimeType="application/json",
-                )
-            ]
+            return json.dumps(content, indent=2, ensure_ascii=False)
 
     async def _check_auspicious_date(
         self, date: str, activity: str, culture: str = "chinese"

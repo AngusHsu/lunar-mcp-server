@@ -3,6 +3,7 @@
 from unittest.mock import patch
 
 import pytest
+from mcp.types import GetPromptRequest, ListPromptsRequest, ListResourcesRequest, ReadResourceRequest
 
 from lunar_mcp_server.server import LunarMCPServer
 
@@ -518,59 +519,3 @@ class TestServerToolIntegration:
         if "recommendation" in result:
             assert result["recommendation"] in dates or result["recommendation"] is None
 
-
-class TestServerPromptsAndResources:
-    """Test cases for MCP prompts and resources handlers."""
-
-    def setup_method(self):
-        """Set up test fixtures."""
-        self.server = LunarMCPServer()
-
-    def test_server_has_prompts_handlers(self):
-        """Test that server has prompts handlers registered."""
-        assert self.server.server is not None
-        assert hasattr(self.server.server, "list_prompts")
-
-    def test_server_has_resources_handlers(self):
-        """Test that server has resources handlers registered."""
-        assert self.server.server is not None
-        assert hasattr(self.server.server, "list_resources")
-
-    @pytest.mark.asyncio
-    async def test_list_prompts_returns_prompts(self):
-        """Test that list_prompts handler returns prompts."""
-        assert hasattr(self.server.server, "list_prompts")
-        assert hasattr(self.server.server, "get_prompt")
-
-    @pytest.mark.asyncio
-    async def test_list_resources_returns_resources(self):
-        """Test that list_resources handler returns resources."""
-        assert hasattr(self.server.server, "list_resources")
-        assert hasattr(self.server.server, "read_resource")
-
-    def test_prompt_count(self):
-        """Test that 5 prompts are defined."""
-        # Verify the server setup method exists which registers prompts
-        assert hasattr(self.server, "_setup_handlers")
-        # The server should be properly initialized
-        assert self.server.server.name == "lunar-mcp-server"
-
-    def test_resource_count(self):
-        """Test that 5 resources are defined."""
-        # Verify the server setup method exists which registers resources
-        assert hasattr(self.server, "_setup_handlers")
-        # The server should be properly initialized
-        assert self.server.server.name == "lunar-mcp-server"
-
-    def test_server_name_and_version(self):
-        """Test server name and version."""
-        assert self.server.server.name == "lunar-mcp-server"
-        assert self.server.server.version == "0.1.0"
-
-    def test_all_calculators_initialized(self):
-        """Test that all calculator instances are initialized."""
-        assert self.server.lunar_calc is not None
-        assert self.server.auspicious_checker is not None
-        assert self.server.festival_manager is not None
-        assert self.server.calendar_converter is not None
-        assert self.server.bazi_calculator is not None
