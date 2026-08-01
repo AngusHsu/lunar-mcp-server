@@ -12,20 +12,16 @@ This workflow runs code quality checks and tests on every pull request and push 
    - Ruff linting
    - Mypy type checking
 
-2. **Unit Tests** (runs in parallel after quality checks)
-   - Runs pytest with coverage
-   - Tests all Python modules
-   - Generates coverage reports
-   - Uploads coverage artifact
+2. **Test Matrix** (runs in parallel after quality checks)
+   - Runs the full unit and integration suite on standard CPython 3.11–3.14
+   - Validates all 20 tools, 5 prompts, and 5 resources on every version
+   - Generates and uploads coverage once, from Python 3.11
 
-3. **MCP Server Tests** (runs in parallel after quality checks)
-   - Runs comprehensive MCP server tests
-   - Validates all 20 tools, 5 prompts, and 5 resources
-   - Uses `./scripts/test_mcp_final.sh`
-
-4. **Test Matrix** (runs in parallel after quality checks)
-   - Tests on Python 3.11 and 3.12
-   - Ensures compatibility across versions
+3. **Built Artifact Tests** (runs in parallel after quality checks)
+   - Builds both the wheel and source distribution
+   - Installs each artifact in an isolated environment on Python 3.11 and 3.14
+   - Smoke-tests version metadata, server construction, and bundled ephemeris
+     access from outside the repository
 
 ### Triggers
 

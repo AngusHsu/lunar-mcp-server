@@ -6,7 +6,7 @@ Guide for contributing to the Lunar Calendar MCP Server.
 
 ### Prerequisites
 
-- Python 3.11 or higher
+- Standard CPython 3.11–3.14 (free-threaded builds are not currently tested)
 - [uv](https://github.com/astral-sh/uv) (recommended) or pip
 - Git
 
