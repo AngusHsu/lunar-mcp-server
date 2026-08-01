@@ -30,9 +30,6 @@ jobs:
       - name: Check code formatting with black
         run: uv run black --check src/ tests/
 
-      - name: Check import sorting with isort
-        run: uv run isort --check src/ tests/
-
       - name: Lint with ruff
         run: uv run ruff check src/ tests/
 

@@ -17,12 +17,12 @@ Guide for contributing to the Lunar Calendar MCP Server.
 git clone https://github.com/AngusHsu/lunar-mcp-server.git
 cd lunar-mcp-server
 
-# Install with development dependencies using uv
+# Install the uv-first contributor environment
 uv sync --dev
-
-# Or using pip
-pip install -e ".[dev]"
 ```
+
+Development tools live only in `[dependency-groups].dev`; a published `dev`
+extra is intentionally not provided.
 
 ## Code Quality
 
@@ -32,10 +32,7 @@ pip install -e ".[dev]"
 # Format code with black
 uv run black src/ tests/
 
-# Sort imports with isort
-uv run isort src/ tests/
-
-# Lint with ruff
+# Lint and sort imports with ruff
 uv run ruff check src/ tests/
 
 # Type check with mypy
@@ -43,7 +40,6 @@ uv run mypy src/
 
 # Run all quality checks
 uv run black --check src/ tests/
-uv run isort --check src/ tests/
 uv run ruff check src/ tests/
 uv run mypy src/
 ```
@@ -340,7 +336,6 @@ chore: update dependencies
    ```bash
    # All checks must pass
    uv run black --check src/ tests/
-   uv run isort --check src/ tests/
    uv run ruff check src/ tests/
    uv run mypy src/
    ./scripts/test_mcp_final.sh
