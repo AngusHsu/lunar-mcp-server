@@ -35,7 +35,7 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "mcp>=1.0.0",
+    "mcp>=1.28.1,<2",
     "skyfield>=1.48",
     "ephem>=4.1.5",
     "astropy>=6.0.0",
@@ -202,7 +202,6 @@ exclude_lines = [
 dev = [
     "black>=25.9.0",
     "isort>=6.0.1",
-    "mcp>=1.15.0",
     "mypy>=1.18.2",
     "pre-commit>=4.3.0",
     "pytest>=8.4.2",

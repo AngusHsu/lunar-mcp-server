@@ -6,7 +6,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![MCP Compatible](https://img.shields.io/badge/MCP-2024--11--05-green.svg)](https://modelcontextprotocol.io)
+[![MCP Compatible](https://img.shields.io/badge/MCP-2025--11--25-green.svg)](https://modelcontextprotocol.io)
 [![CI](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml/badge.svg)](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/AngusHsu/lunar-mcp-server/branch/main/graph/badge.svg)](https://codecov.io/gh/AngusHsu/lunar-mcp-server)
 [![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](./scripts/test_mcp_final.sh)
@@ -73,6 +73,16 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
 ```
 
 Then restart Claude Desktop and start asking about lunar calendar information!
+
+### MCP compatibility
+
+- MCP Python SDK: `>=1.28.1,<2` (the lockfile records the exact tested v1 release)
+- Primary protocol: `2025-11-25`
+- Backward-compatible initialization: `2024-11-05`
+- Production transport: STDIO
+
+MCP SDK v2, the prerelease 2026 protocol, and remote production transports are
+not part of the v1.2.1 compatibility contract.
 
 ### Alternative Installation Methods
 

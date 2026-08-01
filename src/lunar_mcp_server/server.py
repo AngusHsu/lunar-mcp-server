@@ -9,6 +9,7 @@ from typing import Any
 
 from mcp.server import Server
 from mcp.server.lowlevel import NotificationOptions
+from mcp.server.lowlevel.helper_types import ReadResourceContents
 from mcp.types import (
     GetPromptResult,
     Prompt,
@@ -738,7 +739,7 @@ class LunarMCPServer:
             ]
 
         @self.server.read_resource()
-        async def handle_read_resource(uri: str) -> str:
+        async def handle_read_resource(uri: str) -> list[ReadResourceContents]:
             """Read a specific resource."""
             # Convert AnyUrl to string if needed
             uri_str = str(uri)
@@ -1138,7 +1139,12 @@ class LunarMCPServer:
             else:
                 raise ValueError(f"Unknown resource: {uri_str}")
 
-            return json.dumps(content, indent=2, ensure_ascii=False)
+            return [
+                ReadResourceContents(
+                    content=json.dumps(content, indent=2, ensure_ascii=False),
+                    mime_type="application/json",
+                )
+            ]
 
     async def _check_auspicious_date(
         self, date: str, activity: str, culture: str = "chinese"
