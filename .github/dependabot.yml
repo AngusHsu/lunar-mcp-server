@@ -1,0 +1,115 @@
+version: 2
+
+# Weekly checks keep review volume manageable. Patch/minor updates can be
+# grouped only inside their risk domain; majors remain individual PRs.
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Taipei"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      core-runtime:
+        patterns:
+          - "annotated-types"
+          - "anyio"
+          - "attrs"
+          - "certifi"
+          - "cffi"
+          - "click"
+          - "cryptography"
+          - "h11"
+          - "hatchling"
+          - "httpcore"
+          - "httpx"
+          - "httpx-sse"
+          - "idna"
+          - "jsonschema*"
+          - "packaging"
+          - "pydantic*"
+          - "pycparser"
+          - "pyjwt"
+          - "python-dotenv"
+          - "python-multipart"
+          - "referencing"
+          - "rpds-py"
+          - "sniffio"
+          - "sse-starlette"
+          - "starlette"
+          - "typing-*"
+          - "uvicorn"
+        update-types:
+          - "minor"
+          - "patch"
+      astronomy-runtime:
+        patterns:
+          - "ephem"
+          - "jplephem"
+          - "numpy"
+          - "sgp4"
+          - "skyfield"
+        update-types:
+          - "minor"
+          - "patch"
+      chinese-calendar-runtime:
+        patterns:
+          - "chinese-calendar"
+          - "lunardate"
+          - "zhdate"
+        update-types:
+          - "minor"
+          - "patch"
+      development-tools:
+        dependency-type: "development"
+        patterns:
+          - "black"
+          - "coverage"
+          - "distlib"
+          - "filelock"
+          - "identify"
+          - "iniconfig"
+          - "mypy"
+          - "mypy-extensions"
+          - "nodeenv"
+          - "pathspec"
+          - "platformdirs"
+          - "pluggy"
+          - "pre-commit"
+          - "pygments"
+          - "pytest*"
+          - "pytokens"
+          - "ruff"
+          - "virtualenv"
+        update-types:
+          - "minor"
+          - "patch"
+    # `mcp` is deliberately absent from every group so SDK updates always get
+    # an independent protocol-focused pull request.
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:30"
+      timezone: "Asia/Taipei"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
