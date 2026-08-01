@@ -18,6 +18,9 @@
 
 </div>
 
+Standard CPython 3.11, 3.12, 3.13, and 3.14 are supported and tested. Python
+3.14 free-threaded builds are not part of the v1.2.1 support guarantee.
+
 ## 📖 Overview
 
 A comprehensive Model Context Protocol (MCP) server providing traditional Chinese lunar calendar information, auspicious date checking, and festival data based on Chinese cultural traditions.
