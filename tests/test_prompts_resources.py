@@ -293,7 +293,7 @@ class TestServerPromptsAndResources:
         assert len(contents) == 1
         content = contents[0]
         assert str(content.uri) == "lunar://zodiac/animals"
-        assert content.mimeType == "text/plain"
+        assert content.mimeType == "application/json"
 
         # Parse JSON content
         data = json.loads(content.text)
@@ -313,7 +313,7 @@ class TestServerPromptsAndResources:
         assert len(contents) == 1
         content = contents[0]
         assert str(content.uri) == "lunar://elements/five"
-        assert content.mimeType == "text/plain"
+        assert content.mimeType == "application/json"
 
         # Parse JSON content
         data = json.loads(content.text)
@@ -337,7 +337,7 @@ class TestServerPromptsAndResources:
         assert len(contents) == 1
         content = contents[0]
         assert str(content.uri) == "lunar://festivals/major"
-        assert content.mimeType == "text/plain"
+        assert content.mimeType == "application/json"
 
         # Parse JSON content
         data = json.loads(content.text)
@@ -358,7 +358,7 @@ class TestServerPromptsAndResources:
         assert len(contents) == 1
         content = contents[0]
         assert str(content.uri) == "lunar://stems-branches/heavenly"
-        assert content.mimeType == "text/plain"
+        assert content.mimeType == "application/json"
 
         # Parse JSON content
         data = json.loads(content.text)
@@ -378,7 +378,7 @@ class TestServerPromptsAndResources:
         assert len(contents) == 1
         content = contents[0]
         assert str(content.uri) == "lunar://stems-branches/earthly"
-        assert content.mimeType == "text/plain"
+        assert content.mimeType == "application/json"
 
         # Parse JSON content
         data = json.loads(content.text)
