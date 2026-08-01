@@ -158,9 +158,11 @@ uv build
 
 ### Version Workflow
 
-1. Update version in `pyproject.toml`
-2. Update `CHANGELOG.md` with new version entry
-3. Commit changes
-4. Create and push tag
-5. Create GitHub release
-6. Workflow automatically publishes to PyPI
+1. Update the version once in `pyproject.toml`, the canonical version source.
+2. Run `uv lock` so the local package entry in `uv.lock` matches it.
+3. Update `CHANGELOG.md` with the same version entry.
+4. Run the version tests; the package and MCP initialization response derive
+   their version from installed distribution metadata and must match.
+5. Commit the changes and create the matching `vX.Y.Z` tag.
+6. Create the GitHub release; the workflow publishes that tagged version to
+   PyPI.

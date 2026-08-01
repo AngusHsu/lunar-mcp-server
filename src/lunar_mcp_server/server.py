@@ -19,6 +19,7 @@ from mcp.types import (
     Tool,
 )
 
+from ._version import __version__
 from .auspicious_dates import AuspiciousDateChecker
 from .bazi import BaZiCalculator
 from .calendar_conversions import CalendarConverter
@@ -30,7 +31,7 @@ class LunarMCPServer:
     """MCP Server for Lunar Calendar operations."""
 
     def __init__(self) -> None:
-        self.server = Server("lunar-mcp-server", version="0.1.0")
+        self.server = Server("lunar-mcp-server", version=__version__)
         self.lunar_calc = LunarCalculator()
         self.auspicious_checker = AuspiciousDateChecker()
         self.festival_manager = FestivalManager()
