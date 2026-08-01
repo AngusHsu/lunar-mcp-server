@@ -52,6 +52,19 @@ dedicated issue validates behavior and Python 3.11 compatibility.
 | `pydantic` | `>=2.5.0` | 2.11.9 | 2.13.4 | #20 | MCP schema compatibility risk. No direct source import was found; currently also supplied transitively by MCP. |
 | `typing-extensions` | `>=4.8.0` | 4.15.0 | 4.16.0 | #20 | Low runtime risk. No direct source import was found; prove direct use or remove. |
 
+### #20 implementation outcome
+
+The core-utility review found no source or test imports of `python-dateutil`,
+`pytz`, `pydantic`, or `typing-extensions`. All four direct requirements were
+removed rather than publishing dependencies the application does not use.
+
+- `python-dateutil` 2.9.0.post0 and `pytz` 2025.2 leave the resolution entirely.
+- Pydantic remains a required MCP SDK transitive and is upgraded to 2.13.4,
+  with Pydantic Core 2.46.4 and `typing-inspection` 0.4.2.
+- `typing-extensions` remains a shared transitive and is upgraded to 4.16.0.
+- The existing date parsing, timezone-offset, MCP schema, frozen-install, and
+  clean-artifact integration tests provide the removal evidence.
+
 ## Development and build dependencies
 
 The project currently publishes a `dev` extra and also defines a uv `dev`

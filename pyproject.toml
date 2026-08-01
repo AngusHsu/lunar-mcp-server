@@ -42,10 +42,6 @@ dependencies = [
     "lunardate>=0.2.2",
     "zhdate>=0.1",
     "chinese-calendar>=1.9.0",
-    "python-dateutil>=2.8.2",
-    "pytz>=2023.3",
-    "pydantic>=2.5.0",
-    "typing-extensions>=4.8.0",
 ]
 
 [project.optional-dependencies]
