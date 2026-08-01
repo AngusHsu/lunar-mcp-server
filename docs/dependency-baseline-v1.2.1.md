@@ -157,3 +157,13 @@ dependency and `uv audit --frozen` passes.
 - The duplicate dev declarations, duplicate MCP declaration, unused-direct
   candidates, shell portability failure, five MCP deprecation warnings, and
   vulnerability set are explicitly assigned to follow-up issues above.
+
+### #18 implementation outcome
+
+- Upgraded `lunardate` from 0.2.2 to 0.3.0 and `chinese-calendar` from 1.10.0
+  to 1.11.0.
+- Retained and pinned `zhdate` 0.1 because the published 1.0 sdist cannot be
+  resolved as version 1.0 by uv; replacement analysis is deferred.
+- Added exact fixtures for Lunar New Year, the 2023 leap second month, Dragon
+  Boat Festival, Mid-Autumn Festival, reverse conversions, festival lookup,
+  and the Rabbit-to-Dragon zodiac boundary.

@@ -283,11 +283,11 @@ wheels = [
 
 [[package]]
 name = "chinese-calendar"
-version = "1.10.0"
+version = "1.11.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/1d/a7/02eef814abac2a95c1484b4812dce4b57976c9b23e9321eecf313ae31d5c/chinese_calendar-1.10.0.tar.gz", hash = "sha256:1e8c731fb21f79249becfdfff55bf097a7163e3ca76fb5b8107c499cc873ac42", size = 17375, upload-time = "2024-11-13T05:43:23.357Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a0/af/d5dd356a7d03d17325a2f3100e35d26300a405bc7d57d3325dd634f04cc2/chinese_calendar-1.11.0.tar.gz", hash = "sha256:931d9187cbf7bb1dc09685dedb5013e74678bbe03a173d71d46b76afc37f2597", size = 16607, upload-time = "2025-11-04T10:22:43.64Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/72/56fab8f101adc358a42fa5acb26e2c5b989e97f1900ea7d6bd29334b432e/chinese_calendar-1.10.0-py2.py3-none-any.whl", hash = "sha256:9ab1b535a2c41edb0d48a43762c314b51b9ffb36c19e7cd3963b306a20ba30c6", size = 11851, upload-time = "2024-11-13T05:43:21.655Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/34/5ba74e1c2509c522dc9bbc7ff07f2a9823c51183ef32ec2dbade1c593205/chinese_calendar-1.11.0-py2.py3-none-any.whl", hash = "sha256:6800bf53bd011a8b3e9fbb91805d16210f59648c2d86130dc43c2aa7708207ec", size = 11226, upload-time = "2025-11-04T10:22:41.935Z" },
 ]
 
 [[package]]
@@ -736,12 +736,12 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "astropy", specifier = ">=6.0.0" },
-    { name = "chinese-calendar", specifier = ">=1.9.0" },
+    { name = "chinese-calendar", specifier = ">=1.11.0,<2" },
     { name = "ephem", specifier = ">=4.1.5" },
-    { name = "lunardate", specifier = ">=0.2.2" },
+    { name = "lunardate", specifier = ">=0.3.0,<0.4" },
     { name = "mcp", specifier = ">=1.28.1,<2" },
     { name = "skyfield", specifier = ">=1.48" },
-    { name = "zhdate", specifier = ">=0.1" },
+    { name = "zhdate", specifier = "==0.1" },
 ]
 
 [package.metadata.requires-dev]
@@ -757,11 +757,11 @@ dev = [
 
 [[package]]
 name = "lunardate"
-version = "0.2.2"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/85/71/62fadf243502618cf2a7af5b81936a99684147c655729934f014758c3b39/lunardate-0.2.2.tar.gz", hash = "sha256:8ff8c01721bef7710f0712a302b1cb7d0b8b3ffc72a63a9a056cd01e58e5485a", size = 17686, upload-time = "2023-12-07T13:13:21.09Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/70/6d4d14313b5d9eab05e37c761164dd572d95386bd6238354b04b989e0eae/lunardate-0.3.0.tar.gz", hash = "sha256:ae1daa9140bb1078b2c8e2a5b1623e6f25cf0443eca9ef2d6df27a4644f25fef", size = 18571, upload-time = "2026-07-07T05:05:39.019Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/07/232401bb1c6bc699c5e641ad375e2582cdde90b19b18e6618ec51796b737/lunardate-0.2.2-py3-none-any.whl", hash = "sha256:cf1916337e50470a82df12d885ff47a456e89c91a3ad4e5fdf1575e063a7ed55", size = 18081, upload-time = "2023-12-07T13:13:19.333Z" },
+    { url = "https://files.pythonhosted.org/packages/13/65/b0f833b26f932c865efd25790960bb83481098d66ed8b4ceac8a91859433/lunardate-0.3.0-py3-none-any.whl", hash = "sha256:68c1beaf7704c55c8a2c929d14be3ca98da55992d0ec3c0dd57eae2a5d4079fb", size = 18784, upload-time = "2026-07-07T05:05:38.029Z" },
 ]
 
 [[package]]

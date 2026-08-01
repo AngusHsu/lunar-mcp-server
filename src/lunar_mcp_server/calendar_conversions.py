@@ -185,7 +185,7 @@ class CalendarConverter:
 
             if LUNARDATE_AVAILABLE:
                 try:
-                    lunar_date = LunarDate.fromSolarDate(
+                    lunar_date = LunarDate.from_solar_date(
                         solar_date.year, solar_date.month, solar_date.day
                     )
                     zodiac_info = self._calculate_chinese_zodiac_year(lunar_date.year)
@@ -263,7 +263,7 @@ class CalendarConverter:
             if LUNARDATE_AVAILABLE:
                 try:
                     lunar_date = LunarDate(lunar_year, lunar_month, lunar_day)
-                    solar_date = lunar_date.toSolarDate()
+                    solar_date = lunar_date.to_solar_date()
 
                     result.update(
                         {
