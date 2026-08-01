@@ -15,6 +15,13 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      # PyPI advertises zhdate 1.0, but its published metadata cannot be
+      # resolved or installed. Keep the validated 0.1 release until upstream
+      # publishes a usable successor.
+      - dependency-name: "zhdate"
+        versions:
+          - "1.0"
     groups:
       core-runtime:
         patterns:
