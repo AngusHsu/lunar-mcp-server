@@ -6,18 +6,25 @@ This workflow runs code quality checks and tests on every pull request and push 
 
 ### Workflow Jobs
 
-1. **Code Quality Checks** (runs first)
+1. **Lockfile and Vulnerability Validation** (runs first)
+   - Confirms `pyproject.toml` and `uv.lock` are consistent
+   - Installs without changing the lockfile
+   - Audits the complete frozen dependency graph
+
+2. **Code Quality Checks** (runs after dependency validation)
    - Black formatting validation
    - Ruff lint and import-sorting validation
    - Ruff linting
    - Mypy type checking
 
-2. **Test Matrix** (runs in parallel after quality checks)
+All subsequent uv installs and tool runs are also frozen.
+
+3. **Test Matrix** (runs in parallel after quality checks)
    - Runs the full unit and integration suite on standard CPython 3.11–3.14
    - Validates all 20 tools, 5 prompts, and 5 resources on every version
    - Generates and uploads coverage once, from Python 3.11
 
-3. **Built Artifact Tests** (runs in parallel after quality checks)
+4. **Built Artifact Tests** (runs in parallel after quality checks)
    - Builds both the wheel and source distribution
    - Installs each artifact in an isolated environment on Python 3.11 and 3.14
    - Smoke-tests version metadata, server construction, and bundled ephemeris
@@ -35,6 +42,10 @@ No setup required - the workflow runs automatically when:
 - You push commits to main/develop branches
 
 All PR checks must pass before the PR can be merged (if branch protection is enabled).
+
+`dependency-review.yaml` runs only for pull requests and rejects newly
+introduced vulnerable dependencies. Dependabot policy and repository security
+settings are documented in [`docs/dependency-automation.md`](../../docs/dependency-automation.md).
 
 ## publish.yaml - PyPI Publishing Workflow
 
