@@ -93,6 +93,16 @@ Ruff already enables `I` rules while CI separately runs isort. Unless #13 finds
 an uncovered behavior, Ruff should become the single import-sorting source of
 truth and isort should be removed.
 
+### #13 implementation outcome
+
+- Adopted the uv-first model and removed the conflicting published `dev` extra.
+- Upgraded the retained tools to Black 26.5.1, mypy 2.3.0, pre-commit 4.6.1,
+  pytest 9.1.1, pytest-asyncio 1.4.0, pytest-cov 7.1.0, and Ruff 0.16.1.
+- Upgraded the build backend requirement to Hatchling 1.31.0.
+- Made Ruff the single lint/import-sorting source of truth and removed isort.
+- Added local pre-commit hooks that invoke the same uv-managed Black, Ruff, and
+  mypy tools used by contributors and CI.
+
 ## Vulnerability baseline
 
 `uv audit --frozen` reported 50 advisory records. Some CVEs appear under both

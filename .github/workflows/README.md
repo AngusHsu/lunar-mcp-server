@@ -8,7 +8,7 @@ This workflow runs code quality checks and tests on every pull request and push 
 
 1. **Code Quality Checks** (runs first)
    - Black formatting validation
-   - isort import sorting validation
+   - Ruff lint and import-sorting validation
    - Ruff linting
    - Mypy type checking
 
@@ -20,7 +20,7 @@ This workflow runs code quality checks and tests on every pull request and push 
 
 3. **MCP Server Tests** (runs in parallel after quality checks)
    - Runs comprehensive MCP server tests
-   - Validates all 18 tools
+   - Validates all 20 tools, 5 prompts, and 5 resources
    - Uses `./scripts/test_mcp_final.sh`
 
 4. **Test Matrix** (runs in parallel after quality checks)
@@ -48,12 +48,12 @@ This workflow automatically publishes the package to PyPI when a new GitHub rele
 
 1. **Code Quality Checks** (runs first)
    - Black formatting validation
-   - isort import sorting validation
+   - Ruff lint and import-sorting validation
    - Ruff linting
    - Mypy type checking
 
 2. **Test Suite** (runs after quality checks pass)
-   - Comprehensive MCP server tests (all 18 tools)
+   - Comprehensive MCP server tests (20 tools, 5 prompts, and 5 resources)
    - Unit tests with pytest
    - Code coverage reporting
 
@@ -128,7 +128,6 @@ You can test the workflow without publishing by creating a test release or runni
 ```bash
 # Test quality checks
 uv run black --check src/ tests/
-uv run isort --check src/ tests/
 uv run ruff check src/ tests/
 uv run mypy src/
 
@@ -145,7 +144,7 @@ uv build
 ### Troubleshooting
 
 **Issue**: Quality checks fail
-- **Solution**: Run formatters locally: `uv run black src/ tests/` and `uv run isort src/ tests/`
+- **Solution**: Run `uv run black src/ tests/` and `uv run ruff check --fix src/ tests/`
 
 **Issue**: Tests fail
 - **Solution**: Run `./scripts/test_mcp_final.sh` locally to debug

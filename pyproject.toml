@@ -44,18 +44,6 @@ dependencies = [
     "chinese-calendar>=1.9.0",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-cov>=4.1.0",
-    "black>=23.0.0",
-    "isort>=5.12.0",
-    "mypy>=1.6.0",
-    "ruff>=0.1.0",
-    "pre-commit>=3.5.0",
-]
-
 [project.urls]
 Homepage = "https://github.com/AngusHsu/lunar-mcp-server"
 Repository = "https://github.com/AngusHsu/lunar-mcp-server"
@@ -67,7 +55,7 @@ Changelog = "https://github.com/AngusHsu/lunar-mcp-server/blob/main/CHANGELOG.md
 lunar-mcp-server = "lunar_mcp_server.server:main"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.31.0,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
@@ -99,12 +87,6 @@ extend-exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-known_first_party = ["lunar_mcp_server"]
-
 [tool.mypy]
 python_version = "3.11"
 warn_return_any = true
@@ -123,7 +105,6 @@ module = [
     "lunardate.*",
     "zhdate.*",
     "chinese_calendar.*",
-    "pytz.*",
     "skyfield.*",
 ]
 ignore_missing_imports = true
@@ -157,7 +138,7 @@ select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
     "F",  # pyflakes
-    "I",  # isort
+    "I",  # import sorting
     "B",  # flake8-bugbear
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
@@ -196,12 +177,11 @@ exclude_lines = [
 
 [dependency-groups]
 dev = [
-    "black>=25.9.0",
-    "isort>=6.0.1",
-    "mypy>=1.18.2",
-    "pre-commit>=4.3.0",
-    "pytest>=8.4.2",
-    "pytest-asyncio>=1.2.0",
-    "pytest-cov>=7.0.0",
-    "ruff>=0.13.2",
+    "black>=26.5.1,<27",
+    "mypy>=2.3.0,<3",
+    "pre-commit>=4.6.1,<5",
+    "pytest>=9.1.1,<10",
+    "pytest-asyncio>=1.4.0,<2",
+    "pytest-cov>=7.1.0,<8",
+    "ruff>=0.16.1,<0.17",
 ]
