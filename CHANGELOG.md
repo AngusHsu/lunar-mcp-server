@@ -5,6 +5,76 @@ All notable changes to the Lunar Calendar MCP Server will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-08-01
+
+### Security
+
+- Upgraded the MCP Python SDK from 1.15.0 to 1.29.0 on the supported v1 line,
+  resolving the six advisories in the previous locked release.
+- Upgraded vulnerable runtime transitives including AnyIO, Click,
+  Cryptography, IDNA, python-dotenv, and PyJWT; `uv audit --frozen` now reports
+  no known vulnerabilities or adverse package status in the locked graph.
+- Added pull-request dependency review plus early CI gates for lockfile
+  consistency, frozen installation, and vulnerability auditing.
+
+### Changed
+
+- Added production STDIO integration coverage for the complete MCP surface:
+  exactly 20 tools, 5 prompts, and 5 resources. The server uses protocol
+  `2025-11-25` while retaining client initialization compatibility with
+  `2024-11-05`.
+- Upgraded Chinese calendar dependencies to Lunardate 0.3.0 and
+  chinese-calendar 1.11.0. Deprecated Lunardate camel-case calls were migrated
+  without changing validated conversion, leap-month, festival, zodiac, or BaZi
+  fixtures.
+- Upgraded Skyfield to 1.54 and Ephem to 4.2.1, with Jplephem 2.24, SGP4 2.27,
+  and NumPy 2.4.6 on Python 3.11 / 2.5.1 on Python 3.12+. Exact pre-upgrade
+  moon-phase fixtures remain unchanged.
+- Consolidated contributor dependencies into uv's development group and
+  upgraded Black 26.5.1, mypy 2.3.0, pre-commit 4.6.1, pytest 9.1.1,
+  pytest-asyncio 1.4.0, pytest-cov 7.1.0, Ruff 0.16.1, and Hatchling 1.31.0.
+  Ruff is now the single import-sorting authority and isort was removed.
+- Confirmed and advertised standard CPython 3.11, 3.12, 3.13, and 3.14 support.
+  The full unit and MCP integration suite runs on every version; wheel and
+  source-distribution installs run on the oldest and newest versions.
+- Added weekly native-uv and GitHub Actions Dependabot updates with independent
+  MCP, core runtime, astronomy, Chinese calendar, development-tool, and Actions
+  review domains. Major updates are never grouped.
+
+### Fixed
+
+- Runtime and MCP server version reporting now derive from installed
+  distribution metadata, eliminating stale duplicated version constants.
+- DE421 ephemeris data is now included in wheels and source distributions and
+  resolved through package resources, so installed astronomy calculations do
+  not depend on the working directory or a network download.
+- The legacy shell MCP smoke-test entry point now delegates to the supported
+  Python client integration suite instead of requiring GNU `timeout` and
+  parsing protocol JSON with `grep`, making release validation portable.
+- Removed unused direct requirements for python-dateutil, pytz, Pydantic, and
+  typing-extensions. Pydantic and typing-extensions remain only where required
+  transitively by MCP. Removed unused Astropy and its exclusive PyERFA and IERS
+  data transitives.
+
+### Compatibility and deferred upgrades
+
+- No tools, prompts, resources, transports, public response schemas, or
+  calculation algorithms were added or intentionally changed in this patch.
+- MCP 2.0 is intentionally deferred to a separately reviewed protocol/API
+  migration; v1.2.1 constrains the SDK to `>=1.28.1,<2`.
+- `zhdate` remains pinned to 0.1 because PyPI's advertised 1.0 release has
+  invalid/unresolvable metadata. Dependabot excludes only that unusable version;
+  vulnerability auditing remains enabled for the installed package.
+- Python 3.14 free-threaded builds are not included in this patch's support
+  guarantee.
+
+### Validation
+
+- 216 tests pass with deprecation warnings treated as errors, including exact
+  Chinese-calendar and astronomy golden fixtures.
+- Black, Ruff, mypy, pre-commit, frozen lock validation, vulnerability audit,
+  wheel/sdist builds, and clean installed-artifact smoke tests pass.
+
 ## [1.2.0] - 2025-12-06
 
 ### Added
