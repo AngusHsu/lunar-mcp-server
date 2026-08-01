@@ -4,12 +4,12 @@
 
 ### Traditional Chinese Lunar Calendar for AI Applications
 
-[![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.11--3.14-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP Compatible](https://img.shields.io/badge/MCP-2025--11--25-green.svg)](https://modelcontextprotocol.io)
 [![CI](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml/badge.svg)](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/AngusHsu/lunar-mcp-server/branch/main/graph/badge.svg)](https://codecov.io/gh/AngusHsu/lunar-mcp-server)
-[![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen.svg)](./scripts/test_mcp_final.sh)
+[![Tests](https://img.shields.io/badge/tests-216%20passed-brightgreen.svg)](https://github.com/AngusHsu/lunar-mcp-server/actions/workflows/ci.yaml)
 [![PyPI version](https://badge.fury.io/py/lunar-mcp-server.svg)](https://pypi.org/project/lunar-mcp-server/)
 
 **20 Tools** | **BaZi (八字)** | **Chinese Zodiac** | **Five Elements** | **Moon Phases** | **Festivals** | **Auspicious Dates**
