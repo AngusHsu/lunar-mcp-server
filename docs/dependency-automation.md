@@ -26,6 +26,12 @@ Only patch and minor updates are grouped. Major updates remain individual.
 - Development-tool patch/minor updates can share one pull request.
 - GitHub Actions patch/minor updates can share one pull request.
 
+The sole version exclusion is `zhdate` 1.0. PyPI advertises that release, but
+its published metadata is not resolvable by uv; the initial native-uv update
+run demonstrated the failure. This is not a vulnerability exception: `uv audit`
+still audits `zhdate` 0.1 and the rest of the complete graph. The exclusion can
+be removed when upstream publishes an installable successor.
+
 Required transitive lockfile changes travel with the applicable direct update.
 An update must not combine MCP, core runtime, astronomy, and Chinese calendar
 domains merely to make dependency resolution easier.
@@ -58,7 +64,9 @@ Dependabot alerts and Dependabot security updates are enabled in repository
 settings. The public repository's dependency graph enables GitHub dependency
 review. Maintainers can verify these settings under **Settings → Code security**.
 
-The configuration is validated after it reaches the default branch by checking
-the Dependabot update log or the first generated update pull request. If GitHub
-reports a configuration error, dependency automation is not considered healthy
-until that error is corrected.
+The initial default-branch update ran both configured ecosystems. GitHub Actions
+opened independently reviewable major-update pull requests. The uv run opened a
+separate MCP 2.0 pull request, which was reviewed and deferred because MCP v2 is
+outside the v1.2.1 patch scope, and exposed the invalid `zhdate` 1.0 metadata.
+The exact unusable release is now excluded so subsequent uv runs can complete;
+any future configuration error must likewise be corrected rather than ignored.
