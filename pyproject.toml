@@ -36,9 +36,8 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [
     "mcp>=1.28.1,<2",
-    "skyfield>=1.48",
-    "ephem>=4.1.5",
-    "astropy>=6.0.0",
+    "skyfield>=1.54,<2",
+    "ephem>=4.2.1,<5",
     "lunardate>=0.3.0,<0.4",
     # PyPI's zhdate 1.0 sdist has invalid/unresolvable package metadata.
     "zhdate==0.1",

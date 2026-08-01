@@ -41,9 +41,9 @@ dedicated issue validates behavior and Python 3.11 compatibility.
 | Package | Declared constraint | Locked | Proposed target | Owner | Risk and notes |
 | --- | --- | ---: | ---: | --- | --- |
 | `mcp` | `>=1.0.0` | 1.15.0 | `>=1.28.1,<2` | #11 | High protocol/security risk. Six advisories affect the locked release. The `<2` ceiling prevents an accidental SDK v2 migration. |
-| `skyfield` | `>=1.48` | 1.53 | 1.54 | #12 | Calculation-sensitive; validate phase boundaries and ephemeris behavior. |
-| `ephem` | `>=4.1.5` | 4.2 | 4.2.1 | #12 | Calculation-sensitive; imported as an optional astronomy backend. |
-| `astropy` | `>=6.0.0` | 7.1.0 | 8.0.1 | #12 | High transitive/calculation risk. No source import was found, so #12 should prove it is needed or remove it. |
+| `skyfield` | `>=1.48` | 1.53 | 1.54 | #12 | Upgraded to 1.54 with exact pre-upgrade phase fixtures. |
+| `ephem` | `>=4.1.5` | 4.2 | 4.2.1 | #12 | Upgraded to 4.2.1; currently used only as an availability probe. |
+| `astropy` | `>=6.0.0` | 7.1.0 | removed | #12 | Removed after confirming no runtime or test import; its exclusive transitives were removed too. |
 | `lunardate` | `>=0.2.2` | 0.2.2 | 0.3.0 | #18 | Calendar-output risk, especially leap months and supported date ranges. |
 | `zhdate` | `>=0.1` | 0.1 | 1.0 | #18 | Major-version jump and calendar-output risk; requires independent golden-fixture validation. |
 | `chinese-calendar` | `>=1.9.0` | 1.10.0 | 1.11.0 | #18 | Festival/holiday dataset changes may alter results. |

@@ -4,6 +4,7 @@ Astronomical calculations for lunar calendar operations.
 
 import math
 from datetime import datetime, timedelta
+from importlib.resources import files
 from typing import Any
 
 try:
@@ -31,7 +32,8 @@ class LunarCalculator:
 
         if SKYFIELD_AVAILABLE:
             self.ts = load.timescale()
-            self.eph = load("de421.bsp")
+            ephemeris = files("lunar_mcp_server").joinpath("data/de421.bsp")
+            self.eph = load(str(ephemeris))
             self.earth = self.eph["earth"]
             self.moon = self.eph["moon"]
             self.sun = self.eph["sun"]
