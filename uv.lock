@@ -1,14 +1,14 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version >= '3.15' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version == '3.14.*' and sys_platform != 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'win32'",
-    "python_full_version < '3.12' and sys_platform == 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'win32'",
+    "python_full_version < '3.12' and sys_platform == 'win32'",
     "python_full_version < '3.12' and sys_platform != 'win32'",
 ]
 
@@ -240,11 +240,11 @@ wheels = [
 
 [[package]]
 name = "chinese-calendar"
-version = "1.11.0"
+version = "1.12.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a0/af/d5dd356a7d03d17325a2f3100e35d26300a405bc7d57d3325dd634f04cc2/chinese_calendar-1.11.0.tar.gz", hash = "sha256:931d9187cbf7bb1dc09685dedb5013e74678bbe03a173d71d46b76afc37f2597", size = 16607, upload-time = "2025-11-04T10:22:43.64Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4d/7b/f5f66c5d2d01610fc23a4619923d59d94523ef5c70b67c1aadb9234de05a/chinese_calendar-1.12.1.tar.gz", hash = "sha256:9355e6398cd360100fab75262971dd28e1ca61cac994ccb3768cfb84b77466fe", size = 18123, upload-time = "2026-11-05T10:32:32.973Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c1/34/5ba74e1c2509c522dc9bbc7ff07f2a9823c51183ef32ec2dbade1c593205/chinese_calendar-1.11.0-py2.py3-none-any.whl", hash = "sha256:6800bf53bd011a8b3e9fbb91805d16210f59648c2d86130dc43c2aa7708207ec", size = 11226, upload-time = "2025-11-04T10:22:41.935Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/c7/152a1cc368ff364cdf7917198bd78dcd56267a5b1dc2cf44d2dbd752e971/chinese_calendar-1.12.1-py3-none-any.whl", hash = "sha256:201168423c879a9584b5cd13054f039a2ff34dad9cf5f822dd1133379983a79e", size = 12412, upload-time = "2026-11-05T10:32:30.604Z" },
 ]
 
 [[package]]
@@ -928,8 +928,8 @@ version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version >= '3.15' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version == '3.14.*' and sys_platform != 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.12' and python_full_version < '3.14' and sys_platform != 'win32'",
